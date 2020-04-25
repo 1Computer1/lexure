@@ -1,0 +1,15 @@
+# Node
+node_modules
+
+# Source
+src
+.eslintrc.js
+tsconfig.json
+
+# Output
+coverage
+
+# Other
+.DS_Store
+*.log
+.vscode

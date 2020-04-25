@@ -1,0 +1,11 @@
+# Node
+node_modules
+
+# Output
+coverage
+dist
+
+# Other
+.DS_Store
+*.log
+.vscode
