@@ -1,6 +1,8 @@
 # lexure
 
-Lexer and parser for structured non-technical user input.
+`npm i lexure`  
+
+Lexer and parser for structured non-technical user input.  
 
 ## Features
 
