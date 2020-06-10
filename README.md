@@ -12,14 +12,14 @@ Lexer and parser for structured non-technical user input.
 ## Example
 
 ```ts
-import { lexer, parser, token, unordered } from 'suplex';
+import { Lexer, Parser, Tokens, Unordered } from 'suplex';
 
 const input = 'hello world "cool stuff" --foo --bar=baz';
 
-const l = new lexer.Lexer(input)
+const lexer = new Lexer(input)
     .setQuotes([['"', '"'], ['“', '”']]);
 
-const tokens = l.lex();
+const tokens = lexer.lex();
 >>> [
     Word { value: 'hello', trailing: ' ' },
     Word { value: 'world', trailing: ' ' },
@@ -28,10 +28,10 @@ const tokens = l.lex();
     Word { value: '--bar=baz', trailing: '' },
 ]
 
-const p = new parser.Parser(tokens)
-    .setUnorderedStrategy(unordered.longStrategy());
+const parser = new Parser(tokens)
+    .setUnorderedStrategy(Unordered.longStrategy());
 
-const res = p.parse();
+const res = parser.parse();
 >>> {
     ordered: [
         Word { value: 'hello', trailing: ' ' },
@@ -42,7 +42,7 @@ const res = p.parse();
     options: Map { 'bar' => 'baz' }
 }
 
-const text = token.joinTokens(res.ordered);
+const text = Tokens.joinTokens(res.ordered);
 >>> 'hello world "cool stuff"'
 ```
 

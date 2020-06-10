@@ -1,4 +1,4 @@
-import { joinTokens, Word } from '../src/token';
+import { joinTokens, Word } from '../src/tokens';
 
 describe('joinTokens', () => {
     it('should join tokens losslessly', () => {

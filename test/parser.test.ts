@@ -1,5 +1,5 @@
-import { Lexer } from '../src/lexer';
-import { Parser } from '../src/parser';
+import Lexer from '../src/lexer';
+import Parser from '../src/parser';
 import { longStrategy } from '../src/unordered';
 
 describe('parser', () => {

@@ -1,5 +1,5 @@
 import { UnorderedStrategy, noStrategy } from './unordered';
-import { Token } from "./token";
+import { Token } from "./tokens";
 
 /**
  * Output of the parser.
@@ -24,7 +24,7 @@ export interface ParserOutput {
 /**
  * Parses a list of tokens to separate out flags and options.
  */
-export class Parser {
+export default class Parser {
     private readonly input: Token[];
 
     private unorderedStrategy: UnorderedStrategy = noStrategy();

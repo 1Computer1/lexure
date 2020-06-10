@@ -1,5 +1,5 @@
-import { Lexer } from '../src/lexer';
-import { Word, Quoted } from '../src/token';
+import Lexer from '../src/lexer';
+import { Word, Quoted } from '../src/tokens';
 
 describe('lexer', () => {
     it('with no quotes, parses text without quotes', () => {

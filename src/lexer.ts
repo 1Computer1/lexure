@@ -1,9 +1,9 @@
-import { Token, Word, Quoted } from './token';
+import { Token, Word, Quoted } from './tokens';
 
 /**
  * The lexer turns input into a list of tokens.
  */
-export class Lexer implements IterableIterator<Token> {
+export default class Lexer implements IterableIterator<Token> {
     private readonly input: string;
 
     private quotes: [string, string][] = [];

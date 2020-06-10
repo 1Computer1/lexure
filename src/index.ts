@@ -1,4 +1,4 @@
-export * as lexer from './lexer';
-export * as parser from './parser';
-export * as token from './token';
-export * as unordered from './unordered';
+export * from './lexer';
+export * from './parser';
+export * as Tokens from './tokens';
+export * as Unordered from './unordered';
