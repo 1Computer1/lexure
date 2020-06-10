@@ -1,4 +1,4 @@
-# suplex
+# lexure
 
 Lexer and parser for structured non-technical user input.
 
@@ -12,7 +12,7 @@ Lexer and parser for structured non-technical user input.
 ## Example
 
 ```ts
-import { Lexer, Parser, Tokens, Unordered } from 'suplex';
+import { Lexer, Parser, Tokens, Unordered } from 'lexure';
 
 const input = 'hello world "cool stuff" --foo --bar=baz';
 
