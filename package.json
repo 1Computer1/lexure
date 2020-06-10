@@ -1,6 +1,6 @@
 {
   "name": "lexure",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Lexer and parser for semi-structured user input.",
   "keywords": [
     "lexer",
@@ -29,7 +29,8 @@
   "scripts": {
     "lint": "eslint ./src ./test --ext .ts",
     "build": "rimraf dist && tsc",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "prepublishOnly": "npm run test && npm run build"
   },
   "jest": {
     "transform": {
