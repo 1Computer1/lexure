@@ -23,11 +23,11 @@ const lexer = new Lexer(input)
 
 const tokens = lexer.lex();
 >>> [
-    Word { value: 'hello', trailing: ' ' },
-    Word { value: 'world', trailing: ' ' },
-    Quoted { value: '"cool stuff"', innerValue: 'cool stuff', trailing: ' ' },
-    Word { value: '--foo', trailing: ' ' },
-    Word { value: '--bar=baz', trailing: '' },
+    { value: 'hello', trailing: ' ' },
+    { value: 'world', trailing: ' ' },
+    { value: '"cool stuff"', innerValue: 'cool stuff', trailing: ' ' },
+    { value: '--foo', trailing: ' ' },
+    { value: '--bar=baz', trailing: '' },
 ]
 
 const parser = new Parser(tokens)
@@ -36,9 +36,9 @@ const parser = new Parser(tokens)
 const res = parser.parse();
 >>> {
     ordered: [
-        Word { value: 'hello', trailing: ' ' },
-        Word { value: 'world', trailing: ' ' },
-        Quoted { value: '"cool stuff"', innerValue: 'cool stuff', trailing: ' ' }
+        { value: 'hello', trailing: ' ' },
+        { value: 'world', trailing: ' ' },
+        { value: '"cool stuff"', innerValue: 'cool stuff', trailing: ' ' }
     ],
     flags: Set { 'foo' },
     options: Map { 'bar' => 'baz' }

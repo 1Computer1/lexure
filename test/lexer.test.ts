@@ -1,14 +1,13 @@
 import Lexer from '../src/lexer';
-import { Word, Quoted } from '../src/tokens';
 
 describe('lexer', () => {
     it('with no quotes, parses text without quotes', () => {
         const s = 'simple text   here';
         const ts = new Lexer(s).lex();
         expect(ts).toEqual([
-            new Word('simple', ' '),
-            new Word('text', '   '),
-            new Word('here', '')
+            { value: 'simple', trailing: ' ' },
+            { value: 'text', trailing: '   ' },
+            { value: 'here', trailing: '' }
         ]);
     });
 
@@ -16,9 +15,9 @@ describe('lexer', () => {
         const s = 'simple "text"   here';
         const ts = new Lexer(s).lex();
         expect(ts).toEqual([
-            new Word('simple', ' '),
-            new Word('"text"', '   '),
-            new Word('here', '')
+            { value: 'simple', trailing: ' ' },
+            { value: '"text"', trailing: '   ' },
+            { value: 'here', trailing: '' }
         ]);
     });
 
@@ -26,9 +25,9 @@ describe('lexer', () => {
         const s = 'simple text   here';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
         expect(ts).toEqual([
-            new Word('simple', ' '),
-            new Word('text', '   '),
-            new Word('here', '')
+            { value: 'simple', trailing: ' ' },
+            { value: 'text', trailing: '   ' },
+            { value: 'here', trailing: '' }
         ]);
     });
 
@@ -36,9 +35,9 @@ describe('lexer', () => {
         const s = 'simple "text"   here';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
         expect(ts).toEqual([
-            new Word('simple', ' '),
-            new Quoted('"text"', 'text', '   '),
-            new Word('here', '')
+            { value: 'simple', trailing: ' ' },
+            { value: '"text"', innerValue: 'text', trailing: '   ' },
+            { value: 'here', trailing: '' }
         ]);
     });
 
@@ -46,8 +45,8 @@ describe('lexer', () => {
         const s = 'simple " text here "';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
         expect(ts).toEqual([
-            new Word('simple', ' '),
-            new Quoted('" text here "', ' text here ', '')
+            { value: 'simple', trailing: ' ' },
+            { value: '" text here "', innerValue: ' text here ', trailing: '' }
         ]);
     });
 
@@ -55,9 +54,9 @@ describe('lexer', () => {
         const s = 'simple"text"here';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
         expect(ts).toEqual([
-            new Word('simple', ''),
-            new Quoted('"text"', 'text', ''),
-            new Word('here', ''),
+            { value: 'simple', trailing: '' },
+            { value: '"text"', innerValue: 'text', trailing: '' },
+            { value: 'here', trailing: '' },
         ]);
     });
 
@@ -65,9 +64,9 @@ describe('lexer', () => {
         const s = 'simple "text"   “here”';
         const ts = new Lexer(s).setQuotes([['"', '"'], ['“', '”']]).lex();
         expect(ts).toEqual([
-            new Word('simple', ' '),
-            new Quoted('"text"', 'text', '   '),
-            new Quoted('“here”', 'here', '')
+            { value: 'simple', trailing: ' ' },
+            { value: '"text"', innerValue: 'text', trailing: '   ' },
+            { value: '“here”', innerValue: 'here', trailing: '' }
         ]);
     });
 
@@ -75,9 +74,9 @@ describe('lexer', () => {
         const s = 'simple "text"   “here';
         const ts = new Lexer(s).setQuotes([['"', '"'], ['“', '”']]).lex();
         expect(ts).toEqual([
-            new Word('simple', ' '),
-            new Quoted('"text"', 'text', '   '),
-            new Quoted('“here', 'here', '')
+            { value: 'simple', trailing: ' ' },
+            { value: '"text"', innerValue: 'text', trailing: '   ' },
+            { value: '“here', innerValue: 'here', trailing: '' }
         ]);
     });
 
@@ -85,8 +84,8 @@ describe('lexer', () => {
         const s = 'simple "text “here';
         const ts = new Lexer(s).setQuotes([['"', '"'], ['“', '”']]).lex();
         expect(ts).toEqual([
-            new Word('simple', ' '),
-            new Quoted('"text “here', 'text “here', '')
+            { value: 'simple', trailing: ' ' },
+            { value: '"text “here', innerValue: 'text “here', trailing: '' }
         ]);
     });
 
@@ -94,9 +93,9 @@ describe('lexer', () => {
         const s = ' simple text here';
         const ts = new Lexer(s).lex();
         expect(ts).toEqual([
-            new Word('simple', ' '),
-            new Word('text', ' '),
-            new Word('here', '')
+            { value: 'simple', trailing: ' ' },
+            { value: 'text', trailing: ' ' },
+            { value: 'here', trailing: '' }
         ]);
     });
 });

@@ -1,53 +1,41 @@
 /**
  * Represents a token.
  */
-export class Token {
-    /**
-     * The value of the token.
-     */
-    public readonly value: string;
-
-    /**
-     * Trailing whitespace.
-     */
-    public readonly trailing: string;
-
-    /**
-     * @param value - The value of the token.
-     * @param trailing - Trailing whitespace.
-     */
-    public constructor(value: string, trailing: string) {
-        this.value = value;
-        this.trailing = trailing;
-    }
-}
+export type Token = Word | Quoted;
 
 /**
  * A normal word.
  */
-export class Word extends Token {
+export interface Word {
+    /**
+     * The value of the token.
+     */
+    readonly value: string;
 
+    /**
+     * Trailing whitespace.
+     */
+    readonly trailing: string;
 }
 
 /**
  * A quoted substring.
  */
-export class Quoted extends Token {
+export interface Quoted {
+    /**
+     * The value of the token.
+     */
+    readonly value: string;
+
     /**
      * The value without quotes.
      */
-    public readonly innerValue: string;
+    readonly innerValue: string;
 
     /**
-     * @param value - The value of the token.
-     * @param innerValue - The value without quotes.
-     * @param trailing - Trailing whitespace.
+     * Trailing whitespace.
      */
-    public constructor(value: string, innerValue: string, trailing: string) {
-        super(value, trailing);
-
-        this.innerValue = innerValue;
-    }
+    readonly trailing: string;
 }
 
 /**
