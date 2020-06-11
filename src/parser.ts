@@ -77,12 +77,26 @@ export default class Parser implements IterableIterator<ParserOutput> {
         return this.pFlag() || this.pOption() || this.pCompactOption() || this.pOrdered();
     }
 
-    private static mergeOutputs(px: ParserOutput, py: ParserOutput): ParserOutput {
-        return {
-            ordered: [...px.ordered, ...py.ordered],
-            flags: new Set([...px.flags, ...py.flags]),
-            options: new Map([...px.options, ...py.options])
-        };
+    private static mergeOutputs(...ps: ParserOutput[]): ParserOutput {
+        const ordered = Array.from(function *() {
+            for (const p of ps) {
+                yield* p.ordered;
+            }
+        }());
+
+        const flags = new Set(function *() {
+            for (const p of ps) {
+                yield* p.flags;
+            }
+        }());
+
+        const options = new Map(function *() {
+            for (const p of ps) {
+                yield* p.options;
+            }
+        }());
+
+        return { ordered, flags, options };
     }
 
     private static emptyOutput(): ParserOutput {
@@ -169,6 +183,6 @@ export default class Parser implements IterableIterator<ParserOutput> {
      * Runs the parser.
      */
     public parse(): ParserOutput {
-        return [...this].reduce((a, x) => Parser.mergeOutputs(a, x), Parser.emptyOutput());
+        return Parser.mergeOutputs(...this);
     }
 }
