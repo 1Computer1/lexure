@@ -10,13 +10,14 @@ Lexer and parser for structured non-technical user input.
 - Parses flags and options with customizable parsing implementation.
 - Keeps trailing whitespace.
 - Always parses input by allowing some mis-inputs.
+- Includes a convenient wrapper to retrieve arguments.
 
 ## Example
 
 ```ts
-import { Lexer, Parser, Tokens, Unordered } from 'lexure';
+import { Lexer, Parser, Args, Tokens, Unordered } from 'lexure';
 
-const input = '!hello world "cool stuff" --foo --bar=baz';
+const input = '!hello world "cool stuff" --foo --bar=baz a b c';
 
 const lexer = new Lexer(input)
     .setQuotes([['"', '"'], ['“', '”']]);
@@ -27,7 +28,10 @@ const tokens = lexer.lex();
     { value: 'world', trailing: ' ' },
     { value: 'cool stuff', quoted: '"cool stuff"', trailing: ' ' },
     { value: '--foo', trailing: ' ' },
-    { value: '--bar=baz', trailing: '' },
+    { value: '--bar=baz', trailing: ' ' },
+    { value: 'a', trailing: ' ' },
+    { value: 'b', trailing: ' ' },
+    { value: 'c', trailing: '' }
 ]
 
 const parser = new Parser(tokens)
@@ -38,17 +42,52 @@ const res = parser.parse();
     ordered: [
         { value: '!hello', trailing: ' ' },
         { value: 'world', trailing: ' ' },
-        { value: 'cool stuff', quoted: '"cool stuff"', trailing: ' ' }
+        { value: 'cool stuff', quoted: '"cool stuff"', trailing: ' ' },
+        { value: 'a', trailing: ' ' },
+        { value: 'b', trailing: ' ' },
+        { value: 'c', trailing: '' }
     ],
     flags: Set { 'foo' },
     options: Map { 'bar' => 'baz' }
 }
 
-const text = Tokens.joinTokens(res.ordered);
->>> '!hello world cool stuff'
+Tokens.joinTokens(res.ordered)
+>>> '!hello world "cool stuff"'
 
-const command = Tokens.extractCommand(s => s.startsWith('!') ? 1 : null, res.ordered);
+Tokens.extractCommand(s => s.startsWith('!') ? 1 : null, res.ordered)
 >>> 'hello'
+
+res.ordered
+>>> [
+    { value: 'world', trailing: ' ' },
+    { value: 'cool stuff', quoted: '"cool stuff"', trailing: ' ' },
+    { value: 'a', trailing: ' ' },
+    { value: 'b', trailing: ' ' },
+    { value: 'c', trailing: '' }
+]
+
+const args = new Args(res);
+
+args.single()
+>>> 'world'
+
+args.single()
+>>> 'cool stuff'
+
+args.findMap(x => x === 'c' ? [true, 'it was a C'] : [false, null])
+>>> 'it was a C'
+
+args.many()
+>>> [
+    { value: 'a', trailing: ' ' },
+    { value: 'b', trailing: '' }
+]
+
+args.flag('foo')
+>>> true
+
+args.option('bar')
+>>> 'baz'
 ```
 
-See code for more usages and documentation.
+See source code and tests for more usages and documentation.
