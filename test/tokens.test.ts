@@ -1,4 +1,5 @@
 import { Tokens } from '../src/';
+import { Token } from '../src/tokens';
 
 describe('getOriginal', () => {
     it('should get quoted value', () => {
@@ -90,7 +91,7 @@ describe('extractCommand', () => {
     });
 
     it('can fail when not enough tokens', () => {
-        const ts = [];
+        const ts: Token[] = [];
         const cmd = Tokens.extractCommand(s => s.startsWith('!') ? 1 : null, ts);
         expect(cmd).toEqual(null);
         expect(ts).toEqual(ts);
