@@ -67,6 +67,10 @@ export default class Lexer implements IterableIterator<Token> {
     }
 
     private nextToken(): Token | null {
+        if (this.position === 0) {
+            this.pWs();
+        }
+
         return this.pQuoted() || this.pWord();
     }
 

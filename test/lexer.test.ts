@@ -89,4 +89,14 @@ describe('lexer', () => {
             new Quoted('"text “here', 'text “here', '')
         ]);
     });
+
+    it('can handle leading spaces', () => {
+        const s = ' simple text here';
+        const ts = new Lexer(s).lex();
+        expect(ts).toEqual([
+            new Word('simple', ' '),
+            new Word('text', ' '),
+            new Word('here', '')
+        ]);
+    });
 });
