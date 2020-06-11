@@ -1,13 +1,61 @@
-import { joinTokens, extractCommand, Token } from '../src/tokens';
+import { joinTokens, extractCommand, Token, getOriginal } from '../src/tokens';
 
-describe('joinTokens', () => {
-    it('should join tokens losslessly', () => {
-        const s = joinTokens([{ value: 'foo', trailing: '    ' }, { value: 'bar', trailing: '\n\n' }]);
-        expect(s).toEqual('foo    bar\n\n');
+describe('getOriginal', () => {
+    it('should get quoted value', () => {
+        const s = getOriginal({ value: 'foo', quoted: '"foo"', trailing: '' });
+        expect(s).toEqual('"foo"');
     });
 
-    it('should join tokens with normal spacing', () => {
-        const s = joinTokens([{ value: 'foo', trailing: '    ' }, { value: 'bar', trailing: '\n\n' }], false);
+    it('should get normal value', () => {
+        const s = getOriginal({ value: 'foo', trailing: '' });
+        expect(s).toEqual('foo');
+    });
+});
+
+describe('joinTokens', () => {
+    it('should join tokens with original spacing', () => {
+        const s = joinTokens([{ value: 'foo', trailing: '    ' }, { value: 'bar', trailing: '\n\n' }]);
+        expect(s).toEqual('foo    bar');
+    });
+
+    it('should join tokens with given spacing', () => {
+        const s = joinTokens([{ value: 'foo', trailing: '    ' }, { value: 'bar', trailing: '\n\n' }], ' ');
+        expect(s).toEqual('foo bar');
+    });
+
+    it('should join tokens with original spacing and keep quotes', () => {
+        const s = joinTokens([
+            { value: 'foo', quoted: '"foo"', trailing: '    ' },
+            { value: 'bar', trailing: '\n\n' }
+        ], null, true);
+
+        expect(s).toEqual('"foo"    bar');
+    });
+
+    it('should join tokens with original spacing and not keep quotes', () => {
+        const s = joinTokens([
+            { value: 'foo', quoted: '"foo"', trailing: '    ' },
+            { value: 'bar', trailing: '\n\n' }
+        ], null, false);
+
+        expect(s).toEqual('foo    bar');
+    });
+
+    it('should join tokens with given spacing and keep quotes', () => {
+        const s = joinTokens([
+            { value: 'foo', quoted: '"foo"', trailing: '    ' },
+            { value: 'bar', trailing: '\n\n' }
+        ], ' ', true);
+
+        expect(s).toEqual('"foo" bar');
+    });
+
+    it('should join tokens with given spacing and not keep quotes', () => {
+        const s = joinTokens([
+            { value: 'foo', quoted: '"foo"', trailing: '    ' },
+            { value: 'bar', trailing: '\n\n' }
+        ], ' ', false);
+
         expect(s).toEqual('foo bar');
     });
 });

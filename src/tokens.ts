@@ -39,15 +39,41 @@ export interface Quoted {
 }
 
 /**
+ * Gets the quoted value if the token is quoted, otherwise gets the value.
+ * @param token - The token.
+ * @returns The value.
+ */
+export function getOriginal(token: Token): string {
+    if ('quoted' in token) {
+        return token.quoted;
+    }
+
+    return token.value;
+}
+
+/**
  * Joins tokens together.
+ * By default, this keeps as much of the original input as possible.
  * @param tokens - Tokens to join.
- * @param lossless - Whether to keep trailing whitespace.
+ * @param separator - The separator, if null, will use original trailing whitespace; defaults to null.
+ * @param keepQuotes - Whether to keep quotes; defaults to true.
  * @returns The joined string.
  */
-export function joinTokens(tokens: Token[], lossless = true): string {
-    return lossless
-        ? tokens.map(t => t.value + t.trailing).join('')
-        : tokens.map(t => t.value).join(' ');
+export function joinTokens(tokens: Token[], separator: string | null = null, keepQuotes = true): string {
+    if (separator != null && !keepQuotes) {
+        return tokens.map(t => t.value).join(separator);
+    }
+
+    const xs = [];
+    for (let i = 0; i < tokens.length - 1; i++) {
+        const t = tokens[i];
+        xs.push(keepQuotes ? getOriginal(t) : t.value);
+        xs.push(separator ?? t.trailing);
+    }
+
+    const last = tokens[tokens.length - 1];
+    xs.push(keepQuotes ? getOriginal(last) : last.value);
+    return xs.join('');
 }
 
 /**
