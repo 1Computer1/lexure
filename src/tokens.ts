@@ -23,14 +23,14 @@ export interface Word {
  */
 export interface Quoted {
     /**
-     * The value of the token.
+     * The value of the token without quotes.
      */
     readonly value: string;
 
     /**
-     * The value without quotes.
+     * The value of the token with quotes.
      */
-    readonly innerValue: string;
+    readonly quoted: string;
 
     /**
      * Trailing whitespace.

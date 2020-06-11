@@ -25,7 +25,7 @@ const tokens = lexer.lex();
 >>> [
     { value: '!hello', trailing: ' ' },
     { value: 'world', trailing: ' ' },
-    { value: '"cool stuff"', innerValue: 'cool stuff', trailing: ' ' },
+    { value: 'cool stuff', quoted: '"cool stuff"', trailing: ' ' },
     { value: '--foo', trailing: ' ' },
     { value: '--bar=baz', trailing: '' },
 ]
@@ -38,14 +38,14 @@ const res = parser.parse();
     ordered: [
         { value: '!hello', trailing: ' ' },
         { value: 'world', trailing: ' ' },
-        { value: '"cool stuff"', innerValue: 'cool stuff', trailing: ' ' }
+        { value: 'cool stuff', quoted: '"cool stuff"', trailing: ' ' }
     ],
     flags: Set { 'foo' },
     options: Map { 'bar' => 'baz' }
 }
 
 const text = Tokens.joinTokens(res.ordered);
->>> '!hello world "cool stuff"'
+>>> '!hello world cool stuff'
 
 const command = Tokens.extractCommand(s => s.startsWith('!') ? 1 : null, res.ordered);
 >>> 'hello'

@@ -97,7 +97,7 @@ export default class Lexer implements IterableIterator<Token> {
             this.shift(close.length);
 
             const s = this.pWs();
-            return { value: open + inner + close, innerValue: inner, trailing: s };
+            return { value: inner, quoted: open + inner + close, trailing: s };
         }
 
         return null;

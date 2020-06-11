@@ -73,6 +73,19 @@ describe('parser', () => {
         });
     });
 
+    it('should not include the quotes in flags or options', () => {
+        const ts = new Lexer('hello "--foo" "--bar=" "123" "--baz=quux" world')
+            .setQuotes([['"', '"']])
+            .lex();
+
+        const out = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        expect(out).toEqual({
+            ordered: [ts[0], ts[5]],
+            flags: new Set(['foo']),
+            options: new Map([['bar', '123'], ['baz', 'quux']])
+        });
+    });
+
     it('should give things in order', () => {
         const ts = new Lexer('hello --foo --bar= 123 --baz=quux world').lex();
         const parser = new Parser(ts).setUnorderedStrategy(longStrategy());

@@ -36,7 +36,7 @@ describe('lexer', () => {
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
         expect(ts).toEqual([
             { value: 'simple', trailing: ' ' },
-            { value: '"text"', innerValue: 'text', trailing: '   ' },
+            { value: 'text', quoted: '"text"', trailing: '   ' },
             { value: 'here', trailing: '' }
         ]);
     });
@@ -46,7 +46,7 @@ describe('lexer', () => {
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
         expect(ts).toEqual([
             { value: 'simple', trailing: ' ' },
-            { value: '" text here "', innerValue: ' text here ', trailing: '' }
+            { value: ' text here ', quoted: '" text here "', trailing: '' }
         ]);
     });
 
@@ -55,7 +55,7 @@ describe('lexer', () => {
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
         expect(ts).toEqual([
             { value: 'simple', trailing: '' },
-            { value: '"text"', innerValue: 'text', trailing: '' },
+            { value: 'text', quoted: '"text"', trailing: '' },
             { value: 'here', trailing: '' },
         ]);
     });
@@ -65,8 +65,8 @@ describe('lexer', () => {
         const ts = new Lexer(s).setQuotes([['"', '"'], ['“', '”']]).lex();
         expect(ts).toEqual([
             { value: 'simple', trailing: ' ' },
-            { value: '"text"', innerValue: 'text', trailing: '   ' },
-            { value: '“here”', innerValue: 'here', trailing: '' }
+            { value: 'text', quoted: '"text"', trailing: '   ' },
+            { value: 'here', quoted: '“here”', trailing: '' }
         ]);
     });
 
@@ -75,8 +75,8 @@ describe('lexer', () => {
         const ts = new Lexer(s).setQuotes([['"', '"'], ['“', '”']]).lex();
         expect(ts).toEqual([
             { value: 'simple', trailing: ' ' },
-            { value: '"text"', innerValue: 'text', trailing: '   ' },
-            { value: '“here', innerValue: 'here', trailing: '' }
+            { value: 'text', quoted: '"text"', trailing: '   ' },
+            { value: 'here', quoted: '“here', trailing: '' }
         ]);
     });
 
@@ -85,7 +85,7 @@ describe('lexer', () => {
         const ts = new Lexer(s).setQuotes([['"', '"'], ['“', '”']]).lex();
         expect(ts).toEqual([
             { value: 'simple', trailing: ' ' },
-            { value: '"text “here', innerValue: 'text “here', trailing: '' }
+            { value: 'text “here', quoted: '"text “here', trailing: '' }
         ]);
     });
 
