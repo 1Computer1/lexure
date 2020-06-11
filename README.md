@@ -15,7 +15,7 @@ Lexer and parser for structured non-technical user input.
 ## Example
 
 ```ts
-import { Lexer, Parser, Args, Tokens, Unordered } from 'lexure';
+import { Lexer, Parser, Args, Tokens, Unordered, some, none } from 'lexure';
 
 const input = '!hello world "cool stuff" --foo --bar=baz a b c';
 
@@ -74,8 +74,8 @@ args.single()
 args.single()
 >>> 'cool stuff'
 
-args.findMap(x => x === 'c' ? [true, 'it was a C'] : [false, null])
->>> 'it was a C'
+args.findMap(x => x === 'c' ? some('it was a C') : none())
+>>> { exists: true, value: 'it was a C' }
 
 args.many()
 >>> [
