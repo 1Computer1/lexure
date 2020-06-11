@@ -87,7 +87,7 @@ describe('args', () => {
         const args = new Args(po);
 
         const y = args.findMap(x => x === 'hello' ? some(10) : none());
-        expect(y).toEqual(10);
+        expect(y).toEqual(some(10));
     });
 
     it('cannot find a token', () => {
@@ -97,7 +97,7 @@ describe('args', () => {
         const args = new Args(po);
 
         const y = args.findMap(x => x === 'goodbye' ? some(10) : none());
-        expect(y).toEqual(null);
+        expect(y).toEqual(none());
     });
 
     it('can filter multiple tokens', () => {
