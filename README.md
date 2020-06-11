@@ -52,7 +52,7 @@ const res = parser.parse();
 }
 
 Tokens.joinTokens(res.ordered)
->>> '!hello world "cool stuff"'
+>>> '!hello world "cool stuff" a b c'
 
 Tokens.extractCommand(s => s.startsWith('!') ? 1 : null, res.ordered)
 >>> 'hello'
