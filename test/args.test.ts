@@ -1,14 +1,10 @@
-import Parser from '../src/parser';
-import Lexer from '../src/lexer';
-import { longStrategy } from '../src/unordered';
-import Args from '../src/args';
-import { some, none } from '../src/option';
+import { Lexer, Parser, Args, some, none, Unordered } from '../src';
 
 describe('args', () => {
     it('can retrieve single and many args', () => {
         const s = 'hello "world" baz "quux"';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
-        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const po = new Parser(ts).setUnorderedStrategy(Unordered.longStrategy()).parse();
         const args = new Args(po);
 
         expect(args.single()).toEqual('hello');
@@ -20,7 +16,7 @@ describe('args', () => {
     it('can retrieve a limited amount of many args', () => {
         const s = 'hello "world" baz "quux"';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
-        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const po = new Parser(ts).setUnorderedStrategy(Unordered.longStrategy()).parse();
         const args = new Args(po);
 
         expect(args.many(2)).toEqual([{ value: 'hello', trailing: ' ' }, { value: 'world', quoted: '"world"', trailing: ' ' }]);
@@ -32,7 +28,7 @@ describe('args', () => {
     it('can retrieve flags and options', () => {
         const s = '--foo --bar=123';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
-        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const po = new Parser(ts).setUnorderedStrategy(Unordered.longStrategy()).parse();
         const args = new Args(po);
 
         expect(args.flag('foo')).toEqual(true);
@@ -44,7 +40,7 @@ describe('args', () => {
     it('can retrieve do both things above', () => {
         const s = 'hello "world" --foo --bar=123 baz "quux"';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
-        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const po = new Parser(ts).setUnorderedStrategy(Unordered.longStrategy()).parse();
         const args = new Args(po);
 
         expect(args.single()).toEqual('hello');
@@ -60,7 +56,7 @@ describe('args', () => {
     it('has the correct state and counts', () => {
         const s = 'hello "world" baz "quux"';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
-        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const po = new Parser(ts).setUnorderedStrategy(Unordered.longStrategy()).parse();
         const args = new Args(po);
 
         expect(args.length).toEqual(4);
@@ -87,7 +83,7 @@ describe('args', () => {
     it('can find a token', () => {
         const s = 'hello "world" baz "quux"';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
-        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const po = new Parser(ts).setUnorderedStrategy(Unordered.longStrategy()).parse();
         const args = new Args(po);
 
         const y = args.findMap(x => x === 'hello' ? some(10) : none());
@@ -97,7 +93,7 @@ describe('args', () => {
     it('cannot find a token', () => {
         const s = 'hello "world" baz "quux"';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
-        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const po = new Parser(ts).setUnorderedStrategy(Unordered.longStrategy()).parse();
         const args = new Args(po);
 
         const y = args.findMap(x => x === 'goodbye' ? some(10) : none());
@@ -107,7 +103,7 @@ describe('args', () => {
     it('can filter multiple tokens', () => {
         const s = 'hello "world" hello "quux"';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
-        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const po = new Parser(ts).setUnorderedStrategy(Unordered.longStrategy()).parse();
         const args = new Args(po);
 
         const y = args.filterMap(x => x === 'hello' ? some(10) : none());
@@ -117,7 +113,7 @@ describe('args', () => {
     it('will skip over a used token', () => {
         const s = 'hello "world" baz "quux"';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
-        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const po = new Parser(ts).setUnorderedStrategy(Unordered.longStrategy()).parse();
         const args = new Args(po);
 
         args.findMap(x => x === 'hello' ? some(10) : none());
@@ -130,7 +126,7 @@ describe('args', () => {
     it('will skip over multiple used tokens', () => {
         const s = 'hello a hello b';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
-        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const po = new Parser(ts).setUnorderedStrategy(Unordered.longStrategy()).parse();
         const args = new Args(po);
 
         args.filterMap(x => x === 'hello' ? some(10) : none());

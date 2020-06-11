@@ -1,4 +1,4 @@
-import Lexer from '../src/lexer';
+import { Lexer } from '../src';
 
 describe('lexer', () => {
     it('with no quotes, parses text without quotes', () => {

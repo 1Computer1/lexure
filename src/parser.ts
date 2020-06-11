@@ -24,7 +24,7 @@ export interface ParserOutput {
 /**
  * Parses a list of tokens to separate out flags and options.
  */
-export default class Parser implements IterableIterator<ParserOutput> {
+export class Parser implements IterableIterator<ParserOutput> {
     private readonly input: Token[];
 
     private unorderedStrategy: UnorderedStrategy = noStrategy();

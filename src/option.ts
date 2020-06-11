@@ -2,8 +2,7 @@
  * A type that can express the lack of a value.
  * Used in this library for when a generic type could be nullable.
  */
-type Option<T> = Some<T> | None;
-export default Option;
+export type Option<T> = Some<T> | None;
 
 /**
  * The value exists.

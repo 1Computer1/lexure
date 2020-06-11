@@ -1,11 +1,11 @@
 import { ParserOutput } from './parser';
 import { Token } from './tokens';
-import Option, { some, none } from './option';
+import { Option, some, none } from './option';
 
 /**
  * A wrapper around the parser output for retrieving command arguments.
  */
-export default class Args {
+export class Args {
     /**
      * The parser output.
      */
