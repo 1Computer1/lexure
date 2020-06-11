@@ -2,6 +2,7 @@ import Parser from '../src/parser';
 import Lexer from '../src/lexer';
 import { longStrategy } from '../src/unordered';
 import Args from '../src/args';
+import { some, none } from '../src/option';
 
 describe('args', () => {
     it('can retrieve single and many args', () => {
@@ -89,7 +90,7 @@ describe('args', () => {
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
-        const y = args.findMap(x => x === 'hello' ? [true, 10] : [false, null]);
+        const y = args.findMap(x => x === 'hello' ? some(10) : none());
         expect(y).toEqual(10);
     });
 
@@ -99,7 +100,7 @@ describe('args', () => {
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
-        const y = args.findMap(x => x === 'goodbye' ? [true, 10] : [false, null]);
+        const y = args.findMap(x => x === 'goodbye' ? some(10) : none());
         expect(y).toEqual(null);
     });
 
@@ -109,7 +110,7 @@ describe('args', () => {
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
-        const y = args.filterMap(x => x === 'hello' ? [true, 10] : [false, null]);
+        const y = args.filterMap(x => x === 'hello' ? some(10) : none());
         expect(y).toEqual([10, 10]);
     });
 
@@ -119,7 +120,7 @@ describe('args', () => {
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
-        args.findMap(x => x === 'hello' ? [true, 10] : [false, null]);
+        args.findMap(x => x === 'hello' ? some(10) : none());
         expect(args.usedIndices).toEqual(new Set([0]));
         expect(args.single()).toEqual('world');
         expect(args.usedIndices).toEqual(new Set([0, 1]));
@@ -132,7 +133,7 @@ describe('args', () => {
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
-        args.filterMap(x => x === 'hello' ? [true, 10] : [false, null]);
+        args.filterMap(x => x === 'hello' ? some(10) : none());
         expect(args.usedIndices).toEqual(new Set([0, 2]));
         expect(args.many()).toEqual([{ value: 'a', trailing: ' ' }, { value: 'b', trailing: '' }]);
         expect(args.usedIndices).toEqual(new Set([0, 1, 2, 3]));

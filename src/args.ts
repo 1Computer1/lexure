@@ -1,5 +1,6 @@
 import { ParserOutput } from './parser';
 import { Token } from './tokens';
+import Option, { some, none } from './option';
 
 /**
  * A wrapper around the parser output for retrieving command arguments.
@@ -113,21 +114,21 @@ export default class Args {
      * @param from - Where to start looking for tokens; defaults to current position.
      * @returns The resulting value if it was found.
      */
-    public findMap<T>(f: (x: string) => [true, T] | [false, null], from = this.position): T | null {
+    public findMap<T>(f: (x: string) => Option<T>, from = this.position): Option<T> {
         for (let i = from; i < this.length; i++) {
             if (this.usedIndices.has(i)) {
                 continue;
             }
 
             const x = this.parserOutput.ordered[i];
-            const [ok, y] = f(x.value);
-            if (ok) {
+            const o = f(x.value);
+            if (o.exists) {
                 this.usedIndices.add(i);
-                return y;
+                return some(o.value);
             }
         }
 
-        return null;
+        return none();
     }
 
     /**
@@ -138,7 +139,7 @@ export default class Args {
      * @param from - Where to start looking for tokens; defaults to current position.
      * @returns The resulting values.
      */
-    public filterMap<T>(f: (x: string) => [true, T] | [false, null], limit = Infinity, from = this.position): T[] {
+    public filterMap<T>(f: (x: string) => Option<T>, limit = Infinity, from = this.position): T[] {
         const ys = [];
         for (let i = from; i < this.length && ys.length < limit; i++) {
             if (this.usedIndices.has(i)) {
@@ -146,10 +147,10 @@ export default class Args {
             }
 
             const x = this.parserOutput.ordered[i];
-            const [ok, y] = f(x.value);
-            if (ok) {
+            const o = f(x.value);
+            if (o.exists) {
                 this.usedIndices.add(i);
-                ys.push(y!);
+                ys.push(o.value);
             }
         }
 
