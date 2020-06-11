@@ -77,6 +77,12 @@ describe('parser', () => {
         const ts = new Lexer('hello --foo --bar= 123 --baz=quux world').lex();
         const parser = new Parser(ts).setUnorderedStrategy(longStrategy());
         const ps = [...parser];
-        expect(ps).toEqual([[ts[0]], [ts[1]], [ts[2], ts[3]], [ts[4]], [ts[5]]]);
+        expect(ps).toEqual([
+            { ordered: [{ value: 'hello', trailing: ' ' }], flags: new Set(), options: new Map() },
+            { ordered: [], flags: new Set(['foo']), options: new Map() },
+            { ordered: [], flags: new Set(), options: new Map([['bar', '123']]) },
+            { ordered: [], flags: new Set(), options: new Map([['baz', 'quux']]) },
+            { ordered: [{ value: 'world', trailing: '' }], flags: new Set(), options: new Map() }
+        ]);
     });
 });

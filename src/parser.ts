@@ -24,12 +24,11 @@ export interface ParserOutput {
 /**
  * Parses a list of tokens to separate out flags and options.
  */
-export default class Parser implements IterableIterator<Token[]> {
+export default class Parser implements IterableIterator<ParserOutput> {
     private readonly input: Token[];
 
     private unorderedStrategy: UnorderedStrategy = noStrategy();
     private position = 0;
-    private output: ParserOutput = { ordered: [], flags: new Set(), options: new Map() };
 
     /**
      * @param input - The input tokens.
@@ -61,7 +60,7 @@ export default class Parser implements IterableIterator<Token[]> {
     /**
      * Gets the next parsed tokens.
      */
-    public next(): IteratorResult<Token[]> {
+    public next(): IteratorResult<ParserOutput> {
         if (this.finished) {
             return { done: true, value: null };
         }
@@ -74,18 +73,27 @@ export default class Parser implements IterableIterator<Token[]> {
         return { done: false, value: ts };
     }
 
-    /**
-     * Gets the parser output.
-     */
-    public getOutput(): ParserOutput {
-        return this.output;
-    }
-
-    private processToken(): Token[] | null {
+    private processToken(): ParserOutput {
         return this.pFlag() || this.pOption() || this.pCompactOption() || this.pOrdered();
     }
 
-    private pFlag(): Token[] | null {
+    private static mergeOutputs(px: ParserOutput, py: ParserOutput): ParserOutput {
+        return {
+            ordered: [...px.ordered, ...py.ordered],
+            flags: new Set([...px.flags, ...py.flags]),
+            options: new Map([...px.options, ...py.options])
+        };
+    }
+
+    private static emptyOutput(): ParserOutput {
+        return {
+            ordered: [],
+            flags: new Set(),
+            options: new Map()
+        };
+    }
+
+    private pFlag(): ParserOutput | null {
         const t = this.input[this.position];
         const f = this.unorderedStrategy.matchFlag(t.value);
         if (f == null) {
@@ -93,11 +101,13 @@ export default class Parser implements IterableIterator<Token[]> {
         }
 
         this.shift(1);
-        this.output.flags.add(f);
-        return [t];
+
+        const output = Parser.emptyOutput();
+        output.flags.add(f);
+        return output;
     }
 
-    private pOption(): Token[] | null {
+    private pOption(): ParserOutput | null {
         const t = this.input[this.position];
         const o = this.unorderedStrategy.matchOption(t.value);
         if (o == null) {
@@ -105,11 +115,13 @@ export default class Parser implements IterableIterator<Token[]> {
         }
 
         this.shift(1);
-        this.output.options.set(o, '');
+
+        const output = Parser.emptyOutput();
+        output.options.set(o, '');
 
         const n = this.input[this.position];
         if (n == null) {
-            return [t];
+            return output;
         }
 
         const bad = (this.unorderedStrategy.matchFlag(n.value)
@@ -117,15 +129,16 @@ export default class Parser implements IterableIterator<Token[]> {
                 || this.unorderedStrategy.matchCompactOption(n.value)) != null;
 
         if (bad) {
-            return [t];
+            return output;
         }
 
         this.shift(1);
-        this.output.options.set(o, n.value);
-        return [t, n];
+
+        output.options.set(o, n.value);
+        return output;
     }
 
-    private pCompactOption(): Token[] | null {
+    private pCompactOption(): ParserOutput | null {
         const t = this.input[this.position];
         const o = this.unorderedStrategy.matchCompactOption(t.value);
         if (o == null) {
@@ -133,15 +146,19 @@ export default class Parser implements IterableIterator<Token[]> {
         }
 
         this.shift(1);
-        this.output.options.set(o[0], o[1]);
-        return [t];
+
+        const output = Parser.emptyOutput();
+        output.options.set(o[0], o[1]);
+        return output;
     }
 
-    private pOrdered(): Token[] | null {
+    private pOrdered(): ParserOutput {
         const t = this.input[this.position];
         this.shift(1);
-        this.output.ordered.push(t);
-        return [t];
+
+        const output = Parser.emptyOutput();
+        output.ordered.push(t);
+        return output;
     }
 
     public [Symbol.iterator](): this {
@@ -152,7 +169,6 @@ export default class Parser implements IterableIterator<Token[]> {
      * Runs the parser.
      */
     public parse(): ParserOutput {
-        [...this];
-        return this.getOutput();
+        return [...this].reduce((a, x) => Parser.mergeOutputs(a, x), Parser.emptyOutput());
     }
 }
