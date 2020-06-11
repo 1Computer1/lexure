@@ -14,6 +14,7 @@ module.exports = {
     rules: {
         'semi': 'error',
         'indent': ['error', 4, { 'SwitchCase': 1 }],
-        '@typescript-eslint/explicit-function-return-type': ['warn', { allowExpressions: true, allowTypedFunctionExpressions: true }]
+        '@typescript-eslint/explicit-function-return-type': ['warn', { allowExpressions: true, allowTypedFunctionExpressions: true }],
+        '@typescript-eslint/no-non-null-assertion': ['off']
     }
 };

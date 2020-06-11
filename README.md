@@ -16,14 +16,14 @@ Lexer and parser for structured non-technical user input.
 ```ts
 import { Lexer, Parser, Tokens, Unordered } from 'lexure';
 
-const input = 'hello world "cool stuff" --foo --bar=baz';
+const input = '!hello world "cool stuff" --foo --bar=baz';
 
 const lexer = new Lexer(input)
     .setQuotes([['"', '"'], ['“', '”']]);
 
 const tokens = lexer.lex();
 >>> [
-    { value: 'hello', trailing: ' ' },
+    { value: '!hello', trailing: ' ' },
     { value: 'world', trailing: ' ' },
     { value: '"cool stuff"', innerValue: 'cool stuff', trailing: ' ' },
     { value: '--foo', trailing: ' ' },
@@ -36,7 +36,7 @@ const parser = new Parser(tokens)
 const res = parser.parse();
 >>> {
     ordered: [
-        { value: 'hello', trailing: ' ' },
+        { value: '!hello', trailing: ' ' },
         { value: 'world', trailing: ' ' },
         { value: '"cool stuff"', innerValue: 'cool stuff', trailing: ' ' }
     ],
@@ -45,7 +45,10 @@ const res = parser.parse();
 }
 
 const text = Tokens.joinTokens(res.ordered);
->>> 'hello world "cool stuff"'
+>>> '!hello world "cool stuff"'
+
+const command = Tokens.extractCommand(s => s.startsWith('!') ? 1 : null, res.ordered);
+>>> 'hello'
 ```
 
 See code for more usages and documentation.
