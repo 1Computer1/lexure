@@ -1,10 +1,10 @@
-import { Lexer, Parser, Args, extractCommand, joinTokens, longStrategy, some, none } from '../src';
+import * as Lexure from '../src';
 
 describe('readme', () => {
     it('should work', () => {
         const input = '!hello world "cool stuff" --foo --bar=baz a b c';
         
-        const lexer = new Lexer(input)
+        const lexer = new Lexure.Lexer(input)
             .setQuotes([['"', '"'], ['“', '”']]);
         
         const tokens = lexer.lex();
@@ -19,7 +19,7 @@ describe('readme', () => {
             { value: 'c', raw: 'c', trailing: '' }
         ]);
         
-        const c = extractCommand(s => s.startsWith('!') ? 1 : null, tokens);
+        const c = Lexure.extractCommand(s => s.startsWith('!') ? 1 : null, tokens);
         expect(c).toEqual({ value: 'hello', raw: 'hello', trailing: ' ' });
         
         expect(tokens).toEqual([
@@ -32,8 +32,8 @@ describe('readme', () => {
             { value: 'c', raw: 'c', trailing: '' }
         ]);
         
-        const parser = new Parser(tokens)
-            .setUnorderedStrategy(longStrategy());
+        const parser = new Lexure.Parser(tokens)
+            .setUnorderedStrategy(Lexure.longStrategy());
 
         const res = parser.parse();
         expect(res).toEqual({
@@ -48,10 +48,10 @@ describe('readme', () => {
             options: new Map([['bar', 'baz']])
         });
 
-        const j = joinTokens(res.ordered);
+        const j = Lexure.joinTokens(res.ordered);
         expect(j).toEqual('world "cool stuff" a b c');
 
-        const args = new Args(res);
+        const args = new Lexure.Args(res);
         
         const a1 = args.single();
         expect(a1).toEqual('world');
@@ -59,7 +59,7 @@ describe('readme', () => {
         const a2 = args.single();
         expect(a2).toEqual('cool stuff');
         
-        const a3 = args.findMap(x => x === 'c' ? some('it was a C') : none());
+        const a3 = args.findMap(x => x === 'c' ? Lexure.some('it was a C') : Lexure.none());
         expect(a3).toEqual({ exists: true, value: 'it was a C' });
         
         const a4 = args.many();

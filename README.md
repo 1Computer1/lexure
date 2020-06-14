@@ -15,11 +15,11 @@ Lexer and parser for structured non-technical user input.
 ## Example
 
 ```ts
-import { Lexer, Parser, Args, extractCommand, joinTokens, longStrategy, some, none } from 'lexure';
+import * as Lexure from 'lexure';
 
 const input = '!hello world "cool stuff" --foo --bar=baz a b c';
 
-const lexer = new Lexer(input)
+const lexer = new Lexure.Lexer(input)
     .setQuotes([['"', '"'], ['“', '”']]);
 
 const tokens = lexer.lex();
@@ -34,10 +34,10 @@ const tokens = lexer.lex();
     { value: 'c',          raw: 'c',            trailing: ''  }
 ]
 
-extractCommand(s => s.startsWith('!') ? 1 : null, tokens)
+Lexure.extractCommand(s => s.startsWith('!') ? 1 : null, tokens)
 >>> { value: 'hello', raw: 'hello', trailing: ' ' }
 
-tokens
+Lexure.tokens
 >>> [
     { value: 'world',      raw: 'world',        trailing: ' ' },
     { value: 'cool stuff', raw: '"cool stuff"', trailing: ' ' },
@@ -48,8 +48,8 @@ tokens
     { value: 'c',          raw: 'c',            trailing: ''  }
 ]
 
-const parser = new Parser(tokens)
-    .setUnorderedStrategy(longStrategy());
+const parser = new Lexure.Parser(tokens)
+    .setUnorderedStrategy(Lexure.longStrategy());
 
 const res = parser.parse();
 >>> {
@@ -64,10 +64,10 @@ const res = parser.parse();
     options: Map { 'bar' => 'baz' }
 }
 
-joinTokens(res.ordered)
+Lexure.joinTokens(res.ordered)
 >>> 'world "cool stuff" a b c'
 
-const args = new Args(res);
+const args = new Lexure.Args(res);
 
 args.single()
 >>> 'world'
@@ -75,7 +75,7 @@ args.single()
 args.single()
 >>> 'cool stuff'
 
-args.findMap(x => x === 'c' ? some('it was a C') : none())
+args.findMap(x => x === 'c' ? Lexure.some('it was a C') : Lexure.none())
 >>> { exists: true, value: 'it was a C' }
 
 args.many()
