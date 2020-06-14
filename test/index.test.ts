@@ -1,4 +1,4 @@
-import { Lexer, Parser, Args, Tokens, Unordered, some, none } from '../src';
+import { Lexer, Parser, Args, extractCommand, joinTokens, longStrategy, some, none } from '../src';
 
 describe('readme', () => {
     it('should work', () => {
@@ -19,7 +19,7 @@ describe('readme', () => {
             { value: 'c', raw: 'c', trailing: '' }
         ]);
         
-        const c = Tokens.extractCommand(s => s.startsWith('!') ? 1 : null, tokens);
+        const c = extractCommand(s => s.startsWith('!') ? 1 : null, tokens);
         expect(c).toEqual({ value: 'hello', raw: 'hello', trailing: ' ' });
         
         expect(tokens).toEqual([
@@ -33,7 +33,7 @@ describe('readme', () => {
         ]);
         
         const parser = new Parser(tokens)
-            .setUnorderedStrategy(Unordered.longStrategy());
+            .setUnorderedStrategy(longStrategy());
 
         const res = parser.parse();
         expect(res).toEqual({
@@ -48,7 +48,7 @@ describe('readme', () => {
             options: new Map([['bar', 'baz']])
         });
 
-        const j = Tokens.joinTokens(res.ordered);
+        const j = joinTokens(res.ordered);
         expect(j).toEqual('world "cool stuff" a b c');
 
         const args = new Args(res);

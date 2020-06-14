@@ -1,4 +1,4 @@
-import { Lexer, Parser, Unordered } from '../src';
+import { Lexer, Parser, longStrategy } from '../src';
 
 describe('parser', () => {
     it('should parse normal words', () => {
@@ -13,7 +13,7 @@ describe('parser', () => {
 
     it('should parse flags', () => {
         const ts = new Lexer('foo bar --baz').lex();
-        const out = new Parser(ts).setUnorderedStrategy(Unordered.longStrategy()).parse();
+        const out = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         expect(out).toEqual({
             ordered: ts.slice(0, 2),
             flags: new Set(['baz']),
@@ -23,7 +23,7 @@ describe('parser', () => {
 
     it('should parse options', () => {
         const ts = new Lexer('foo bar --baz= quux').lex();
-        const out = new Parser(ts).setUnorderedStrategy(Unordered.longStrategy()).parse();
+        const out = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         expect(out).toEqual({
             ordered: ts.slice(0, 2),
             flags: new Set(),
@@ -33,7 +33,7 @@ describe('parser', () => {
 
     it('should parse options without value', () => {
         const ts = new Lexer('foo bar --baz=').lex();
-        const out = new Parser(ts).setUnorderedStrategy(Unordered.longStrategy()).parse();
+        const out = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         expect(out).toEqual({
             ordered: ts.slice(0, 2),
             flags: new Set(),
@@ -43,7 +43,7 @@ describe('parser', () => {
 
     it('should parse options followed by flag', () => {
         const ts = new Lexer('foo bar --baz= --foo').lex();
-        const out = new Parser(ts).setUnorderedStrategy(Unordered.longStrategy()).parse();
+        const out = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         expect(out).toEqual({
             ordered: ts.slice(0, 2),
             flags: new Set(['foo']),
@@ -53,7 +53,7 @@ describe('parser', () => {
 
     it('should parse compact options', () => {
         const ts = new Lexer('foo bar --baz=quux').lex();
-        const out = new Parser(ts).setUnorderedStrategy(Unordered.longStrategy()).parse();
+        const out = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         expect(out).toEqual({
             ordered: ts.slice(0, 2),
             flags: new Set(),
@@ -63,7 +63,7 @@ describe('parser', () => {
 
     it('should parse everything', () => {
         const ts = new Lexer('hello --foo --bar= 123 --baz=quux world').lex();
-        const out = new Parser(ts).setUnorderedStrategy(Unordered.longStrategy()).parse();
+        const out = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         expect(out).toEqual({
             ordered: [ts[0], ts[5]],
             flags: new Set(['foo']),
@@ -76,7 +76,7 @@ describe('parser', () => {
             .setQuotes([['"', '"']])
             .lex();
 
-        const out = new Parser(ts).setUnorderedStrategy(Unordered.longStrategy()).parse();
+        const out = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         expect(out).toEqual({
             ordered: [ts[0], ts[5]],
             flags: new Set(['foo']),
@@ -86,7 +86,7 @@ describe('parser', () => {
 
     it('should give things in order', () => {
         const ts = new Lexer('hello --foo --bar= 123 --baz=quux world').lex();
-        const parser = new Parser(ts).setUnorderedStrategy(Unordered.longStrategy());
+        const parser = new Parser(ts).setUnorderedStrategy(longStrategy());
         const ps = [...parser];
         expect(ps).toEqual([
             { ordered: [{ value: 'hello', raw: 'hello', trailing: ' ' }], flags: new Set(), options: new Map() },

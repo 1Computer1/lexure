@@ -15,7 +15,7 @@ Lexer and parser for structured non-technical user input.
 ## Example
 
 ```ts
-import { Lexer, Parser, Args, Tokens, Unordered, some, none } from 'lexure';
+import { Lexer, Parser, Args, extractCommand, joinTokens, longStrategy, some, none } from 'lexure';
 
 const input = '!hello world "cool stuff" --foo --bar=baz a b c';
 
@@ -34,7 +34,7 @@ const tokens = lexer.lex();
     { value: 'c',          raw: 'c',            trailing: ''  }
 ]
 
-Tokens.extractCommand(s => s.startsWith('!') ? 1 : null, tokens)
+extractCommand(s => s.startsWith('!') ? 1 : null, tokens)
 >>> { value: 'hello', raw: 'hello', trailing: ' ' }
 
 tokens
@@ -49,7 +49,7 @@ tokens
 ]
 
 const parser = new Parser(tokens)
-    .setUnorderedStrategy(Unordered.longStrategy());
+    .setUnorderedStrategy(longStrategy());
 
 const res = parser.parse();
 >>> {
@@ -64,7 +64,7 @@ const res = parser.parse();
     options: Map { 'bar' => 'baz' }
 }
 
-Tokens.joinTokens(res.ordered)
+joinTokens(res.ordered)
 >>> 'world "cool stuff" a b c'
 
 const args = new Args(res);
