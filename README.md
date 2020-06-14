@@ -24,14 +24,14 @@ const lexer = new Lexer(input)
 
 const tokens = lexer.lex();
 >>> [
-    { value: '!hello', raw: '!hello', trailing: ' ' },
-    { value: 'world', raw: 'world', trailing: ' ' },
+    { value: '!hello',     raw: '!hello',       trailing: ' ' },
+    { value: 'world',      raw: 'world',        trailing: ' ' },
     { value: 'cool stuff', raw: '"cool stuff"', trailing: ' ' },
-    { value: '--foo', raw: '--foo', trailing: ' ' },
-    { value: '--bar=baz', raw: '--bar=baz', trailing: ' ' },
-    { value: 'a', raw: 'a', trailing: ' ' },
-    { value: 'b', raw: 'b', trailing: ' ' },
-    { value: 'c', raw: 'c', trailing: '' }
+    { value: '--foo',      raw: '--foo',        trailing: ' ' },
+    { value: '--bar=baz',  raw: '--bar=baz',    trailing: ' ' },
+    { value: 'a',          raw: 'a',            trailing: ' ' },
+    { value: 'b',          raw: 'b',            trailing: ' ' },
+    { value: 'c',          raw: 'c',            trailing: ''  }
 ]
 
 Tokens.extractCommand(s => s.startsWith('!') ? 1 : null, tokens)
@@ -39,13 +39,13 @@ Tokens.extractCommand(s => s.startsWith('!') ? 1 : null, tokens)
 
 tokens
 >>> [
-    { value: 'world', raw: 'world', trailing: ' ' },
+    { value: 'world',      raw: 'world',        trailing: ' ' },
     { value: 'cool stuff', raw: '"cool stuff"', trailing: ' ' },
-    { value: '--foo', raw: '--foo', trailing: ' ' },
-    { value: '--bar=baz', raw: '--bar=baz', trailing: ' ' },
-    { value: 'a', raw: 'a', trailing: ' ' },
-    { value: 'b', raw: 'b', trailing: ' ' },
-    { value: 'c', raw: 'c', trailing: '' }
+    { value: '--foo',      raw: '--foo',        trailing: ' ' },
+    { value: '--bar=baz',  raw: '--bar=baz',    trailing: ' ' },
+    { value: 'a',          raw: 'a',            trailing: ' ' },
+    { value: 'b',          raw: 'b',            trailing: ' ' },
+    { value: 'c',          raw: 'c',            trailing: ''  }
 ]
 
 const parser = new Parser(tokens)
@@ -54,11 +54,11 @@ const parser = new Parser(tokens)
 const res = parser.parse();
 >>> {
     ordered: [
-        { value: 'world', raw: 'world', trailing: ' ' },
+        { value: 'world',      raw: 'world',        trailing: ' ' },
         { value: 'cool stuff', raw: '"cool stuff"', trailing: ' ' },
-        { value: 'a', raw: 'a', trailing: ' ' },
-        { value: 'b', raw: 'b', trailing: ' ' },
-        { value: 'c', raw: 'c', trailing: '' }
+        { value: 'a',          raw: 'a',            trailing: ' ' },
+        { value: 'b',          raw: 'b',            trailing: ' ' },
+        { value: 'c',          raw: 'c',            trailing: ''  }
     ],
     flags: Set { 'foo' },
     options: Map { 'bar' => 'baz' }
