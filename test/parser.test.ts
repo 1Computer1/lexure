@@ -89,11 +89,11 @@ describe('parser', () => {
         const parser = new Parser(ts).setUnorderedStrategy(Unordered.longStrategy());
         const ps = [...parser];
         expect(ps).toEqual([
-            { ordered: [{ value: 'hello', trailing: ' ' }], flags: new Set(), options: new Map() },
+            { ordered: [{ value: 'hello', raw: 'hello', trailing: ' ' }], flags: new Set(), options: new Map() },
             { ordered: [], flags: new Set(['foo']), options: new Map() },
             { ordered: [], flags: new Set(), options: new Map([['bar', '123']]) },
             { ordered: [], flags: new Set(), options: new Map([['baz', 'quux']]) },
-            { ordered: [{ value: 'world', trailing: '' }], flags: new Set(), options: new Map() }
+            { ordered: [{ value: 'world', raw: 'world', trailing: '' }], flags: new Set(), options: new Map() }
         ]);
     });
 });

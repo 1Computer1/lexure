@@ -5,9 +5,9 @@ describe('lexer', () => {
         const s = 'simple text   here';
         const ts = new Lexer(s).lex();
         expect(ts).toEqual([
-            { value: 'simple', trailing: ' ' },
-            { value: 'text', trailing: '   ' },
-            { value: 'here', trailing: '' }
+            { value: 'simple', raw: 'simple', trailing: ' ' },
+            { value: 'text', raw: 'text', trailing: '   ' },
+            { value: 'here', raw: 'here', trailing: '' }
         ]);
     });
 
@@ -15,9 +15,9 @@ describe('lexer', () => {
         const s = 'simple "text"   here';
         const ts = new Lexer(s).lex();
         expect(ts).toEqual([
-            { value: 'simple', trailing: ' ' },
-            { value: '"text"', trailing: '   ' },
-            { value: 'here', trailing: '' }
+            { value: 'simple', raw: 'simple', trailing: ' ' },
+            { value: '"text"', raw: '"text"', trailing: '   ' },
+            { value: 'here', raw: 'here', trailing: '' }
         ]);
     });
 
@@ -25,9 +25,9 @@ describe('lexer', () => {
         const s = 'simple text   here';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
         expect(ts).toEqual([
-            { value: 'simple', trailing: ' ' },
-            { value: 'text', trailing: '   ' },
-            { value: 'here', trailing: '' }
+            { value: 'simple', raw: 'simple', trailing: ' ' },
+            { value: 'text', raw: 'text', trailing: '   ' },
+            { value: 'here', raw: 'here', trailing: '' }
         ]);
     });
 
@@ -35,9 +35,9 @@ describe('lexer', () => {
         const s = 'simple "text"   here';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
         expect(ts).toEqual([
-            { value: 'simple', trailing: ' ' },
-            { value: 'text', quoted: '"text"', trailing: '   ' },
-            { value: 'here', trailing: '' }
+            { value: 'simple', raw: 'simple', trailing: ' ' },
+            { value: 'text', raw: '"text"', trailing: '   ' },
+            { value: 'here', raw: 'here', trailing: '' }
         ]);
     });
 
@@ -45,8 +45,8 @@ describe('lexer', () => {
         const s = 'simple " text here "';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
         expect(ts).toEqual([
-            { value: 'simple', trailing: ' ' },
-            { value: ' text here ', quoted: '" text here "', trailing: '' }
+            { value: 'simple', raw: 'simple', trailing: ' ' },
+            { value: ' text here ', raw: '" text here "', trailing: '' }
         ]);
     });
 
@@ -54,9 +54,9 @@ describe('lexer', () => {
         const s = 'simple"text"here';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
         expect(ts).toEqual([
-            { value: 'simple', trailing: '' },
-            { value: 'text', quoted: '"text"', trailing: '' },
-            { value: 'here', trailing: '' },
+            { value: 'simple', raw: 'simple', trailing: '' },
+            { value: 'text', raw: '"text"', trailing: '' },
+            { value: 'here', raw: 'here', trailing: '' },
         ]);
     });
 
@@ -64,9 +64,9 @@ describe('lexer', () => {
         const s = 'simple "text"   “here”';
         const ts = new Lexer(s).setQuotes([['"', '"'], ['“', '”']]).lex();
         expect(ts).toEqual([
-            { value: 'simple', trailing: ' ' },
-            { value: 'text', quoted: '"text"', trailing: '   ' },
-            { value: 'here', quoted: '“here”', trailing: '' }
+            { value: 'simple', raw: 'simple', trailing: ' ' },
+            { value: 'text', raw: '"text"', trailing: '   ' },
+            { value: 'here', raw: '“here”', trailing: '' }
         ]);
     });
 
@@ -74,9 +74,9 @@ describe('lexer', () => {
         const s = 'simple "text"   “here';
         const ts = new Lexer(s).setQuotes([['"', '"'], ['“', '”']]).lex();
         expect(ts).toEqual([
-            { value: 'simple', trailing: ' ' },
-            { value: 'text', quoted: '"text"', trailing: '   ' },
-            { value: 'here', quoted: '“here', trailing: '' }
+            { value: 'simple', raw: 'simple', trailing: ' ' },
+            { value: 'text', raw: '"text"', trailing: '   ' },
+            { value: 'here', raw: '“here', trailing: '' }
         ]);
     });
 
@@ -84,8 +84,8 @@ describe('lexer', () => {
         const s = 'simple "text “here';
         const ts = new Lexer(s).setQuotes([['"', '"'], ['“', '”']]).lex();
         expect(ts).toEqual([
-            { value: 'simple', trailing: ' ' },
-            { value: 'text “here', quoted: '"text “here', trailing: '' }
+            { value: 'simple', raw: 'simple', trailing: ' ' },
+            { value: 'text “here', raw: '"text “here', trailing: '' }
         ]);
     });
 
@@ -93,9 +93,9 @@ describe('lexer', () => {
         const s = ' simple text here';
         const ts = new Lexer(s).lex();
         expect(ts).toEqual([
-            { value: 'simple', trailing: ' ' },
-            { value: 'text', trailing: ' ' },
-            { value: 'here', trailing: '' }
+            { value: 'simple', raw: 'simple', trailing: ' ' },
+            { value: 'text', raw: 'text', trailing: ' ' },
+            { value: 'here', raw: 'here', trailing: '' }
         ]);
     });
 });

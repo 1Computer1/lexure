@@ -9,7 +9,7 @@ describe('args', () => {
 
         expect(args.single()).toEqual('hello');
         expect(args.single()).toEqual('world');
-        expect(args.many()).toEqual([{ value: 'baz', trailing: ' ' }, { value: 'quux', quoted: '"quux"', trailing: '' }]);
+        expect(args.many()).toEqual([{ value: 'baz', raw: 'baz', trailing: ' ' }, { value: 'quux', raw: '"quux"', trailing: '' }]);
         expect(args.single()).toEqual(null);
     });
 
@@ -19,7 +19,7 @@ describe('args', () => {
         const po = new Parser(ts).setUnorderedStrategy(Unordered.longStrategy()).parse();
         const args = new Args(po);
 
-        expect(args.many(2)).toEqual([{ value: 'hello', trailing: ' ' }, { value: 'world', quoted: '"world"', trailing: ' ' }]);
+        expect(args.many(2)).toEqual([{ value: 'hello', raw: 'hello', trailing: ' ' }, { value: 'world', raw: '"world"', trailing: ' ' }]);
         expect(args.single()).toEqual('baz');
         expect(args.single()).toEqual('quux');
         expect(args.single()).toEqual(null);
@@ -37,7 +37,7 @@ describe('args', () => {
         expect(args.option('world')).toEqual(null);
     });
 
-    it('can retrieve do both things above', () => {
+    it('can retrieve one, many, flags, and options', () => {
         const s = 'hello "world" --foo --bar=123 baz "quux"';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
         const po = new Parser(ts).setUnorderedStrategy(Unordered.longStrategy()).parse();
@@ -45,7 +45,7 @@ describe('args', () => {
 
         expect(args.single()).toEqual('hello');
         expect(args.single()).toEqual('world');
-        expect(args.many()).toEqual([{ value: 'baz', trailing: ' ' }, { value: 'quux', quoted: '"quux"', trailing: '' }]);
+        expect(args.many()).toEqual([{ value: 'baz', raw: 'baz', trailing: ' ' }, { value: 'quux', raw: '"quux"', trailing: '' }]);
         expect(args.single()).toEqual(null);
         expect(args.flag('foo')).toEqual(true);
         expect(args.flag('hello')).toEqual(false);
@@ -131,7 +131,7 @@ describe('args', () => {
 
         args.filterMap(x => x === 'hello' ? some(10) : none());
         expect(args.usedIndices).toEqual(new Set([0, 2]));
-        expect(args.many()).toEqual([{ value: 'a', trailing: ' ' }, { value: 'b', trailing: '' }]);
+        expect(args.many()).toEqual([{ value: 'a', raw: 'a', trailing: ' ' }, { value: 'b', raw: 'b', trailing: '' }]);
         expect(args.usedIndices).toEqual(new Set([0, 1, 2, 3]));
     });
 });

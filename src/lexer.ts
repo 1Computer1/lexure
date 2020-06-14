@@ -1,4 +1,4 @@
-import { Token, Quoted, Word } from './tokens';
+import { Token } from './tokens';
 
 /**
  * The lexer turns input into a list of tokens.
@@ -80,7 +80,7 @@ export class Lexer implements IterableIterator<Token> {
         return w;
     }
 
-    private pQuoted(): Quoted | null {
+    private pQuoted(): Token | null {
         for (const [openQ, closeQ] of this.quotes) {
             const open = this.match(openQ);
             if (open == null) {
@@ -97,13 +97,13 @@ export class Lexer implements IterableIterator<Token> {
             this.shift(close.length);
 
             const s = this.pWs();
-            return { value: inner, quoted: open + inner + close, trailing: s };
+            return { value: inner, raw: open + inner + close, trailing: s };
         }
 
         return null;
     }
 
-    private pWord(): Word | null {
+    private pWord(): Token | null {
         let w = this.matchR(/^\S+/)?.[0];
         if (w == null) {
             return null;
@@ -113,7 +113,7 @@ export class Lexer implements IterableIterator<Token> {
         this.shift(w.length);
 
         const s = this.pWs();
-        return { value: w, trailing: s };
+        return { value: w, raw: w, trailing: s };
     }
 
     private static sliceTo(word: string, xs: string[]): string {

@@ -24,28 +24,28 @@ const lexer = new Lexer(input)
 
 const tokens = lexer.lex();
 >>> [
-    { value: '!hello', trailing: ' ' },
-    { value: 'world', trailing: ' ' },
-    { value: 'cool stuff', quoted: '"cool stuff"', trailing: ' ' },
-    { value: '--foo', trailing: ' ' },
-    { value: '--bar=baz', trailing: ' ' },
-    { value: 'a', trailing: ' ' },
-    { value: 'b', trailing: ' ' },
-    { value: 'c', trailing: '' }
+    { value: '!hello', raw: '!hello', trailing: ' ' },
+    { value: 'world', raw: 'world', trailing: ' ' },
+    { value: 'cool stuff', raw: '"cool stuff"', trailing: ' ' },
+    { value: '--foo', raw: '--foo', trailing: ' ' },
+    { value: '--bar=baz', raw: '--bar=baz', trailing: ' ' },
+    { value: 'a', raw: 'a', trailing: ' ' },
+    { value: 'b', raw: 'b', trailing: ' ' },
+    { value: 'c', raw: 'c', trailing: '' }
 ]
 
 Tokens.extractCommand(s => s.startsWith('!') ? 1 : null, tokens)
->>> { value: 'hello', trailing: ' ' }
+>>> { value: 'hello', raw: 'hello', trailing: ' ' }
 
 tokens
 >>> [
-    { value: 'world', trailing: ' ' },
-    { value: 'cool stuff', quoted: '"cool stuff"', trailing: ' ' },
-    { value: '--foo', trailing: ' ' },
-    { value: '--bar=baz', trailing: ' ' },
-    { value: 'a', trailing: ' ' },
-    { value: 'b', trailing: ' ' },
-    { value: 'c', trailing: '' }
+    { value: 'world', raw: 'world', trailing: ' ' },
+    { value: 'cool stuff', raw: '"cool stuff"', trailing: ' ' },
+    { value: '--foo', raw: '--foo', trailing: ' ' },
+    { value: '--bar=baz', raw: '--bar=baz', trailing: ' ' },
+    { value: 'a', raw: 'a', trailing: ' ' },
+    { value: 'b', raw: 'b', trailing: ' ' },
+    { value: 'c', raw: 'c', trailing: '' }
 ]
 
 const parser = new Parser(tokens)
@@ -54,11 +54,11 @@ const parser = new Parser(tokens)
 const res = parser.parse();
 >>> {
     ordered: [
-        { value: 'world', trailing: ' ' },
-        { value: 'cool stuff', quoted: '"cool stuff"', trailing: ' ' },
-        { value: 'a', trailing: ' ' },
-        { value: 'b', trailing: ' ' },
-        { value: 'c', trailing: '' }
+        { value: 'world', raw: 'world', trailing: ' ' },
+        { value: 'cool stuff', raw: '"cool stuff"', trailing: ' ' },
+        { value: 'a', raw: 'a', trailing: ' ' },
+        { value: 'b', raw: 'b', trailing: ' ' },
+        { value: 'c', raw: 'c', trailing: '' }
     ],
     flags: Set { 'foo' },
     options: Map { 'bar' => 'baz' }
@@ -80,8 +80,8 @@ args.findMap(x => x === 'c' ? some('it was a C') : none())
 
 args.many()
 >>> [
-    { value: 'a', trailing: ' ' },
-    { value: 'b', trailing: ' ' }
+    { value: 'a', raw: 'a', trailing: ' ' },
+    { value: 'b', raw: 'b', trailing: ' ' }
 ]
 
 args.flag('foo')

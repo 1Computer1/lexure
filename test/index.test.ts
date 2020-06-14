@@ -9,27 +9,27 @@ describe('readme', () => {
         
         const tokens = lexer.lex();
         expect(tokens).toEqual([
-            { value: '!hello', trailing: ' ' },
-            { value: 'world', trailing: ' ' },
-            { value: 'cool stuff', quoted: '"cool stuff"', trailing: ' ' },
-            { value: '--foo', trailing: ' ' },
-            { value: '--bar=baz', trailing: ' ' },
-            { value: 'a', trailing: ' ' },
-            { value: 'b', trailing: ' ' },
-            { value: 'c', trailing: '' }
+            { value: '!hello', raw: '!hello', trailing: ' ' },
+            { value: 'world', raw: 'world', trailing: ' ' },
+            { value: 'cool stuff', raw: '"cool stuff"', trailing: ' ' },
+            { value: '--foo', raw: '--foo', trailing: ' ' },
+            { value: '--bar=baz', raw: '--bar=baz', trailing: ' ' },
+            { value: 'a', raw: 'a', trailing: ' ' },
+            { value: 'b', raw: 'b', trailing: ' ' },
+            { value: 'c', raw: 'c', trailing: '' }
         ]);
         
         const c = Tokens.extractCommand(s => s.startsWith('!') ? 1 : null, tokens);
-        expect(c).toEqual({ value: 'hello', trailing: ' ' });
+        expect(c).toEqual({ value: 'hello', raw: 'hello', trailing: ' ' });
         
         expect(tokens).toEqual([
-            { value: 'world', trailing: ' ' },
-            { value: 'cool stuff', quoted: '"cool stuff"', trailing: ' ' },
-            { value: '--foo', trailing: ' ' },
-            { value: '--bar=baz', trailing: ' ' },
-            { value: 'a', trailing: ' ' },
-            { value: 'b', trailing: ' ' },
-            { value: 'c', trailing: '' }
+            { value: 'world', raw: 'world', trailing: ' ' },
+            { value: 'cool stuff', raw: '"cool stuff"', trailing: ' ' },
+            { value: '--foo', raw: '--foo', trailing: ' ' },
+            { value: '--bar=baz', raw: '--bar=baz', trailing: ' ' },
+            { value: 'a', raw: 'a', trailing: ' ' },
+            { value: 'b', raw: 'b', trailing: ' ' },
+            { value: 'c', raw: 'c', trailing: '' }
         ]);
         
         const parser = new Parser(tokens)
@@ -38,11 +38,11 @@ describe('readme', () => {
         const res = parser.parse();
         expect(res).toEqual({
             ordered: [
-                { value: 'world', trailing: ' ' },
-                { value: 'cool stuff', quoted: '"cool stuff"', trailing: ' ' },
-                { value: 'a', trailing: ' ' },
-                { value: 'b', trailing: ' ' },
-                { value: 'c', trailing: '' }
+                { value: 'world', raw: 'world', trailing: ' ' },
+                { value: 'cool stuff', raw: '"cool stuff"', trailing: ' ' },
+                { value: 'a', raw: 'a', trailing: ' ' },
+                { value: 'b', raw: 'b', trailing: ' ' },
+                { value: 'c', raw: 'c', trailing: '' }
             ],
             flags: new Set(['foo']),
             options: new Map([['bar', 'baz']])
@@ -64,8 +64,8 @@ describe('readme', () => {
         
         const a4 = args.many();
         expect(a4).toEqual([
-            { value: 'a', trailing: ' ' },
-            { value: 'b', trailing: ' ' }
+            { value: 'a', raw: 'a', trailing: ' ' },
+            { value: 'b', raw: 'b', trailing: ' ' }
         ]);
         
         const a5 = args.flag('foo');

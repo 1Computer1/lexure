@@ -1,54 +1,21 @@
 /**
  * Represents a token.
  */
-export type Token = Word | Quoted;
-
-/**
- * A normal word.
- */
-export interface Word {
+export interface Token {
     /**
      * The value of the token.
      */
     readonly value: string;
 
     /**
-     * Trailing whitespace.
+     * The raw value of the token e.g. with quotes.
      */
-    readonly trailing: string;
-}
-
-/**
- * A quoted substring.
- */
-export interface Quoted {
-    /**
-     * The value of the token without quotes.
-     */
-    readonly value: string;
-
-    /**
-     * The value of the token with quotes.
-     */
-    readonly quoted: string;
+    readonly raw: string;
 
     /**
      * Trailing whitespace.
      */
     readonly trailing: string;
-}
-
-/**
- * Gets the quoted value if the token is quoted, otherwise gets the value.
- * @param token - The token.
- * @returns The value.
- */
-export function getOriginal(token: Token): string {
-    if ('quoted' in token) {
-        return token.quoted;
-    }
-
-    return token.value;
 }
 
 /**
@@ -56,23 +23,23 @@ export function getOriginal(token: Token): string {
  * By default, this keeps as much of the original input as possible.
  * @param tokens - Tokens to join.
  * @param separator - The separator, if null, will use original trailing whitespace; defaults to null.
- * @param keepQuotes - Whether to keep quotes; defaults to true.
+ * @param raw - Whether to use raw values e.g. with quotes; defaults to true.
  * @returns The joined string.
  */
-export function joinTokens(tokens: Token[], separator: string | null = null, keepQuotes = true): string {
-    if (separator != null && !keepQuotes) {
+export function joinTokens(tokens: Token[], separator: string | null = null, raw = true): string {
+    if (separator != null && !raw) {
         return tokens.map(t => t.value).join(separator);
     }
 
     const xs = [];
     for (let i = 0; i < tokens.length - 1; i++) {
         const t = tokens[i];
-        xs.push(keepQuotes ? getOriginal(t) : t.value);
+        xs.push(raw ? t.raw : t.value);
         xs.push(separator ?? t.trailing);
     }
 
     const last = tokens[tokens.length - 1];
-    xs.push(keepQuotes ? getOriginal(last) : last.value);
+    xs.push(raw ? last.raw : last.value);
     return xs.join('');
 }
 
@@ -90,13 +57,12 @@ export function extractCommand(matchPrefix: (s: string) => number | null, tokens
         return null;
     }
 
-    const value = getOriginal(tokens[0]);
-    const plen = matchPrefix(value);
+    const plen = matchPrefix(tokens[0].raw);
     if (plen == null) {
         return null;
     }
 
-    if (value.length === plen) {
+    if (tokens[0].raw.length === plen) {
         if (tokens.length < 2) {
             return null;
         }
@@ -111,9 +77,10 @@ export function extractCommand(matchPrefix: (s: string) => number | null, tokens
 
     if (mutate) {
         const t = tokens.shift()!;
-        return { value: value.slice(plen), trailing: t.trailing };
+        const v = t.raw.slice(plen);
+        return { value: v, raw: v, trailing: t.trailing };
     }
 
-    const t = tokens[0];
-    return { value: value.slice(plen), trailing: t.trailing };
+    const v = tokens[0].raw.slice(plen);
+    return { value: v, raw: v, trailing: tokens[0].trailing };
 }
