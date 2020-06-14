@@ -35,7 +35,7 @@ const tokens = lexer.lex();
 ]
 
 Tokens.extractCommand(s => s.startsWith('!') ? 1 : null, tokens)
->>> 'hello'
+>>> { value: 'hello', trailing: ' ' }
 
 tokens
 >>> [

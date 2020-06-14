@@ -20,7 +20,7 @@ describe('readme', () => {
         ]);
         
         const c = Tokens.extractCommand(s => s.startsWith('!') ? 1 : null, tokens);
-        expect(c).toEqual('hello');
+        expect(c).toEqual({ value: 'hello', trailing: ' ' });
         
         expect(tokens).toEqual([
             { value: 'world', trailing: ' ' },

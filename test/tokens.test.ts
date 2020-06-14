@@ -65,28 +65,28 @@ describe('extractCommand', () => {
     it('can extract and mutate from one token', () => {
         const ts = [{ value: '!help', trailing: ' ' }, { value: 'me', trailing: '' }];
         const cmd = Tokens.extractCommand(s => s.startsWith('!') ? 1 : null, ts);
-        expect(cmd).toEqual('help');
+        expect(cmd).toEqual({ value: 'help', trailing: ' ' });
         expect(ts).toEqual([{ value: 'me', trailing: '' }]);
     });
 
     it('can extract and mutate from two tokens', () => {
         const ts = [{ value: '!', trailing: ' ' }, { value: 'help', trailing: ' ' }, { value: 'me', trailing: '' }];
         const cmd = Tokens.extractCommand(s => s.startsWith('!') ? 1 : null, ts);
-        expect(cmd).toEqual('help');
+        expect(cmd).toEqual({ value: 'help', trailing: ' ' });
         expect(ts).toEqual([{ value: 'me', trailing: '' }]);
     });
 
     it('can extract from one token', () => {
         const ts = [{ value: '!help', trailing: ' ' }, { value: 'me', trailing: '' }];
         const cmd = Tokens.extractCommand(s => s.startsWith('!') ? 1 : null, ts, false);
-        expect(cmd).toEqual('help');
+        expect(cmd).toEqual({ value: 'help', trailing: ' ' });
         expect(ts).toEqual(ts);
     });
 
     it('can extract from two tokens', () => {
         const ts = [{ value: '!', trailing: ' ' }, { value: 'help', trailing: ' ' }, { value: 'me', trailing: '' }];
         const cmd = Tokens.extractCommand(s => s.startsWith('!') ? 1 : null, ts, false);
-        expect(cmd).toEqual('help');
+        expect(cmd).toEqual({ value: 'help', trailing: ' ' });
         expect(ts).toEqual(ts);
     });
 

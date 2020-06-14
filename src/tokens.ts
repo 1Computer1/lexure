@@ -82,34 +82,38 @@ export function joinTokens(tokens: Token[], separator: string | null = null, kee
  * @param matchPrefix - A function that gives the length of the prefix if there is one.
  * @param tokens - Tokens to check.
  * @param mutate - Whether to mutate the list of tokens.
- * @returns The name of the command.
+ * @returns The token containing the name of the command.
+ * This may be a token from the list or a new token.
  */
-export function extractCommand(matchPrefix: (s: string) => number | null, tokens: Token[], mutate = true): string | null {
+export function extractCommand(matchPrefix: (s: string) => number | null, tokens: Token[], mutate = true): Token | null {
     if (tokens.length < 1) {
         return null;
     }
 
-    const plen = matchPrefix(tokens[0].value);
+    const value = getOriginal(tokens[0]);
+    const plen = matchPrefix(value);
     if (plen == null) {
         return null;
     }
 
-    if (tokens[0].value.length === plen) {
+    if (value.length === plen) {
         if (tokens.length < 2) {
             return null;
         }
 
         if (mutate) {
             tokens.shift();
-            return tokens.shift()!.value;
+            return tokens.shift()!;
         }
 
-        return tokens[1].value;
+        return tokens[1];
     }
 
     if (mutate) {
-        return tokens.shift()!.value.slice(plen);
+        const t = tokens.shift()!;
+        return { value: value.slice(plen), trailing: t.trailing };
     }
 
-    return tokens[0].value.slice(plen);
+    const t = tokens[0];
+    return { value: value.slice(plen), trailing: t.trailing };
 }
