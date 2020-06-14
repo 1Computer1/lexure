@@ -1,25 +1,6 @@
 import { UnorderedStrategy, noStrategy } from './unordered';
-import { Token } from "./tokens";
-
-/**
- * Output of the parser.
- */
-export interface ParserOutput {
-    /**
-     * All the tokens that are not flags or options, in order.
-     */
-    ordered: Token[];
-
-    /**
-     * The parsed flags.
-     */
-    flags: Set<string>;
-
-    /**
-     * The parsed options mapped to their value.
-     */
-    options: Map<string, string>;
-}
+import { Token } from './tokens';
+import { ParserOutput, emptyOutput, mergeOutputs } from './parserOutput';
 
 /**
  * Parses a list of tokens to separate out flags and options.
@@ -77,36 +58,6 @@ export class Parser implements IterableIterator<ParserOutput> {
         return this.pFlag() || this.pOption() || this.pCompactOption() || this.pOrdered();
     }
 
-    private static mergeOutputs(...ps: ParserOutput[]): ParserOutput {
-        const ordered = Array.from(function *() {
-            for (const p of ps) {
-                yield* p.ordered;
-            }
-        }());
-
-        const flags = new Set(function *() {
-            for (const p of ps) {
-                yield* p.flags;
-            }
-        }());
-
-        const options = new Map(function *() {
-            for (const p of ps) {
-                yield* p.options;
-            }
-        }());
-
-        return { ordered, flags, options };
-    }
-
-    private static emptyOutput(): ParserOutput {
-        return {
-            ordered: [],
-            flags: new Set(),
-            options: new Map()
-        };
-    }
-
     private pFlag(): ParserOutput | null {
         const t = this.input[this.position];
         const f = this.unorderedStrategy.matchFlag(t.value);
@@ -116,7 +67,7 @@ export class Parser implements IterableIterator<ParserOutput> {
 
         this.shift(1);
 
-        const output = Parser.emptyOutput();
+        const output = emptyOutput();
         output.flags.add(f);
         return output;
     }
@@ -130,7 +81,7 @@ export class Parser implements IterableIterator<ParserOutput> {
 
         this.shift(1);
 
-        const output = Parser.emptyOutput();
+        const output = emptyOutput();
         output.options.set(o, '');
 
         const n = this.input[this.position];
@@ -161,7 +112,7 @@ export class Parser implements IterableIterator<ParserOutput> {
 
         this.shift(1);
 
-        const output = Parser.emptyOutput();
+        const output = emptyOutput();
         output.options.set(o[0], o[1]);
         return output;
     }
@@ -170,7 +121,7 @@ export class Parser implements IterableIterator<ParserOutput> {
         const t = this.input[this.position];
         this.shift(1);
 
-        const output = Parser.emptyOutput();
+        const output = emptyOutput();
         output.ordered.push(t);
         return output;
     }
@@ -183,6 +134,6 @@ export class Parser implements IterableIterator<ParserOutput> {
      * Runs the parser.
      */
     public parse(): ParserOutput {
-        return Parser.mergeOutputs(...this);
+        return mergeOutputs(...this);
     }
 }

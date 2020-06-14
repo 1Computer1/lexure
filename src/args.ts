@@ -1,4 +1,4 @@
-import { ParserOutput } from './parser';
+import { ParserOutput } from './parserOutput';
 import { Token } from './tokens';
 import { Option, some, none } from './option';
 
