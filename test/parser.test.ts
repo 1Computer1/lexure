@@ -1,3 +1,4 @@
+import * as fc from 'fast-check';
 import { Lexer, Parser, longStrategy } from '../src';
 
 describe('parser', () => {
@@ -95,5 +96,13 @@ describe('parser', () => {
             { ordered: [], flags: new Set(), options: new Map([['baz', 'quux']]) },
             { ordered: [{ value: 'world', raw: 'world', trailing: '' }], flags: new Set(), options: new Map() }
         ]);
+    });
+
+    it('should never error', () => {
+        fc.property(fc.string(), s => {
+            const ts = new Lexer(s).lex();
+            const p = new Parser(ts);
+            expect(() => p.parse()).not.toThrow();
+        });
     });
 });

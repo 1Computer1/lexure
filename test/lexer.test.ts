@@ -1,3 +1,4 @@
+import * as fc from 'fast-check';
 import { Lexer } from '../src';
 
 describe('lexer', () => {
@@ -97,5 +98,12 @@ describe('lexer', () => {
             { value: 'text', raw: 'text', trailing: ' ' },
             { value: 'here', raw: 'here', trailing: '' }
         ]);
+    });
+
+    it('should never error', () => {
+        fc.property(fc.string(), s => {
+            const l = new Lexer(s);
+            expect(() => l.lex()).not.toThrow();
+        });
     });
 });
