@@ -81,7 +81,7 @@ args.findMap(x => x === 'c' ? some('it was a C') : none())
 args.many()
 >>> [
     { value: 'a', trailing: ' ' },
-    { value: 'b', trailing: '' }
+    { value: 'b', trailing: ' ' }
 ]
 
 args.flag('foo')
