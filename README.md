@@ -34,13 +34,26 @@ const tokens = lexer.lex();
     { value: 'c', trailing: '' }
 ]
 
+Tokens.extractCommand(s => s.startsWith('!') ? 1 : null, tokens)
+>>> 'hello'
+
+tokens
+>>> [
+    { value: 'world', trailing: ' ' },
+    { value: 'cool stuff', quoted: '"cool stuff"', trailing: ' ' },
+    { value: '--foo', trailing: ' ' },
+    { value: '--bar=baz', trailing: ' ' },
+    { value: 'a', trailing: ' ' },
+    { value: 'b', trailing: ' ' },
+    { value: 'c', trailing: '' }
+]
+
 const parser = new Parser(tokens)
     .setUnorderedStrategy(Unordered.longStrategy());
 
 const res = parser.parse();
 >>> {
     ordered: [
-        { value: '!hello', trailing: ' ' },
         { value: 'world', trailing: ' ' },
         { value: 'cool stuff', quoted: '"cool stuff"', trailing: ' ' },
         { value: 'a', trailing: ' ' },
@@ -52,19 +65,7 @@ const res = parser.parse();
 }
 
 Tokens.joinTokens(res.ordered)
->>> '!hello world "cool stuff" a b c'
-
-Tokens.extractCommand(s => s.startsWith('!') ? 1 : null, res.ordered)
->>> 'hello'
-
-res.ordered
->>> [
-    { value: 'world', trailing: ' ' },
-    { value: 'cool stuff', quoted: '"cool stuff"', trailing: ' ' },
-    { value: 'a', trailing: ' ' },
-    { value: 'b', trailing: ' ' },
-    { value: 'c', trailing: '' }
-]
+>>> 'world "cool stuff" a b c'
 
 const args = new Args(res);
 
