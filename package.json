@@ -19,7 +19,8 @@
     "require": "./dist/lib/index.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "esm"
   ],
   "author": "1Computer <onecomputer00@gmail.com>",
   "repository": {
