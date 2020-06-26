@@ -81,6 +81,68 @@ export function longShortStrategy(): UnorderedStrategy {
 }
 
 /**
+ * Match unordered arguments with custom prefix and separator.
+ * The prefix is the part the preceeds the key name, e.g. '--' in '--foo'.
+ * The separator is the part that delimits the key and value e.g. '=' in '--key=value'.
+ * @param prefixes - The prefixes to use for unordered arguments.
+ * @param separators - The symbol to use to separate the key and value in options.
+ * @returns The strategy.
+ */
+export function prefixedStrategy(prefixes: string[], separators: string[]): UnorderedStrategy {
+    return {
+        matchFlag: (s: string) => {
+            const pre = prefixes.find(x => s.startsWith(x));
+            if (pre == null) {
+                return null;
+            }
+
+            s = s.slice(pre.length);
+            const sep = separators.find(x => s.includes(x));
+            if (sep != null) {
+                return null;
+            }
+
+            return s;
+        },
+        matchOption: (s: string) => {
+            const pre = prefixes.find(x => s.startsWith(x));
+            if (pre == null) {
+                return null;
+            }
+
+            s = s.slice(pre.length);
+            const sep = separators.find(x => s.endsWith(x));
+            if (sep == null) {
+                return null;
+            }
+
+            return s.slice(0, -sep.length);
+        },
+        matchCompactOption: (s: string) => {
+            const pre = prefixes.find(x => s.startsWith(x));
+            if (pre == null) {
+                return null;
+            }
+
+            s = s.slice(pre.length);
+            const sep = separators.find(x => s.includes(x));
+            if (sep == null) {
+                return null;
+            }
+
+            const i = s.indexOf(sep);
+            if (i + sep.length === s.length) {
+                return null;
+            }
+
+            const k = s.slice(0, i);
+            const v = s.slice(i + sep.length);
+            return [k, v];
+        }
+    };
+}
+
+/**
  * Match unordered arguments according to a list of possible words in a case-sensitive manner.
  * Prefixes like '--' and separators like '=' should be apart of the word.
  * @param flags - Words usable as flags.

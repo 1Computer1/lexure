@@ -22,6 +22,7 @@ export const {
     noStrategy,
     longStrategy,
     longShortStrategy,
+    prefixedStrategy,
     exactStrategy,
     caseInsensitiveStrategy
 } = lexure;

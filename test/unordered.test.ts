@@ -1,4 +1,4 @@
-import { noStrategy, longStrategy, longShortStrategy, caseInsensitiveStrategy, exactStrategy } from '../src/';
+import { noStrategy, longStrategy, longShortStrategy, caseInsensitiveStrategy, exactStrategy, prefixedStrategy } from '../src/';
 
 describe('no strategy', () => {
     it('should be false and null', () => {
@@ -74,6 +74,56 @@ describe('long short strategy', () => {
         expect(s.matchFlag(x)).toEqual(null);
         expect(s.matchOption(x)).toEqual(null);
         expect(s.matchCompactOption(x)).toEqual(['f', '3']);
+    });
+});
+
+describe('prefixed strategy', () => {
+    it('should parse a flag exclusively', () => {
+        const s = prefixedStrategy(['--'], ['=']);
+        const x = '--foo';
+        expect(s.matchFlag(x)).toEqual('foo');
+        expect(s.matchOption(x)).toEqual(null);
+        expect(s.matchCompactOption(x)).toEqual(null);
+    });
+
+    it('should parse an option exclusively', () => {
+        const s = prefixedStrategy(['--'], ['=']);
+        const x = '--foo=';
+        expect(s.matchFlag(x)).toEqual(null);
+        expect(s.matchOption(x)).toEqual('foo');
+        expect(s.matchCompactOption(x)).toEqual(null);
+    });
+
+    it('should parse a compact option exclusively', () => {
+        const s = prefixedStrategy(['--'], ['=']);
+        const x = '--foo=x';
+        expect(s.matchFlag(x)).toEqual(null);
+        expect(s.matchOption(x)).toEqual(null);
+        expect(s.matchCompactOption(x)).toEqual(['foo', 'x']);
+    });
+
+    it('with multiple symbols, should parse a flag exclusively', () => {
+        const s = prefixedStrategy(['--', '-', '/'], ['=', ':']);
+        const x = '-foo';
+        expect(s.matchFlag(x)).toEqual('foo');
+        expect(s.matchOption(x)).toEqual(null);
+        expect(s.matchCompactOption(x)).toEqual(null);
+    });
+
+    it('with multiple symbols, should parse an option exclusively', () => {
+        const s = prefixedStrategy(['--', '-', '/'], ['=', ':']);
+        const x = '/foo:';
+        expect(s.matchFlag(x)).toEqual(null);
+        expect(s.matchOption(x)).toEqual('foo');
+        expect(s.matchCompactOption(x)).toEqual(null);
+    });
+
+    it('with multiple symbols, should parse a compact option exclusively', () => {
+        const s = prefixedStrategy(['--', '-', '/'], ['=', ':']);
+        const x = '-foo=x';
+        expect(s.matchFlag(x)).toEqual(null);
+        expect(s.matchOption(x)).toEqual(null);
+        expect(s.matchCompactOption(x)).toEqual(['foo', 'x']);
     });
 });
 
