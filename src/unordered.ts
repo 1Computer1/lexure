@@ -81,6 +81,34 @@ export function longShortStrategy(): UnorderedStrategy {
 }
 
 /**
+ * Match unordered arguments according to a list of possible words in a case-sensitive manner.
+ * Prefixes like '--' and separators like '=' should be apart of the word.
+ * @param flags - Words usable as flags.
+ * @param options - Words usable as options.
+ * @param compactOptions - Words usable as the key of compact options.
+ * @returns The strategy.
+ */
+export function exactStrategy(flags: string[], options: string[], compactOptions: string[]): UnorderedStrategy {
+    return {
+        matchFlag: (s: string) => {
+            return flags.find(x => s === x) ?? null;
+        },
+        matchOption: (s: string) => {
+            return options.find(x => s === x) ?? null;
+        },
+        matchCompactOption: (s: string) => {
+            const k = compactOptions.find(x => s.startsWith(x)) ?? null;
+            if (k == null) {
+                return null;
+            }
+
+            const v = s.slice(k.length);
+            return [k, v];
+        }
+    };
+}
+
+/**
  * Match unordered arguments according to a list of possible words in a case-insensitive manner.
  * Prefixes like '--' and separators like '=' should be apart of the word.
  * @param flags - Words usable as flags.

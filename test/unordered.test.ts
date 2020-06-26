@@ -1,4 +1,4 @@
-import { noStrategy, longStrategy, longShortStrategy, caseInsensitiveStrategy } from '../src/';
+import { noStrategy, longStrategy, longShortStrategy, caseInsensitiveStrategy, exactStrategy } from '../src/';
 
 describe('no strategy', () => {
     it('should be false and null', () => {
@@ -74,6 +74,24 @@ describe('long short strategy', () => {
         expect(s.matchFlag(x)).toEqual(null);
         expect(s.matchOption(x)).toEqual(null);
         expect(s.matchCompactOption(x)).toEqual(['f', '3']);
+    });
+});
+
+describe('exact strategy', () => {
+    it('should work when exact', () => {
+        const s = exactStrategy(['flag'], ['option'], ['compactOption']);
+        const x = 'flag';
+        expect(s.matchFlag(x)).toEqual('flag');
+        expect(s.matchOption(x)).toEqual(null);
+        expect(s.matchCompactOption(x)).toEqual(null);
+    });
+
+    it('should not work when not exact', () => {
+        const s = exactStrategy(['flag'], ['option'], ['compactOption']);
+        const x = 'flaG';
+        expect(s.matchFlag(x)).toEqual(null);
+        expect(s.matchOption(x)).toEqual(null);
+        expect(s.matchCompactOption(x)).toEqual(null);
     });
 });
 
