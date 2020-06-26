@@ -18,14 +18,22 @@ export class Args {
 
     /**
      * The current position in the ordered tokens.
+     * Increments from 0.
      */
     public position = 0;
+
+    /**
+     * The current position backwards in the ordered tokens.
+     * Decrements from the end.
+     */
+    public positionFromEnd: number;
 
     /**
      * @param parserOutput - The parser output.
      */
     public constructor(parserOutput: ParserOutput) {
         this.parserOutput = parserOutput;
+        this.positionFromEnd = parserOutput.ordered.length - 1;
     }
 
     /**
@@ -65,6 +73,24 @@ export class Args {
 
         this.usedIndices.add(this.position);
         return this.parserOutput.ordered[this.position++].value;
+    }
+
+    /**
+     * Retrieves the value of the next unused ordered token from the end.
+     * That token will now be consider used.
+     * @returns The value if there are tokens left.
+     */
+    public singleFromEnd(): string | null {
+        if (this.finished) {
+            return null;
+        }
+
+        while (this.usedIndices.has(this.positionFromEnd)) {
+            this.positionFromEnd--;
+        }
+
+        this.usedIndices.add(this.positionFromEnd);
+        return this.parserOutput.ordered[this.positionFromEnd--].value;
     }
 
     /**

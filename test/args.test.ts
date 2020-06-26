@@ -134,4 +134,28 @@ describe('args', () => {
         expect(args.many()).toEqual([{ value: 'a', raw: 'a', trailing: ' ' }, { value: 'b', raw: 'b', trailing: '' }]);
         expect(args.usedIndices).toEqual(new Set([0, 1, 2, 3]));
     });
+
+    it('can retrieve from end', () => {
+        const s = 'a b c d';
+        const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
+        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const args = new Args(po);
+
+        expect(args.singleFromEnd()).toEqual('d');
+        expect(args.singleFromEnd()).toEqual('c');
+        expect(args.singleFromEnd()).toEqual('b');
+        expect(args.singleFromEnd()).toEqual('a');
+    });
+
+    it('can retrieve from start and end', () => {
+        const s = 'a b c d';
+        const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
+        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const args = new Args(po);
+
+        expect(args.single()).toEqual('a');
+        expect(args.singleFromEnd()).toEqual('d');
+        expect(args.single()).toEqual('b');
+        expect(args.singleFromEnd()).toEqual('c');
+    });
 });
