@@ -101,7 +101,7 @@ export class Args {
      * @param key - The name of the option.
      * @returns The value of the option if it was given.
      */
-    public option(key: string): string | null {
+    public option(key: string): string[] | null {
         return this.parserOutput.options.has(key)
             ? this.parserOutput.options.get(key)!
             : null;
