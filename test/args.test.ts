@@ -135,7 +135,7 @@ describe('args', () => {
         expect(args.usedIndices).toEqual(new Set([0, 1, 2, 3]));
     });
 
-    it('can retrieve from end', () => {
+    it('can retrieve single from end', () => {
         const s = 'a b c d';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
@@ -157,5 +157,15 @@ describe('args', () => {
         expect(args.singleFromEnd()).toEqual('d');
         expect(args.single()).toEqual('b');
         expect(args.singleFromEnd()).toEqual('c');
+    });
+
+    it('can retrieve many from end', () => {
+        const s = 'a b c d';
+        const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
+        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const args = new Args(po);
+
+        expect(args.singleFromEnd()).toEqual('d');
+        expect(args.manyFromEnd()).toEqual(ts.slice(0, 3));
     });
 });

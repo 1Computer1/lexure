@@ -114,6 +114,27 @@ export class Args {
     }
 
     /**
+     * Retrieves many unused tokens from the end.
+     * Note that the order of retrieved tokens will be the same order as in the ordered tokens list.
+     * @param limit - The limit on the amount of tokens to retrieve; defaults to infinite.
+     * @param from - Where to start looking for tokens; defaults to current position from end.
+     * @returns The tokens.
+     */
+    public manyFromEnd(limit = Infinity, from = this.positionFromEnd): Token[] {
+        const ts = [];
+        for (let i = from; i >= 0 && ts.length < limit; i--) {
+            if (this.usedIndices.has(i)) {
+                continue;
+            }
+
+            this.usedIndices.add(i);
+            ts.unshift(this.parserOutput.ordered[i]);
+        }
+
+        return ts;
+    }
+
+    /**
      * Checks if a flag was given.
      * @param key - The name of the flag.
      * @returns Whether the flag was given.
