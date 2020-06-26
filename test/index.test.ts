@@ -72,6 +72,6 @@ describe('readme', () => {
         expect(a5).toEqual(true);
         
         const a6 = args.option('bar');
-        expect(a6).toEqual(['baz']);
+        expect(a6).toEqual('baz');
     });
 });

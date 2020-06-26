@@ -33,8 +33,17 @@ describe('args', () => {
 
         expect(args.flag('foo')).toEqual(true);
         expect(args.flag('hello')).toEqual(false);
-        expect(args.option('bar')).toEqual(['123']);
-        expect(args.option('world')).toEqual(null);
+        expect(args.options('bar')).toEqual(['123']);
+        expect(args.options('world')).toEqual(null);
+    });
+
+    it('can retrieve last option value', () => {
+        const s = '--foo=1 --foo=2 --foo=3';
+        const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
+        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const args = new Args(po);
+
+        expect(args.option('foo')).toEqual('3');
     });
 
     it('can retrieve one, many, flags, and options', () => {
@@ -49,8 +58,8 @@ describe('args', () => {
         expect(args.single()).toEqual(null);
         expect(args.flag('foo')).toEqual(true);
         expect(args.flag('hello')).toEqual(false);
-        expect(args.option('bar')).toEqual(['123']);
-        expect(args.option('world')).toEqual(null);
+        expect(args.options('bar')).toEqual(['123']);
+        expect(args.options('world')).toEqual(null);
     });
 
     it('has the correct state and counts', () => {

@@ -88,7 +88,7 @@ args.flag('foo')
 >>> true
 
 args.option('bar')
->>> ['baz']
+>>> 'baz'
 ```
 
 See source code and tests for more usages and documentation.

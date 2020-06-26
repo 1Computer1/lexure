@@ -144,11 +144,21 @@ export class Args {
     }
 
     /**
-     * Gets the value of an option.
+     * Gets the last value of an option.
+     * @param key - The name of the option.
+     * @returns The lastvalue of the option if it was given.
+     */
+    public option(key: string): string | null {
+        const xs = this.options(key);
+        return xs == null ? null : xs[xs.length - 1];
+    }
+
+    /**
+     * Gets all the values of an option.
      * @param key - The name of the option.
      * @returns The value of the option if it was given.
      */
-    public option(key: string): string[] | null {
+    public options(key: string): string[] | null {
         return this.parserOutput.options.has(key)
             ? this.parserOutput.options.get(key)!
             : null;
