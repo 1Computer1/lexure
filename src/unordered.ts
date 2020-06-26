@@ -86,21 +86,27 @@ export function longShortStrategy(): UnorderedStrategy {
  * @param flags - Words usable as flags.
  * @param options - Words usable as options.
  * @param compactOptions - Words usable as the key of compact options.
+ * @param locale - The locale(s) to use to compare case.
  * @returns The strategy.
  */
-export function caseInsensitiveStrategy(flags: string[], options: string[], compactOptions: string[]): UnorderedStrategy {
+export function caseInsensitiveStrategy(
+    flags: string[],
+    options: string[],
+    compactOptions: string[],
+    locale?: string | string[]
+): UnorderedStrategy {
     return {
         matchFlag: (s: string) => {
-            s = s.toLowerCase();
-            return flags.find(x => s === x.toLowerCase()) ?? null;
+            s = s.toLocaleLowerCase(locale);
+            return flags.find(x => s === x.toLocaleLowerCase(locale)) ?? null;
         },
         matchOption: (s: string) => {
-            s = s.toLowerCase();
-            return options.find(x => s === x.toLowerCase()) ?? null;
+            s = s.toLocaleLowerCase(locale);
+            return options.find(x => s === x.toLocaleLowerCase(locale)) ?? null;
         },
         matchCompactOption: (s: string) => {
-            const s1 = s.toLowerCase();
-            const k = compactOptions.find(x => s1.startsWith(x.toLowerCase())) ?? null;
+            const s1 = s.toLocaleLowerCase(locale);
+            const k = compactOptions.find(x => s1.startsWith(x.toLocaleLowerCase(locale))) ?? null;
             if (k == null) {
                 return null;
             }

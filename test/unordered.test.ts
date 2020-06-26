@@ -95,4 +95,16 @@ describe('case insensitive strategy', () => {
         const x = 'COMPACTOptionHello';
         expect(s.matchCompactOption(x)).toEqual(['compactOption', 'Hello']);
     });
+
+    it('should parse a flag in different locale', () => {
+        const s = caseInsensitiveStrategy(['i'], [], [], 'tr');
+        const x = '\u0130';
+        expect(s.matchFlag(x)).toEqual('i');
+    });
+
+    it('should not parse a flag in different locale', () => {
+        const s = caseInsensitiveStrategy(['i'], [], [], 'en-US');
+        const x = '\u0130';
+        expect(s.matchFlag(x)).toEqual(null);
+    });
 });
