@@ -33,7 +33,7 @@ describe('args', () => {
 
         expect(args.flag('foo')).toEqual(true);
         expect(args.flag('hello')).toEqual(false);
-        expect(args.option('bar')).toEqual('123');
+        expect(args.option('bar')).toEqual(['123']);
         expect(args.option('world')).toEqual(null);
     });
 
@@ -49,7 +49,7 @@ describe('args', () => {
         expect(args.single()).toEqual(null);
         expect(args.flag('foo')).toEqual(true);
         expect(args.flag('hello')).toEqual(false);
-        expect(args.option('bar')).toEqual('123');
+        expect(args.option('bar')).toEqual(['123']);
         expect(args.option('world')).toEqual(null);
     });
 

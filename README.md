@@ -61,7 +61,7 @@ const res = parser.parse();
         { value: 'c',          raw: 'c',            trailing: ''  }
     ],
     flags: Set { 'foo' },
-    options: Map { 'bar' => 'baz' }
+    options: Map { 'bar' => ['baz'] }
 }
 
 Lexure.joinTokens(res.ordered)
@@ -88,7 +88,7 @@ args.flag('foo')
 >>> true
 
 args.option('bar')
->>> 'baz'
+>>> ['baz']
 ```
 
 See source code and tests for more usages and documentation.

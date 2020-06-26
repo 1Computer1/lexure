@@ -17,7 +17,7 @@ export interface ParserOutput {
     /**
      * The parsed options mapped to their value.
      */
-    options: Map<string, string>;
+    options: Map<string, string[]>;
 }
 
 /**
@@ -51,11 +51,17 @@ export function mergeOutputs(...ps: ParserOutput[]): ParserOutput {
         }
     }());
 
-    const options = new Map(function *() {
-        for (const p of ps) {
-            yield* p.options;
+    const options: Map<string, string[]> = new Map();
+    for (const p of ps) {
+        for (const [o, xs] of p.options.entries()) {
+            if (!options.has(o)) {
+                options.set(o, []);
+            }
+
+            const ys = options.get(o);
+            ys!.push(...xs);
         }
-    }());
+    }
 
     return { ordered, flags, options };
 }
@@ -83,6 +89,6 @@ export function outputFromJSON(obj: Record<string, unknown>): ParserOutput {
     return {
         ordered: obj.ordered as Token[],
         flags: new Set(obj.flags as string[]),
-        options: new Map(obj.options as [string, string][])
+        options: new Map(obj.options as [string, string[]][])
     };
 }

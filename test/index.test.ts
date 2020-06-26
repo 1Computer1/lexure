@@ -45,7 +45,7 @@ describe('readme', () => {
                 { value: 'c', raw: 'c', trailing: '' }
             ],
             flags: new Set(['foo']),
-            options: new Map([['bar', 'baz']])
+            options: new Map([['bar', ['baz']]])
         });
 
         const j = Lexure.joinTokens(res.ordered);
@@ -72,6 +72,6 @@ describe('readme', () => {
         expect(a5).toEqual(true);
         
         const a6 = args.option('bar');
-        expect(a6).toEqual('baz');
+        expect(a6).toEqual(['baz']);
     });
 });

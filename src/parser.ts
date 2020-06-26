@@ -82,7 +82,7 @@ export class Parser implements IterableIterator<ParserOutput> {
         this.shift(1);
 
         const output = emptyOutput();
-        output.options.set(o, '');
+        output.options.set(o, []);
 
         const n = this.input[this.position];
         if (n == null) {
@@ -99,7 +99,8 @@ export class Parser implements IterableIterator<ParserOutput> {
 
         this.shift(1);
 
-        output.options.set(o, n.value);
+        const xs = output.options.get(o);
+        xs!.push(n.value);
         return output;
     }
 
@@ -113,7 +114,7 @@ export class Parser implements IterableIterator<ParserOutput> {
         this.shift(1);
 
         const output = emptyOutput();
-        output.options.set(o[0], o[1]);
+        output.options.set(o[0], [o[1]]);
         return output;
     }
 

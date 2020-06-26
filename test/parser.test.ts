@@ -28,7 +28,7 @@ describe('parser', () => {
         expect(out).toEqual({
             ordered: ts.slice(0, 2),
             flags: new Set(),
-            options: new Map([['baz', 'quux']])
+            options: new Map([['baz', ['quux']]])
         });
     });
 
@@ -38,7 +38,7 @@ describe('parser', () => {
         expect(out).toEqual({
             ordered: ts.slice(0, 2),
             flags: new Set(),
-            options: new Map([['baz', '']])
+            options: new Map([['baz', []]])
         });
     });
 
@@ -48,7 +48,7 @@ describe('parser', () => {
         expect(out).toEqual({
             ordered: ts.slice(0, 2),
             flags: new Set(['foo']),
-            options: new Map([['baz', '']])
+            options: new Map([['baz', []]])
         });
     });
 
@@ -58,7 +58,17 @@ describe('parser', () => {
         expect(out).toEqual({
             ordered: ts.slice(0, 2),
             flags: new Set(),
-            options: new Map([['baz', 'quux']])
+            options: new Map([['baz', ['quux']]])
+        });
+    });
+
+    it('should parse multiple same options', () => {
+        const ts = new Lexer('--foo=x --foo= y --foo=z').lex();
+        const out = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        expect(out).toEqual({
+            ordered: [],
+            flags: new Set(),
+            options: new Map([['foo', ['x', 'y', 'z']]])
         });
     });
 
@@ -68,7 +78,7 @@ describe('parser', () => {
         expect(out).toEqual({
             ordered: [ts[0], ts[5]],
             flags: new Set(['foo']),
-            options: new Map([['bar', '123'], ['baz', 'quux']])
+            options: new Map([['bar', ['123']], ['baz', ['quux']]])
         });
     });
 
@@ -81,7 +91,7 @@ describe('parser', () => {
         expect(out).toEqual({
             ordered: [ts[0], ts[5]],
             flags: new Set(['foo']),
-            options: new Map([['bar', '123'], ['baz', 'quux']])
+            options: new Map([['bar', ['123']], ['baz', ['quux']]])
         });
     });
 
@@ -92,8 +102,8 @@ describe('parser', () => {
         expect(ps).toEqual([
             { ordered: [{ value: 'hello', raw: 'hello', trailing: ' ' }], flags: new Set(), options: new Map() },
             { ordered: [], flags: new Set(['foo']), options: new Map() },
-            { ordered: [], flags: new Set(), options: new Map([['bar', '123']]) },
-            { ordered: [], flags: new Set(), options: new Map([['baz', 'quux']]) },
+            { ordered: [], flags: new Set(), options: new Map([['bar', ['123']]]) },
+            { ordered: [], flags: new Set(), options: new Map([['baz', ['quux']]]) },
             { ordered: [{ value: 'world', raw: 'world', trailing: '' }], flags: new Set(), options: new Map() }
         ]);
     });

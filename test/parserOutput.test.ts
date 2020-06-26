@@ -21,7 +21,7 @@ describe('mergeOutputs', () => {
                 { value: 'c', raw: 'c', trailing: '' }
             ],
             flags: new Set(),
-            options: new Map([['bar', 'baz']])
+            options: new Map([['bar', ['baz']]])
         };
 
         expect(mergeOutputs(e, a, b)).toEqual({
@@ -33,7 +33,7 @@ describe('mergeOutputs', () => {
                 { value: 'c', raw: 'c', trailing: '' }
             ],
             flags: new Set(['foo']),
-            options: new Map([['bar', 'baz']])
+            options: new Map([['bar', ['baz']]])
         });
     });
 
@@ -68,7 +68,7 @@ describe('json conversion', () => {
                 { value: 'c', raw: 'c', trailing: '' }
             ],
             flags: new Set(['foo']),
-            options: new Map([['bar', 'baz']])
+            options: new Map([['bar', ['baz']]])
         };
 
         const b = {
@@ -80,7 +80,7 @@ describe('json conversion', () => {
                 { value: 'c', raw: 'c', trailing: '' }
             ],
             flags: ['foo'],
-            options: [['bar', 'baz']]
+            options: [['bar', ['baz']]]
         };
 
         expect(outputToJSON(a)).toEqual(b);
@@ -104,7 +104,7 @@ describe('json conversion', () => {
 });
 
 const genOutput: fc.Arbitrary<ParserOutput> =
-    fc.tuple(fc.array(fc.string()), fc.array(fc.string()), fc.array(fc.tuple(fc.string(), fc.string())))
+    fc.tuple(fc.array(fc.string()), fc.array(fc.string()), fc.array(fc.tuple(fc.string(), fc.array(fc.string()))))
         .map(([ws, fs, os]) => ({
             ordered: ws.map(w => ({ value: w, raw: w, trailing: ' ' })),
             flags: new Set(fs),
