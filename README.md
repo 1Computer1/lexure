@@ -14,13 +14,31 @@ Lexer and parser for structured non-technical user input.
 
 ## Example
 
+First, import lexure:  
+
 ```ts
-import * as Lexure from 'lexure';
+// TypeScript or ES Module
+import * as lexure from 'lexure';
 
+// CommonJS
+const lexure = require('lexure');
+```
+
+Consider some user input in the form of a command like so:  
+
+```ts
 const input = '!hello world "cool stuff" --foo --bar=baz a b c';
+```
 
+We first tokenize the input string to individual tokens.  
+As you can see, lexure supports custom open and close quotes for devices with special keyboards and other locales.  
+
+```ts
 const lexer = new Lexure.Lexer(input)
-    .setQuotes([['"', '"'], ['“', '”']]);
+    .setQuotes([
+        ['"', '"'],
+        ['“', '”']
+    ]);
 
 const tokens = lexer.lex();
 >>> [
@@ -33,7 +51,11 @@ const tokens = lexer.lex();
     { value: 'b',          raw: 'b',            trailing: ' ' },
     { value: 'c',          raw: 'c',            trailing: ''  }
 ]
+```
 
+The `!hello` part of the input is usually interpreted as a command, for which lexure has a utility function that will extract it from the tokens.  
+
+```ts
 Lexure.extractCommand(s => s.startsWith('!') ? 1 : null, tokens)
 >>> { value: 'hello', raw: 'hello', trailing: ' ' }
 
@@ -47,7 +69,13 @@ Lexure.tokens
     { value: 'b',          raw: 'b',            trailing: ' ' },
     { value: 'c',          raw: 'c',            trailing: ''  }
 ]
+```
 
+Now, we can take the tokens and parse them into a structure.  
+In lexure, you are free to describe how you want to match unordered arguments like flags.  
+There are also several built-in strategies for common usecases.  
+
+```ts
 const parser = new Lexure.Parser(tokens)
     .setUnorderedStrategy(Lexure.longStrategy());
 
@@ -66,7 +94,12 @@ const res = parser.parse();
 
 Lexure.joinTokens(res.ordered)
 >>> 'world "cool stuff" a b c'
+```
 
+A utility wrapper class is available for us to retrieve the arguments from the output of the parser.  
+It keeps track of what has already been retrieved and has several helpful methods.  
+
+```ts
 const args = new Lexure.Args(res);
 
 args.single()
@@ -90,5 +123,3 @@ args.flag('foo')
 args.option('bar')
 >>> 'baz'
 ```
-
-See source code and tests for more usages and documentation.
