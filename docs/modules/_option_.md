@@ -24,7 +24,7 @@
 
 Ƭ **Option**: *[Some](../interfaces/_option_.some.md)‹T› | [None](../interfaces/_option_.none.md)*
 
-*Defined in [option.ts:5](https://github.com/1Computer1/lexure/blob/abecae6/src/option.ts#L5)*
+*Defined in [option.ts:5](https://github.com/1Computer1/lexure/blob/5f4fd4c/src/option.ts#L5)*
 
 A type that can express the lack of a value.
 Used in this library for when a generic type could be nullable.
@@ -35,7 +35,7 @@ Used in this library for when a generic type could be nullable.
 
 ▸ **none**(): *[None](../interfaces/_option_.none.md)*
 
-*Defined in [option.ts:45](https://github.com/1Computer1/lexure/blob/abecae6/src/option.ts#L45)*
+*Defined in [option.ts:45](https://github.com/1Computer1/lexure/blob/5f4fd4c/src/option.ts#L45)*
 
 Creates a None.
 
@@ -49,7 +49,7 @@ ___
 
 ▸ **some**‹**T**›(`x`: T): *[Some](../interfaces/_option_.some.md)‹T›*
 
-*Defined in [option.ts:37](https://github.com/1Computer1/lexure/blob/abecae6/src/option.ts#L37)*
+*Defined in [option.ts:37](https://github.com/1Computer1/lexure/blob/5f4fd4c/src/option.ts#L37)*
 
 Creates a Some.
 

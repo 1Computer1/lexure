@@ -22,7 +22,7 @@ Output of the parser.
 
 • **flags**: *Set‹string›*
 
-*Defined in [parserOutput.ts:15](https://github.com/1Computer1/lexure/blob/abecae6/src/parserOutput.ts#L15)*
+*Defined in [parserOutput.ts:15](https://github.com/1Computer1/lexure/blob/5f4fd4c/src/parserOutput.ts#L15)*
 
 The parsed flags.
 
@@ -32,7 +32,7 @@ ___
 
 • **options**: *Map‹string, string[]›*
 
-*Defined in [parserOutput.ts:20](https://github.com/1Computer1/lexure/blob/abecae6/src/parserOutput.ts#L20)*
+*Defined in [parserOutput.ts:20](https://github.com/1Computer1/lexure/blob/5f4fd4c/src/parserOutput.ts#L20)*
 
 The parsed options mapped to their value.
 
@@ -42,6 +42,6 @@ ___
 
 • **ordered**: *[Token](_tokens_.token.md)[]*
 
-*Defined in [parserOutput.ts:10](https://github.com/1Computer1/lexure/blob/abecae6/src/parserOutput.ts#L10)*
+*Defined in [parserOutput.ts:10](https://github.com/1Computer1/lexure/blob/5f4fd4c/src/parserOutput.ts#L10)*
 
 All the tokens that are not flags or options, in order.

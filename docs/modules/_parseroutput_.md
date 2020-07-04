@@ -21,7 +21,7 @@
 
 ▸ **emptyOutput**(): *[ParserOutput](../interfaces/_parseroutput_.parseroutput.md)*
 
-*Defined in [parserOutput.ts:27](https://github.com/1Computer1/lexure/blob/abecae6/src/parserOutput.ts#L27)*
+*Defined in [parserOutput.ts:27](https://github.com/1Computer1/lexure/blob/5f4fd4c/src/parserOutput.ts#L27)*
 
 Creates an empty parser output.
 
@@ -35,7 +35,7 @@ ___
 
 ▸ **mergeOutputs**(...`ps`: [ParserOutput](../interfaces/_parseroutput_.parseroutput.md)[]): *[ParserOutput](../interfaces/_parseroutput_.parseroutput.md)*
 
-*Defined in [parserOutput.ts:41](https://github.com/1Computer1/lexure/blob/abecae6/src/parserOutput.ts#L41)*
+*Defined in [parserOutput.ts:41](https://github.com/1Computer1/lexure/blob/5f4fd4c/src/parserOutput.ts#L41)*
 
 Merges multiple outputs into one.
 Flags and options that appear later will be preferred if there are duplicates.
@@ -56,7 +56,7 @@ ___
 
 ▸ **outputFromJSON**(`obj`: Record‹string, unknown›): *[ParserOutput](../interfaces/_parseroutput_.parseroutput.md)*
 
-*Defined in [parserOutput.ts:88](https://github.com/1Computer1/lexure/blob/abecae6/src/parserOutput.ts#L88)*
+*Defined in [parserOutput.ts:88](https://github.com/1Computer1/lexure/blob/5f4fd4c/src/parserOutput.ts#L88)*
 
 Converts JSON to a parser output.
 
@@ -76,7 +76,7 @@ ___
 
 ▸ **outputToJSON**(`p`: [ParserOutput](../interfaces/_parseroutput_.parseroutput.md)): *Record‹string, unknown›*
 
-*Defined in [parserOutput.ts:75](https://github.com/1Computer1/lexure/blob/abecae6/src/parserOutput.ts#L75)*
+*Defined in [parserOutput.ts:75](https://github.com/1Computer1/lexure/blob/5f4fd4c/src/parserOutput.ts#L75)*
 
 Converts an output to JSON, where the flags and options are turned into arrays of entries.
 You can recover the output with 'outputFromJSON'.

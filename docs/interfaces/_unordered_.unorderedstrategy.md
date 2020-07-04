@@ -22,7 +22,7 @@ A strategy to match unordered arguments in parsing.
 
 ▸ **matchCompactOption**(`s`: string): *[string, string] | null*
 
-*Defined in [unordered.ts:24](https://github.com/1Computer1/lexure/blob/abecae6/src/unordered.ts#L24)*
+*Defined in [unordered.ts:24](https://github.com/1Computer1/lexure/blob/5f4fd4c/src/unordered.ts#L24)*
 
 Match a compact option.
 
@@ -42,7 +42,7 @@ ___
 
 ▸ **matchFlag**(`s`: string): *string | null*
 
-*Defined in [unordered.ts:10](https://github.com/1Computer1/lexure/blob/abecae6/src/unordered.ts#L10)*
+*Defined in [unordered.ts:10](https://github.com/1Computer1/lexure/blob/5f4fd4c/src/unordered.ts#L10)*
 
 Match a flag.
 
@@ -62,7 +62,7 @@ ___
 
 ▸ **matchOption**(`s`: string): *string | null*
 
-*Defined in [unordered.ts:17](https://github.com/1Computer1/lexure/blob/abecae6/src/unordered.ts#L17)*
+*Defined in [unordered.ts:17](https://github.com/1Computer1/lexure/blob/5f4fd4c/src/unordered.ts#L17)*
 
 Match an option.
 

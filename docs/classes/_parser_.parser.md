@@ -35,7 +35,7 @@ Parses a list of tokens to separate out flags and options.
 
 \+ **new Parser**(`input`: [Token](../interfaces/_tokens_.token.md)[]): *[Parser](_parser_.parser.md)*
 
-*Defined in [parser.ts:12](https://github.com/1Computer1/lexure/blob/abecae6/src/parser.ts#L12)*
+*Defined in [parser.ts:12](https://github.com/1Computer1/lexure/blob/5f4fd4c/src/parser.ts#L12)*
 
 **Parameters:**
 
@@ -51,7 +51,7 @@ Name | Type | Description |
 
 • **get finished**(): *boolean*
 
-*Defined in [parser.ts:33](https://github.com/1Computer1/lexure/blob/abecae6/src/parser.ts#L33)*
+*Defined in [parser.ts:33](https://github.com/1Computer1/lexure/blob/5f4fd4c/src/parser.ts#L33)*
 
 Whether the parser is finished.
 
@@ -63,7 +63,7 @@ Whether the parser is finished.
 
 ▸ **[Symbol.iterator]**(): *this*
 
-*Defined in [parser.ts:130](https://github.com/1Computer1/lexure/blob/abecae6/src/parser.ts#L130)*
+*Defined in [parser.ts:130](https://github.com/1Computer1/lexure/blob/5f4fd4c/src/parser.ts#L130)*
 
 **Returns:** *this*
 
@@ -73,7 +73,7 @@ ___
 
 ▸ **next**(): *IteratorResult‹[ParserOutput](../interfaces/_parseroutput_.parseroutput.md)›*
 
-*Defined in [parser.ts:44](https://github.com/1Computer1/lexure/blob/abecae6/src/parser.ts#L44)*
+*Defined in [parser.ts:44](https://github.com/1Computer1/lexure/blob/5f4fd4c/src/parser.ts#L44)*
 
 Gets the next parsed tokens.
 
@@ -85,7 +85,7 @@ ___
 
 ▸ **parse**(): *[ParserOutput](../interfaces/_parseroutput_.parseroutput.md)*
 
-*Defined in [parser.ts:137](https://github.com/1Computer1/lexure/blob/abecae6/src/parser.ts#L137)*
+*Defined in [parser.ts:137](https://github.com/1Computer1/lexure/blob/5f4fd4c/src/parser.ts#L137)*
 
 Runs the parser.
 
@@ -97,7 +97,7 @@ ___
 
 ▸ **setUnorderedStrategy**(`s`: [UnorderedStrategy](../interfaces/_unordered_.unorderedstrategy.md)): *this*
 
-*Defined in [parser.ts:25](https://github.com/1Computer1/lexure/blob/abecae6/src/parser.ts#L25)*
+*Defined in [parser.ts:25](https://github.com/1Computer1/lexure/blob/5f4fd4c/src/parser.ts#L25)*
 
 Sets the strategy for parsing unordered arguments.
 This can be done in the middle of parsing.

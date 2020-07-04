@@ -20,6 +20,6 @@ The value does not exist.
 
 • **exists**: *false*
 
-*Defined in [option.ts:29](https://github.com/1Computer1/lexure/blob/abecae6/src/option.ts#L29)*
+*Defined in [option.ts:29](https://github.com/1Computer1/lexure/blob/5f4fd4c/src/option.ts#L29)*
 
 Whether the value exists.

@@ -19,7 +19,7 @@
 
 ▸ **extractCommand**(`matchPrefix`: function, `tokens`: [Token](../interfaces/_tokens_.token.md)[], `mutate`: boolean): *[Token](../interfaces/_tokens_.token.md) | null*
 
-*Defined in [tokens.ts:55](https://github.com/1Computer1/lexure/blob/abecae6/src/tokens.ts#L55)*
+*Defined in [tokens.ts:55](https://github.com/1Computer1/lexure/blob/5f4fd4c/src/tokens.ts#L55)*
 
 Extracts a command from the first one or two tokens from a list of tokens.
 The command format is '<prefix> <command>', and the space is optional.
@@ -57,7 +57,7 @@ ___
 
 ▸ **joinTokens**(`tokens`: [Token](../interfaces/_tokens_.token.md)[], `separator`: string | null, `raw`: boolean): *string*
 
-*Defined in [tokens.ts:29](https://github.com/1Computer1/lexure/blob/abecae6/src/tokens.ts#L29)*
+*Defined in [tokens.ts:29](https://github.com/1Computer1/lexure/blob/5f4fd4c/src/tokens.ts#L29)*
 
 Joins tokens together.
 By default, this keeps as much of the original input as possible.
