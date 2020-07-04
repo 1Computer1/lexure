@@ -18,10 +18,10 @@ First, import lexure:
 
 ```ts
 // TypeScript or ES Module
-import * as lexure from 'lexure';
+import * as Lexure from 'lexure';
 
 // CommonJS
-const lexure = require('lexure');
+const Lexure = require('lexure');
 ```
 
 Consider some user input in the form of a command like so:  
