@@ -1,13 +1,17 @@
 /**
  * A type used to express actions in the loop.
  * Each action can have a value with it.
+ * @typeparam A - Type of step results.
+ * @typeparam B - Type of finish results.
+ * @typeparam E - Type of errors.
  */
 export type LoopAction<A, B, E> = Step<A> | Finish<B> | Fail<E>;
 
 /**
  * The loop should continue being stepped through.
+ * @typeparam A - Type of step results.
  */
-export interface Step<T> {
+export interface Step<A> {
     /**
      * Whether the loop should continue.
      */
@@ -16,13 +20,14 @@ export interface Step<T> {
     /**
      * The resulting value.
      */
-    value: T;
+    value: A;
 }
 
 /**
  * The loop should finish successfully.
+ * @typeparam B - Type of finish results.
  */
-export interface Finish<T> {
+export interface Finish<B> {
     /**
      * Whether the loop should continue.
      */
@@ -31,11 +36,12 @@ export interface Finish<T> {
     /**
      * The resulting value.
      */
-    value: T;
+    value: B;
 }
 
 /**
  * The loop should fail due to an error.
+ * @typeparam E - Type of errors.
  */
 export interface Fail<E> {
     /**
@@ -51,10 +57,11 @@ export interface Fail<E> {
 
 /**
  * Creates a Step.
+ * @typeparam A - Type of step results.
  * @param x - Value to use.
  * @returns A LoopAction.
  */
-export function step<T>(x: T): Step<T> {
+export function step<A>(x: A): Step<A> {
     return { action: 'step', value: x };
 }
 
@@ -68,18 +75,20 @@ export function step_(): Step<null> {
 
 /**
  * Creates a Finish.
+ * @typeparam B - Type of finish results.
  * @param x - Value to use.
  * @returns A LoopAction.
  */
-export function finish<T>(x: T): Finish<T> {
+export function finish<B>(x: B): Finish<B> {
     return { action: 'finish', value: x };
 }
 
 /**
  * Creates a Fail.
+ * @typeparam E - Type of errors.
  * @param x - Value to use.
  * @returns A LoopAction.
  */
-export function fail<T>(x: T): Fail<T> {
+export function fail<E>(x: E): Fail<E> {
     return { action: 'fail', error: x };
 }

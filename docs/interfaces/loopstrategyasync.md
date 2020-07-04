@@ -8,11 +8,19 @@ A strategy for running an input loop asynchronously via `Promise`.
 
 * **S**
 
+Custom state type.
+
 * **A**
+
+Input type.
 
 * **Z**
 
+Output type.
+
 * **E**
+
+Error type.
 
 ## Hierarchy
 
@@ -33,7 +41,7 @@ A strategy for running an input loop asynchronously via `Promise`.
 
 * **getInput**(state: S): Promise\<[LoopAction](../README.md#loopaction)\<A, Z, E\>\>
 
-*Defined in [loop.ts:52](https://github.com/1Computer1/lexure/blob/f9054d8/src/loop.ts#L52)*
+*Defined in [loop.ts:60](https://github.com/1Computer1/lexure/blob/83985ea/src/loop.ts#L60)*
 
 Gets new input from somewhere e.g. reading a line.
 
@@ -53,7 +61,7 @@ ___
 
 * **parse**(input: A, state: S): Promise\<[LoopAction](../README.md#loopaction)\<null, Z, E\>\>
 
-*Defined in [loop.ts:60](https://github.com/1Computer1/lexure/blob/f9054d8/src/loop.ts#L60)*
+*Defined in [loop.ts:68](https://github.com/1Computer1/lexure/blob/83985ea/src/loop.ts#L68)*
 
 Parses given input into the desired type.
 
@@ -74,7 +82,7 @@ ___
 
 * **onInputError**(error: E, state: S): Promise\<[LoopAction](../README.md#loopaction)\<null, Z, E\>\>
 
-*Defined in [loop.ts:69](https://github.com/1Computer1/lexure/blob/f9054d8/src/loop.ts#L69)*
+*Defined in [loop.ts:77](https://github.com/1Computer1/lexure/blob/83985ea/src/loop.ts#L77)*
 
 Handles error on getting new input.
 This function intercepts the `fail` case of `getInput`.
@@ -96,7 +104,7 @@ ___
 
 * **onParseError**(error: E, input: A, state: S): Promise\<[LoopAction](../README.md#loopaction)\<null, Z, E\>\>
 
-*Defined in [loop.ts:79](https://github.com/1Computer1/lexure/blob/f9054d8/src/loop.ts#L79)*
+*Defined in [loop.ts:87](https://github.com/1Computer1/lexure/blob/83985ea/src/loop.ts#L87)*
 
 Handles error on parsing input.
 This function intercepts the `fail` case of `parse`.

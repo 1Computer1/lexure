@@ -1,10 +1,13 @@
 /**
  * A type used to express computations that can fail.
+ * @typeparam T - Type of results.
+ * @typeparam E - Type of errors.
  */
 export type Result<T, E> = Ok<T> | Err<E>;
 
 /**
  * The computation is successful.
+ * @typeparam T - Type of results.
  */
 export interface Ok<T> {
     /**
@@ -20,6 +23,7 @@ export interface Ok<T> {
 
 /**
  * The computation failed.
+ * @typeparam E - Type of errors.
  */
 export interface Err<E> {
     /**
@@ -35,6 +39,7 @@ export interface Err<E> {
 
 /**
  * Creates an Ok.
+ * @typeparam T - Type of results.
  * @param x - Value to use.
  * @returns A Result.
  */
@@ -44,9 +49,10 @@ export function ok<T>(x: T): Ok<T> {
 
 /**
  * Creates an Err.
+ * @typeparam E - Type of errors.
  * @param x - Value to use.
  * @returns A Result.
  */
-export function err<T>(x: T): Err<T> {
+export function err<E>(x: E): Err<E> {
     return { success: false, error: x };
 }

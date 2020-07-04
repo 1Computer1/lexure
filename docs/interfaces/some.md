@@ -8,6 +8,8 @@ The value exists.
 
 * **T**
 
+Type of results.
+
 ## Hierarchy
 
 * **Some**
@@ -25,7 +27,7 @@ The value exists.
 
 * **exists**: true
 
-*Defined in [option.ts:14](https://github.com/1Computer1/lexure/blob/f9054d8/src/option.ts#L14)*
+*Defined in [option.ts:16](https://github.com/1Computer1/lexure/blob/83985ea/src/option.ts#L16)*
 
 Whether the value exists.
 
@@ -35,6 +37,6 @@ ___
 
 * **value**: T
 
-*Defined in [option.ts:19](https://github.com/1Computer1/lexure/blob/f9054d8/src/option.ts#L19)*
+*Defined in [option.ts:21](https://github.com/1Computer1/lexure/blob/83985ea/src/option.ts#L21)*
 
 The value.

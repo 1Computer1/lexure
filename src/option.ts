@@ -1,11 +1,13 @@
 /**
  * A type that can express the lack of a value.
  * Used in this library for when a generic type could be nullable.
+ * @typeparam T - Type of results.
  */
 export type Option<T> = Some<T> | None;
 
 /**
  * The value exists.
+ * @typeparam T - Type of results.
  */
 export interface Some<T> {
     /**
@@ -31,6 +33,7 @@ export interface None {
 
 /**
  * Creates a Some.
+ * @typeparam T - Type of results.
  * @param x - Value to use.
  * @returns An Option.
  */

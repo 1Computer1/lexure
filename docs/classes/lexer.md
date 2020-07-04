@@ -35,7 +35,7 @@ The lexer turns input into a list of tokens.
 
 * **new Lexer**(input: string): [Lexer](lexer.md)
 
-*Defined in [lexer.ts:10](https://github.com/1Computer1/lexure/blob/f9054d8/src/lexer.ts#L10)*
+*Defined in [lexer.ts:10](https://github.com/1Computer1/lexure/blob/83985ea/src/lexer.ts#L10)*
 
 **Parameters:**
 
@@ -51,7 +51,7 @@ input | string | Input string.  |
 
 * **get finished**(): boolean
 
-*Defined in [lexer.ts:32](https://github.com/1Computer1/lexure/blob/f9054d8/src/lexer.ts#L32)*
+*Defined in [lexer.ts:32](https://github.com/1Computer1/lexure/blob/83985ea/src/lexer.ts#L32)*
 
 Whether the lexer is finished.
 
@@ -63,7 +63,7 @@ Whether the lexer is finished.
 
 * **setQuotes**(quotes: [string, string][]): this
 
-*Defined in [lexer.ts:24](https://github.com/1Computer1/lexure/blob/f9054d8/src/lexer.ts#L24)*
+*Defined in [lexer.ts:24](https://github.com/1Computer1/lexure/blob/83985ea/src/lexer.ts#L24)*
 
 Sets the quotes to use.
 This can be done in the middle of lexing.
@@ -82,7 +82,7 @@ ___
 
 * **next**(): IteratorResult\<[Token](../interfaces/token.md)\>
 
-*Defined in [lexer.ts:56](https://github.com/1Computer1/lexure/blob/f9054d8/src/lexer.ts#L56)*
+*Defined in [lexer.ts:56](https://github.com/1Computer1/lexure/blob/83985ea/src/lexer.ts#L56)*
 
 Gets the next token.
 
@@ -94,7 +94,7 @@ ___
 
 * **[Symbol.iterator]**(): this
 
-*Defined in [lexer.ts:129](https://github.com/1Computer1/lexure/blob/f9054d8/src/lexer.ts#L129)*
+*Defined in [lexer.ts:129](https://github.com/1Computer1/lexure/blob/83985ea/src/lexer.ts#L129)*
 
 **Returns:** this
 
@@ -104,7 +104,7 @@ ___
 
 * **lex**(): [Token](../interfaces/token.md)[]
 
-*Defined in [lexer.ts:136](https://github.com/1Computer1/lexure/blob/f9054d8/src/lexer.ts#L136)*
+*Defined in [lexer.ts:136](https://github.com/1Computer1/lexure/blob/83985ea/src/lexer.ts#L136)*
 
 Runs the lexer.
 

@@ -45,7 +45,7 @@ A wrapper around the parser output for retrieving command arguments.
 
 * **new Args**(parserOutput: [ParserOutput](../interfaces/parseroutput.md)): [Args](args.md)
 
-*Defined in [args.ts:29](https://github.com/1Computer1/lexure/blob/f9054d8/src/args.ts#L29)*
+*Defined in [args.ts:29](https://github.com/1Computer1/lexure/blob/83985ea/src/args.ts#L29)*
 
 **Parameters:**
 
@@ -61,7 +61,7 @@ parserOutput | [ParserOutput](../interfaces/parseroutput.md) | The parser output
 
 * **parserOutput**: [ParserOutput](../interfaces/parseroutput.md)
 
-*Defined in [args.ts:12](https://github.com/1Computer1/lexure/blob/f9054d8/src/args.ts#L12)*
+*Defined in [args.ts:12](https://github.com/1Computer1/lexure/blob/83985ea/src/args.ts#L12)*
 
 The parser output.
 
@@ -71,7 +71,7 @@ ___
 
 * **usedIndices**: Set\<number\> = new Set()
 
-*Defined in [args.ts:17](https://github.com/1Computer1/lexure/blob/f9054d8/src/args.ts#L17)*
+*Defined in [args.ts:17](https://github.com/1Computer1/lexure/blob/83985ea/src/args.ts#L17)*
 
 The indices of the ordered tokens already retrieved.
 
@@ -81,7 +81,7 @@ ___
 
 * **position**: number = 0
 
-*Defined in [args.ts:23](https://github.com/1Computer1/lexure/blob/f9054d8/src/args.ts#L23)*
+*Defined in [args.ts:23](https://github.com/1Computer1/lexure/blob/83985ea/src/args.ts#L23)*
 
 The current position in the ordered tokens.
 Increments from 0.
@@ -92,7 +92,7 @@ ___
 
 * **positionFromEnd**: number
 
-*Defined in [args.ts:29](https://github.com/1Computer1/lexure/blob/f9054d8/src/args.ts#L29)*
+*Defined in [args.ts:29](https://github.com/1Computer1/lexure/blob/83985ea/src/args.ts#L29)*
 
 The current position backwards in the ordered tokens.
 Decrements from the end.
@@ -103,7 +103,7 @@ Decrements from the end.
 
 * **get finished**(): boolean
 
-*Defined in [args.ts:42](https://github.com/1Computer1/lexure/blob/f9054d8/src/args.ts#L42)*
+*Defined in [args.ts:42](https://github.com/1Computer1/lexure/blob/83985ea/src/args.ts#L42)*
 
 Whether all ordered tokens have been used.
 
@@ -115,7 +115,7 @@ ___
 
 * **get length**(): number
 
-*Defined in [args.ts:49](https://github.com/1Computer1/lexure/blob/f9054d8/src/args.ts#L49)*
+*Defined in [args.ts:49](https://github.com/1Computer1/lexure/blob/83985ea/src/args.ts#L49)*
 
 The amount of ordered tokens.
 
@@ -127,7 +127,7 @@ ___
 
 * **get remaining**(): number
 
-*Defined in [args.ts:56](https://github.com/1Computer1/lexure/blob/f9054d8/src/args.ts#L56)*
+*Defined in [args.ts:56](https://github.com/1Computer1/lexure/blob/83985ea/src/args.ts#L56)*
 
 The amount of remaining ordered tokens.
 
@@ -139,7 +139,7 @@ The amount of remaining ordered tokens.
 
 * **single**(): string | null
 
-*Defined in [args.ts:65](https://github.com/1Computer1/lexure/blob/f9054d8/src/args.ts#L65)*
+*Defined in [args.ts:65](https://github.com/1Computer1/lexure/blob/83985ea/src/args.ts#L65)*
 
 Retrieves the value of the next unused ordered token.
 That token will now be consider used.
@@ -154,7 +154,7 @@ ___
 
 * **singleFromEnd**(): string | null
 
-*Defined in [args.ts:83](https://github.com/1Computer1/lexure/blob/f9054d8/src/args.ts#L83)*
+*Defined in [args.ts:83](https://github.com/1Computer1/lexure/blob/83985ea/src/args.ts#L83)*
 
 Retrieves the value of the next unused ordered token from the end.
 That token will now be consider used.
@@ -169,7 +169,7 @@ ___
 
 * **many**(limit: number, from: number): [Token](../interfaces/token.md)[]
 
-*Defined in [args.ts:102](https://github.com/1Computer1/lexure/blob/f9054d8/src/args.ts#L102)*
+*Defined in [args.ts:102](https://github.com/1Computer1/lexure/blob/83985ea/src/args.ts#L102)*
 
 Retrieves many unused tokens.
 
@@ -190,7 +190,7 @@ ___
 
 * **manyFromEnd**(limit: number, from: number): [Token](../interfaces/token.md)[]
 
-*Defined in [args.ts:123](https://github.com/1Computer1/lexure/blob/f9054d8/src/args.ts#L123)*
+*Defined in [args.ts:123](https://github.com/1Computer1/lexure/blob/83985ea/src/args.ts#L123)*
 
 Retrieves many unused tokens from the end.
 Note that the order of retrieved tokens will be the same order as in the ordered tokens list.
@@ -212,7 +212,7 @@ ___
 
 * **flag**(key: string): boolean
 
-*Defined in [args.ts:142](https://github.com/1Computer1/lexure/blob/f9054d8/src/args.ts#L142)*
+*Defined in [args.ts:142](https://github.com/1Computer1/lexure/blob/83985ea/src/args.ts#L142)*
 
 Checks if a flag was given.
 
@@ -232,7 +232,7 @@ ___
 
 * **option**(key: string): string | null
 
-*Defined in [args.ts:151](https://github.com/1Computer1/lexure/blob/f9054d8/src/args.ts#L151)*
+*Defined in [args.ts:151](https://github.com/1Computer1/lexure/blob/83985ea/src/args.ts#L151)*
 
 Gets the last value of an option.
 
@@ -252,7 +252,7 @@ ___
 
 * **options**(key: string): string[] | null
 
-*Defined in [args.ts:161](https://github.com/1Computer1/lexure/blob/f9054d8/src/args.ts#L161)*
+*Defined in [args.ts:161](https://github.com/1Computer1/lexure/blob/83985ea/src/args.ts#L161)*
 
 Gets all the values of an option.
 
@@ -272,7 +272,7 @@ ___
 
 * **findMap**\<**T**\>(f: function, from: number): [Option](../README.md#option)\<T\>
 
-*Defined in [args.ts:174](https://github.com/1Computer1/lexure/blob/f9054d8/src/args.ts#L174)*
+*Defined in [args.ts:175](https://github.com/1Computer1/lexure/blob/83985ea/src/args.ts#L175)*
 
 Finds and retrieves the first unused token that could be transformed.
 That token will now be consider used.
@@ -280,6 +280,8 @@ That token will now be consider used.
 **Type parameters:**
 
 * **T**
+
+Output type.
 
 **Parameters:**
 
@@ -309,7 +311,7 @@ ___
 
 * **filterMap**\<**T**\>(f: function, limit: number, from: number): T[]
 
-*Defined in [args.ts:199](https://github.com/1Computer1/lexure/blob/f9054d8/src/args.ts#L199)*
+*Defined in [args.ts:201](https://github.com/1Computer1/lexure/blob/83985ea/src/args.ts#L201)*
 
 Filters and retrieves all unused tokens that could be transformed.
 Those tokens will now be consider used.
@@ -317,6 +319,8 @@ Those tokens will now be consider used.
 **Type parameters:**
 
 * **T**
+
+Output type.
 
 **Parameters:**
 

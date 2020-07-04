@@ -167,6 +167,7 @@ export class Args {
     /**
      * Finds and retrieves the first unused token that could be transformed.
      * That token will now be consider used.
+     * @typeparam T - Output type.
      * @param f - Gives a pair of whether the transformation worked, and the resulting value.
      * @param from - Where to start looking for tokens; defaults to current position.
      * @returns The resulting value if it was found.
@@ -191,6 +192,7 @@ export class Args {
     /**
      * Filters and retrieves all unused tokens that could be transformed.
      * Those tokens will now be consider used.
+     * @typeparam T - Output type.
      * @param f - Gives a pair of whether the transformation worked, and the resulting value.
      * @param limit - The limit on the amount of tokens to retrieve; defaults to infinite.
      * @param from - Where to start looking for tokens; defaults to current position.

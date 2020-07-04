@@ -1,12 +1,14 @@
 [lexure](../README.md) › [Finish](finish.md)
 
-# Interface: Finish \<**T**\>
+# Interface: Finish \<**B**\>
 
 The loop should finish successfully.
 
 ## Type parameters
 
-* **T**
+* **B**
+
+Type of finish results.
 
 ## Hierarchy
 
@@ -25,7 +27,7 @@ The loop should finish successfully.
 
 * **action**: "finish"
 
-*Defined in [loopAction.ts:29](https://github.com/1Computer1/lexure/blob/f9054d8/src/loopAction.ts#L29)*
+*Defined in [loopAction.ts:34](https://github.com/1Computer1/lexure/blob/83985ea/src/loopAction.ts#L34)*
 
 Whether the loop should continue.
 
@@ -33,8 +35,8 @@ ___
 
 ###  value
 
-* **value**: T
+* **value**: B
 
-*Defined in [loopAction.ts:34](https://github.com/1Computer1/lexure/blob/f9054d8/src/loopAction.ts#L34)*
+*Defined in [loopAction.ts:39](https://github.com/1Computer1/lexure/blob/83985ea/src/loopAction.ts#L39)*
 
 The resulting value.

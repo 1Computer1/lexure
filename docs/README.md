@@ -64,7 +64,7 @@
 
 * **Option**: [Some](interfaces/some.md)\<T\> | [None](interfaces/none.md)
 
-*Defined in [option.ts:5](https://github.com/1Computer1/lexure/blob/f9054d8/src/option.ts#L5)*
+*Defined in [option.ts:6](https://github.com/1Computer1/lexure/blob/83985ea/src/option.ts#L6)*
 
 A type that can express the lack of a value.
 Used in this library for when a generic type could be nullable.
@@ -75,7 +75,7 @@ ___
 
 * **LoopAction**: [Step](interfaces/step.md)\<A\> | [Finish](interfaces/finish.md)\<B\> | [Fail](interfaces/fail.md)\<E\>
 
-*Defined in [loopAction.ts:5](https://github.com/1Computer1/lexure/blob/f9054d8/src/loopAction.ts#L5)*
+*Defined in [loopAction.ts:8](https://github.com/1Computer1/lexure/blob/83985ea/src/loopAction.ts#L8)*
 
 A type used to express actions in the loop.
 Each action can have a value with it.
@@ -86,7 +86,7 @@ ___
 
 * **Result**: [Ok](interfaces/ok.md)\<T\> | [Err](interfaces/err.md)\<E\>
 
-*Defined in [result.ts:4](https://github.com/1Computer1/lexure/blob/f9054d8/src/result.ts#L4)*
+*Defined in [result.ts:6](https://github.com/1Computer1/lexure/blob/83985ea/src/result.ts#L6)*
 
 A type used to express computations that can fail.
 
@@ -96,7 +96,7 @@ A type used to express computations that can fail.
 
 * **joinTokens**(tokens: [Token](interfaces/token.md)[], separator: string | null, raw: boolean): string
 
-*Defined in [tokens.ts:29](https://github.com/1Computer1/lexure/blob/f9054d8/src/tokens.ts#L29)*
+*Defined in [tokens.ts:29](https://github.com/1Computer1/lexure/blob/83985ea/src/tokens.ts#L29)*
 
 Joins tokens together.
 By default, this keeps as much of the original input as possible.
@@ -119,7 +119,7 @@ ___
 
 * **extractCommand**(matchPrefix: function, tokens: [Token](interfaces/token.md)[], mutate: boolean): [Token](interfaces/token.md) | null
 
-*Defined in [tokens.ts:55](https://github.com/1Computer1/lexure/blob/f9054d8/src/tokens.ts#L55)*
+*Defined in [tokens.ts:55](https://github.com/1Computer1/lexure/blob/83985ea/src/tokens.ts#L55)*
 
 Extracts a command from the first one or two tokens from a list of tokens.
 The command format is '<prefix> <command>', and the space is optional.
@@ -157,7 +157,7 @@ ___
 
 * **emptyOutput**(): [ParserOutput](interfaces/parseroutput.md)
 
-*Defined in [parserOutput.ts:27](https://github.com/1Computer1/lexure/blob/f9054d8/src/parserOutput.ts#L27)*
+*Defined in [parserOutput.ts:27](https://github.com/1Computer1/lexure/blob/83985ea/src/parserOutput.ts#L27)*
 
 Creates an empty parser output.
 
@@ -171,7 +171,7 @@ ___
 
 * **mergeOutputs**(...ps: [ParserOutput](interfaces/parseroutput.md)[]): [ParserOutput](interfaces/parseroutput.md)
 
-*Defined in [parserOutput.ts:41](https://github.com/1Computer1/lexure/blob/f9054d8/src/parserOutput.ts#L41)*
+*Defined in [parserOutput.ts:41](https://github.com/1Computer1/lexure/blob/83985ea/src/parserOutput.ts#L41)*
 
 Merges multiple outputs into one.
 Flags and options that appear later will be preferred if there are duplicates.
@@ -192,7 +192,7 @@ ___
 
 * **outputToJSON**(p: [ParserOutput](interfaces/parseroutput.md)): Record\<string, unknown\>
 
-*Defined in [parserOutput.ts:75](https://github.com/1Computer1/lexure/blob/f9054d8/src/parserOutput.ts#L75)*
+*Defined in [parserOutput.ts:75](https://github.com/1Computer1/lexure/blob/83985ea/src/parserOutput.ts#L75)*
 
 Converts an output to JSON, where the flags and options are turned into arrays of entries.
 You can recover the output with 'outputFromJSON'.
@@ -213,7 +213,7 @@ ___
 
 * **outputFromJSON**(obj: Record\<string, unknown\>): [ParserOutput](interfaces/parseroutput.md)
 
-*Defined in [parserOutput.ts:88](https://github.com/1Computer1/lexure/blob/f9054d8/src/parserOutput.ts#L88)*
+*Defined in [parserOutput.ts:88](https://github.com/1Computer1/lexure/blob/83985ea/src/parserOutput.ts#L88)*
 
 Converts JSON to a parser output.
 
@@ -233,13 +233,15 @@ ___
 
 * **some**\<**T**\>(x: T): [Some](interfaces/some.md)\<T\>
 
-*Defined in [option.ts:37](https://github.com/1Computer1/lexure/blob/f9054d8/src/option.ts#L37)*
+*Defined in [option.ts:40](https://github.com/1Computer1/lexure/blob/83985ea/src/option.ts#L40)*
 
 Creates a Some.
 
 **Type parameters:**
 
 * **T**
+
+Type of results.
 
 **Parameters:**
 
@@ -257,7 +259,7 @@ ___
 
 * **none**(): [None](interfaces/none.md)
 
-*Defined in [option.ts:45](https://github.com/1Computer1/lexure/blob/f9054d8/src/option.ts#L45)*
+*Defined in [option.ts:48](https://github.com/1Computer1/lexure/blob/83985ea/src/option.ts#L48)*
 
 Creates a None.
 
@@ -269,23 +271,25 @@ ___
 
 ###  step
 
-* **step**\<**T**\>(x: T): [Step](interfaces/step.md)\<T\>
+* **step**\<**A**\>(x: A): [Step](interfaces/step.md)\<A\>
 
-*Defined in [loopAction.ts:57](https://github.com/1Computer1/lexure/blob/f9054d8/src/loopAction.ts#L57)*
+*Defined in [loopAction.ts:64](https://github.com/1Computer1/lexure/blob/83985ea/src/loopAction.ts#L64)*
 
 Creates a Step.
 
 **Type parameters:**
 
-* **T**
+* **A**
+
+Type of step results.
 
 **Parameters:**
 
 Name | Type | Description |
 ------ | ------ | ------ |
-x | T | Value to use. |
+x | A | Value to use. |
 
-**Returns:** [Step](interfaces/step.md)\<T\>
+**Returns:** [Step](interfaces/step.md)\<A\>
 
 A LoopAction.
 
@@ -295,7 +299,7 @@ ___
 
 * **step_**(): [Step](interfaces/step.md)\<null\>
 
-*Defined in [loopAction.ts:65](https://github.com/1Computer1/lexure/blob/f9054d8/src/loopAction.ts#L65)*
+*Defined in [loopAction.ts:72](https://github.com/1Computer1/lexure/blob/83985ea/src/loopAction.ts#L72)*
 
 Creates a Step with null value.
 
@@ -307,23 +311,25 @@ ___
 
 ###  finish
 
-* **finish**\<**T**\>(x: T): [Finish](interfaces/finish.md)\<T\>
+* **finish**\<**B**\>(x: B): [Finish](interfaces/finish.md)\<B\>
 
-*Defined in [loopAction.ts:74](https://github.com/1Computer1/lexure/blob/f9054d8/src/loopAction.ts#L74)*
+*Defined in [loopAction.ts:82](https://github.com/1Computer1/lexure/blob/83985ea/src/loopAction.ts#L82)*
 
 Creates a Finish.
 
 **Type parameters:**
 
-* **T**
+* **B**
+
+Type of finish results.
 
 **Parameters:**
 
 Name | Type | Description |
 ------ | ------ | ------ |
-x | T | Value to use. |
+x | B | Value to use. |
 
-**Returns:** [Finish](interfaces/finish.md)\<T\>
+**Returns:** [Finish](interfaces/finish.md)\<B\>
 
 A LoopAction.
 
@@ -331,23 +337,25 @@ ___
 
 ###  fail
 
-* **fail**\<**T**\>(x: T): [Fail](interfaces/fail.md)\<T\>
+* **fail**\<**E**\>(x: E): [Fail](interfaces/fail.md)\<E\>
 
-*Defined in [loopAction.ts:83](https://github.com/1Computer1/lexure/blob/f9054d8/src/loopAction.ts#L83)*
+*Defined in [loopAction.ts:92](https://github.com/1Computer1/lexure/blob/83985ea/src/loopAction.ts#L92)*
 
 Creates a Fail.
 
 **Type parameters:**
 
-* **T**
+* **E**
+
+Type of errors.
 
 **Parameters:**
 
 Name | Type | Description |
 ------ | ------ | ------ |
-x | T | Value to use. |
+x | E | Value to use. |
 
-**Returns:** [Fail](interfaces/fail.md)\<T\>
+**Returns:** [Fail](interfaces/fail.md)\<E\>
 
 A LoopAction.
 
@@ -357,13 +365,15 @@ ___
 
 * **ok**\<**T**\>(x: T): [Ok](interfaces/ok.md)\<T\>
 
-*Defined in [result.ts:41](https://github.com/1Computer1/lexure/blob/f9054d8/src/result.ts#L41)*
+*Defined in [result.ts:46](https://github.com/1Computer1/lexure/blob/83985ea/src/result.ts#L46)*
 
 Creates an Ok.
 
 **Type parameters:**
 
 * **T**
+
+Type of results.
 
 **Parameters:**
 
@@ -379,23 +389,25 @@ ___
 
 ###  err
 
-* **err**\<**T**\>(x: T): [Err](interfaces/err.md)\<T\>
+* **err**\<**E**\>(x: E): [Err](interfaces/err.md)\<E\>
 
-*Defined in [result.ts:50](https://github.com/1Computer1/lexure/blob/f9054d8/src/result.ts#L50)*
+*Defined in [result.ts:56](https://github.com/1Computer1/lexure/blob/83985ea/src/result.ts#L56)*
 
 Creates an Err.
 
 **Type parameters:**
 
-* **T**
+* **E**
+
+Type of errors.
 
 **Parameters:**
 
 Name | Type | Description |
 ------ | ------ | ------ |
-x | T | Value to use. |
+x | E | Value to use. |
 
-**Returns:** [Err](interfaces/err.md)\<T\>
+**Returns:** [Err](interfaces/err.md)\<E\>
 
 A Result.
 
@@ -405,7 +417,7 @@ ___
 
 * **loop**\<**S**, **A**, **Z**, **E**\>(intialInput: A, state: S, strat: [LoopStrategy](interfaces/loopstrategy.md)\<S, A, Z, E\>): [Result](README.md#result)\<Z, E\>
 
-*Defined in [loop.ts:90](https://github.com/1Computer1/lexure/blob/f9054d8/src/loop.ts#L90)*
+*Defined in [loop.ts:102](https://github.com/1Computer1/lexure/blob/83985ea/src/loop.ts#L102)*
 
 Runs a loop which continuously gets input and attempts to parse it.
 The loop strategy used will determine how the loop continues and ends.
@@ -414,11 +426,19 @@ The loop strategy used will determine how the loop continues and ends.
 
 * **S**
 
+Custom state type.
+
 * **A**
+
+Input type.
 
 * **Z**
 
+Output type.
+
 * **E**
+
+Error type.
 
 **Parameters:**
 
@@ -438,7 +458,7 @@ ___
 
 * **loop1**\<**S**, **A**, **Z**, **E**\>(state: S, strat: [LoopStrategy](interfaces/loopstrategy.md)\<S, A, Z, E\>): [Result](README.md#result)\<Z, E\>
 
-*Defined in [loop.ts:147](https://github.com/1Computer1/lexure/blob/f9054d8/src/loop.ts#L147)*
+*Defined in [loop.ts:163](https://github.com/1Computer1/lexure/blob/83985ea/src/loop.ts#L163)*
 
 Runs a loop which continuously gets input and attempts to parse it.
 The loop strategy used will determine how the loop continues and ends.
@@ -448,11 +468,19 @@ This variant has no initial input.
 
 * **S**
 
+Custom state type.
+
 * **A**
+
+Input type.
 
 * **Z**
 
+Output type.
+
 * **E**
+
+Error type.
 
 **Parameters:**
 
@@ -471,7 +499,7 @@ ___
 
 * **loopAsync**\<**S**, **A**, **Z**, **E**\>(intialInput: A, state: S, strat: [LoopStrategyAsync](interfaces/loopstrategyasync.md)\<S, A, Z, E\>): Promise\<[Result](README.md#result)\<Z, E\>\>
 
-*Defined in [loop.ts:202](https://github.com/1Computer1/lexure/blob/f9054d8/src/loop.ts#L202)*
+*Defined in [loop.ts:222](https://github.com/1Computer1/lexure/blob/83985ea/src/loop.ts#L222)*
 
 Runs a loop which continuously gets input and attempts to parse it.
 The loop strategy used will determine how the loop continues and ends.
@@ -481,11 +509,19 @@ This variant of the function is asynchronous using `Promise`.
 
 * **S**
 
+Custom state type.
+
 * **A**
+
+Input type.
 
 * **Z**
 
+Output type.
+
 * **E**
+
+Error type.
 
 **Parameters:**
 
@@ -505,7 +541,7 @@ ___
 
 * **loop1Async**\<**S**, **A**, **Z**, **E**\>(state: S, strat: [LoopStrategyAsync](interfaces/loopstrategyasync.md)\<S, A, Z, E\>): Promise\<[Result](README.md#result)\<Z, E\>\>
 
-*Defined in [loop.ts:260](https://github.com/1Computer1/lexure/blob/f9054d8/src/loop.ts#L260)*
+*Defined in [loop.ts:284](https://github.com/1Computer1/lexure/blob/83985ea/src/loop.ts#L284)*
 
 Runs a loop which continuously gets input and attempts to parse it.
 The loop strategy used will determine how the loop continues and ends.
@@ -516,11 +552,19 @@ This variant of the function is asynchronous using `Promise`.
 
 * **S**
 
+Custom state type.
+
 * **A**
+
+Input type.
 
 * **Z**
 
+Output type.
+
 * **E**
+
+Error type.
 
 **Parameters:**
 
@@ -539,7 +583,7 @@ ___
 
 * **noStrategy**(): [UnorderedStrategy](interfaces/unorderedstrategy.md)
 
-*Defined in [unordered.ts:31](https://github.com/1Computer1/lexure/blob/f9054d8/src/unordered.ts#L31)*
+*Defined in [unordered.ts:31](https://github.com/1Computer1/lexure/blob/83985ea/src/unordered.ts#L31)*
 
 Do not match any unordered argument at all.
 
@@ -553,7 +597,7 @@ ___
 
 * **longStrategy**(): [UnorderedStrategy](interfaces/unorderedstrategy.md)
 
-*Defined in [unordered.ts:46](https://github.com/1Computer1/lexure/blob/f9054d8/src/unordered.ts#L46)*
+*Defined in [unordered.ts:46](https://github.com/1Computer1/lexure/blob/83985ea/src/unordered.ts#L46)*
 
 Match unordered arguments according to conventional syntax.
 '--flag' is a flag.
@@ -570,7 +614,7 @@ ___
 
 * **longShortStrategy**(): [UnorderedStrategy](interfaces/unorderedstrategy.md)
 
-*Defined in [unordered.ts:68](https://github.com/1Computer1/lexure/blob/f9054d8/src/unordered.ts#L68)*
+*Defined in [unordered.ts:68](https://github.com/1Computer1/lexure/blob/83985ea/src/unordered.ts#L68)*
 
 Match unordered arguments according to conventional syntax.
 '--flag' or '-f' is a flag.
@@ -587,7 +631,7 @@ ___
 
 * **prefixedStrategy**(prefixes: string[], separators: string[]): [UnorderedStrategy](interfaces/unorderedstrategy.md)
 
-*Defined in [unordered.ts:91](https://github.com/1Computer1/lexure/blob/f9054d8/src/unordered.ts#L91)*
+*Defined in [unordered.ts:91](https://github.com/1Computer1/lexure/blob/83985ea/src/unordered.ts#L91)*
 
 Match unordered arguments with custom prefix and separator.
 The prefix is the part the preceeds the key name, e.g. '--' in '--foo'.
@@ -610,7 +654,7 @@ ___
 
 * **exactStrategy**(flags: string[], options: string[], compactOptions: string[]): [UnorderedStrategy](interfaces/unorderedstrategy.md)
 
-*Defined in [unordered.ts:153](https://github.com/1Computer1/lexure/blob/f9054d8/src/unordered.ts#L153)*
+*Defined in [unordered.ts:153](https://github.com/1Computer1/lexure/blob/83985ea/src/unordered.ts#L153)*
 
 Match unordered arguments according to a list of possible words in a case-sensitive manner.
 Prefixes like '--' and separators like '=' should be apart of the word.
@@ -633,7 +677,7 @@ ___
 
 * **caseInsensitiveStrategy**(flags: string[], options: string[], compactOptions: string[], locale?: string | string[]): [UnorderedStrategy](interfaces/unorderedstrategy.md)
 
-*Defined in [unordered.ts:182](https://github.com/1Computer1/lexure/blob/f9054d8/src/unordered.ts#L182)*
+*Defined in [unordered.ts:182](https://github.com/1Computer1/lexure/blob/83985ea/src/unordered.ts#L182)*
 
 Match unordered arguments according to a list of possible words in a case-insensitive manner.
 Prefixes like '--' and separators like '=' should be apart of the word.

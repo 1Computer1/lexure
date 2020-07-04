@@ -3,6 +3,10 @@ import { Result, ok, err } from './result';
 
 /**
  * A strategy for running an input loop.
+ * @typeparam S - Custom state type.
+ * @typeparam A - Input type.
+ * @typeparam Z - Output type.
+ * @typeparam E - Error type.
  */
 export interface LoopStrategy<S, A, Z, E> {
     /**
@@ -42,6 +46,10 @@ export interface LoopStrategy<S, A, Z, E> {
 
 /**
  * A strategy for running an input loop asynchronously via `Promise`.
+ * @typeparam S - Custom state type.
+ * @typeparam A - Input type.
+ * @typeparam Z - Output type.
+ * @typeparam E - Error type.
  */
 export interface LoopStrategyAsync<S, A, Z, E> {
 /**
@@ -82,6 +90,10 @@ export interface LoopStrategyAsync<S, A, Z, E> {
 /**
  * Runs a loop which continuously gets input and attempts to parse it.
  * The loop strategy used will determine how the loop continues and ends.
+ * @typeparam S - Custom state type.
+ * @typeparam A - Input type.
+ * @typeparam Z - Output type.
+ * @typeparam E - Error type.
  * @param intialInput - The first input to parse.
  * @param state - Custom state to thread along the loop.
  * @param strat - The loop strategy to use.
@@ -140,6 +152,10 @@ export function loop<S, A, Z, E>(
  * Runs a loop which continuously gets input and attempts to parse it.
  * The loop strategy used will determine how the loop continues and ends.
  * This variant has no initial input.
+ * @typeparam S - Custom state type.
+ * @typeparam A - Input type.
+ * @typeparam Z - Output type.
+ * @typeparam E - Error type.
  * @param state - Custom state to thread along the loop.
  * @param strat - The loop strategy to use.
  * @returns Either the parsed value or an error.
@@ -194,6 +210,10 @@ export function loop1<S, A, Z, E>(
  * Runs a loop which continuously gets input and attempts to parse it.
  * The loop strategy used will determine how the loop continues and ends.
  * This variant of the function is asynchronous using `Promise`.
+ * @typeparam S - Custom state type.
+ * @typeparam A - Input type.
+ * @typeparam Z - Output type.
+ * @typeparam E - Error type.
  * @param intialInput - The first input to parse.
  * @param state - Custom state to thread along the loop.
  * @param strat - The loop strategy to use.
@@ -253,6 +273,10 @@ export async function loopAsync<S, A, Z, E>(
  * The loop strategy used will determine how the loop continues and ends.
  * This variant has no initial input.
  * This variant of the function is asynchronous using `Promise`.
+ * @typeparam S - Custom state type.
+ * @typeparam A - Input type.
+ * @typeparam Z - Output type.
+ * @typeparam E - Error type.
  * @param state - Custom state to thread along the loop.
  * @param strat - The loop strategy to use.
  * @returns Either the parsed value or an error.

@@ -8,6 +8,8 @@ The computation failed.
 
 * **E**
 
+Type of errors.
+
 ## Hierarchy
 
 * **Err**
@@ -25,7 +27,7 @@ The computation failed.
 
 * **success**: false
 
-*Defined in [result.ts:28](https://github.com/1Computer1/lexure/blob/f9054d8/src/result.ts#L28)*
+*Defined in [result.ts:32](https://github.com/1Computer1/lexure/blob/83985ea/src/result.ts#L32)*
 
 Whether the computation is successful.
 
@@ -35,6 +37,6 @@ ___
 
 * **error**: E
 
-*Defined in [result.ts:33](https://github.com/1Computer1/lexure/blob/f9054d8/src/result.ts#L33)*
+*Defined in [result.ts:37](https://github.com/1Computer1/lexure/blob/83985ea/src/result.ts#L37)*
 
 The resulting error.
