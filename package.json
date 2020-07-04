@@ -34,6 +34,7 @@
   "scripts": {
     "lint": "eslint ./src ./test --ext .ts",
     "build": "rimraf dist && tsc",
+    "docs": "rimraf docs && typedoc",
     "test": "jest --coverage",
     "prepublishOnly": "npm run test && npm run build"
   },
@@ -67,6 +68,8 @@
     "jest-config": "^26.0.1",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.1.0",
+    "typedoc": "^0.17.8",
+    "typedoc-plugin-markdown": "^2.3.1",
     "typescript": "^3.9.5"
   }
 }
