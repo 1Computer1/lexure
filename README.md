@@ -3,6 +3,7 @@
 `npm i lexure`  
 
 Parser and utilities for non-technical user input.  
+[Documentation available here](https://github.com/1Computer1/lexure/tree/master/docs).
 
 ## Features
 
