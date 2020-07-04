@@ -1,5 +1,5 @@
 {
-    "mode": "modules",
+    "mode": "file",
     "inputFiles": "src",
     "readme": "none",
     "exclude": ["src/index.ts"],
