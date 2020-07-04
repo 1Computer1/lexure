@@ -2,7 +2,7 @@
 
 `npm i lexure`  
 
-Lexer and parser for structured non-technical user input.  
+Parser and utilities for non-technical user input.  
 
 ## Features
 
@@ -11,6 +11,7 @@ Lexer and parser for structured non-technical user input.
 - Keeps trailing whitespace.
 - Always parses input by allowing some mis-inputs.
 - Includes a convenient wrapper to retrieve arguments.
+- Includes abstractions for creating an input loop.
 
 ## Example
 
@@ -122,4 +123,38 @@ args.flag('foo')
 
 args.option('bar')
 >>> 'baz'
+```
+
+Suppose we would like to prompt the user input, and retry until a valid input is given.  
+Lexure has a utility for this, in which the logic of an input loop is abstracted out.  
+
+```ts
+// Suppose we have access to this function that prompts the user.
+// You can imagine this as a CLI or chat bot.
+function prompt(): string | null {
+    return '100';
+}
+
+const result = Lexure.loop1(null, {
+    getInput() {
+        const input = prompt();
+        if (input == null) {
+            return Lexure.fail('no input');
+        } else {
+            return Lexure.step(input);
+        }
+    }
+
+    parse(s: string) {
+        const n = Number(s);
+        if (isNaN(n)) {
+            return Lexure.fail('cannot parse input');
+        } else {
+            return Lexure.finish(n);
+        }
+    }
+});
+
+result
+>>> { success: true, value: 100 }
 ```
