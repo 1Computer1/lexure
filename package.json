@@ -69,7 +69,7 @@
     "rimraf": "^3.0.2",
     "ts-jest": "^26.1.0",
     "typedoc": "^0.17.8",
-    "typedoc-plugin-markdown": "^2.3.1",
+    "typedoc-plugin-markdown": "github:1Computer1/typedoc-plugin-markdown#custom",
     "typescript": "^3.9.5"
   }
 }
