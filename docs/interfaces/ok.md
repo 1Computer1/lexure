@@ -25,7 +25,7 @@ The computation is successful.
 
 * **success**: true
 
-*Defined in [result.ts:13](https://github.com/1Computer1/lexure/blob/de74dcc/src/result.ts#L13)*
+*Defined in [result.ts:13](https://github.com/1Computer1/lexure/blob/f9054d8/src/result.ts#L13)*
 
 Whether the computation is successful.
 
@@ -35,6 +35,6 @@ ___
 
 * **value**: T
 
-*Defined in [result.ts:18](https://github.com/1Computer1/lexure/blob/de74dcc/src/result.ts#L18)*
+*Defined in [result.ts:18](https://github.com/1Computer1/lexure/blob/f9054d8/src/result.ts#L18)*
 
 The resulting value.

@@ -33,7 +33,7 @@ A strategy for running an input loop.
 
 * **getInput**(state: S): [LoopAction](../README.md#loopaction)\<A, Z, E\>
 
-*Defined in [loop.ts:13](https://github.com/1Computer1/lexure/blob/de74dcc/src/loop.ts#L13)*
+*Defined in [loop.ts:13](https://github.com/1Computer1/lexure/blob/f9054d8/src/loop.ts#L13)*
 
 Gets new input from somewhere e.g. reading a line.
 
@@ -53,7 +53,7 @@ ___
 
 * **parse**(input: A, state: S): [LoopAction](../README.md#loopaction)\<null, Z, E\>
 
-*Defined in [loop.ts:21](https://github.com/1Computer1/lexure/blob/de74dcc/src/loop.ts#L21)*
+*Defined in [loop.ts:21](https://github.com/1Computer1/lexure/blob/f9054d8/src/loop.ts#L21)*
 
 Parses given input into the desired type.
 
@@ -74,7 +74,7 @@ ___
 
 * **onInputError**(error: E, state: S): [LoopAction](../README.md#loopaction)\<null, Z, E\>
 
-*Defined in [loop.ts:30](https://github.com/1Computer1/lexure/blob/de74dcc/src/loop.ts#L30)*
+*Defined in [loop.ts:30](https://github.com/1Computer1/lexure/blob/f9054d8/src/loop.ts#L30)*
 
 Handles error on getting new input.
 This function intercepts the `fail` case of `getInput`.
@@ -96,7 +96,7 @@ ___
 
 * **onParseError**(error: E, input: A, state: S): [LoopAction](../README.md#loopaction)\<null, Z, E\>
 
-*Defined in [loop.ts:40](https://github.com/1Computer1/lexure/blob/de74dcc/src/loop.ts#L40)*
+*Defined in [loop.ts:40](https://github.com/1Computer1/lexure/blob/f9054d8/src/loop.ts#L40)*
 
 Handles error on parsing input.
 This function intercepts the `fail` case of `parse`.

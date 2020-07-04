@@ -25,7 +25,7 @@ The value exists.
 
 * **exists**: true
 
-*Defined in [option.ts:14](https://github.com/1Computer1/lexure/blob/de74dcc/src/option.ts#L14)*
+*Defined in [option.ts:14](https://github.com/1Computer1/lexure/blob/f9054d8/src/option.ts#L14)*
 
 Whether the value exists.
 
@@ -35,6 +35,6 @@ ___
 
 * **value**: T
 
-*Defined in [option.ts:19](https://github.com/1Computer1/lexure/blob/de74dcc/src/option.ts#L19)*
+*Defined in [option.ts:19](https://github.com/1Computer1/lexure/blob/f9054d8/src/option.ts#L19)*
 
 The value.
