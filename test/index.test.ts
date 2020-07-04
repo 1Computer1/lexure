@@ -73,5 +73,31 @@ describe('readme', () => {
         
         const a6 = args.option('bar');
         expect(a6).toEqual('baz');
+
+        function prompt(): string | null {
+            return '100';
+        }
+
+        const result = Lexure.loop1(null, {
+            getInput() {
+                const input = prompt();
+                if (input == null) {
+                    return Lexure.fail('bad input');
+                } else {
+                    return Lexure.step(input);
+                }
+            },
+        
+            parse(s: string) {
+                const n = Number(s);
+                if (isNaN(n)) {
+                    return Lexure.fail('bad input');
+                } else {
+                    return Lexure.finish(n);
+                }
+            }
+        });
+
+        expect(result).toEqual({ success: true, value: 100 });
     });
 });

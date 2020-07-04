@@ -5,6 +5,16 @@ export const {
     Args,
     // lexer.js
     Lexer,
+    // loops.js
+    loop,
+    loop1,
+    loopAsync,
+    loop1Async,
+    // loopAction.js
+    step,
+    step_,
+    finish,
+    fail,
     // option.js
     some,
     none,
@@ -15,6 +25,9 @@ export const {
     outputToJSON,
     mergeOutputs,
     emptyOutput,
+    // result.js
+    ok,
+    err,
     // tokens.js
     extractCommand,
     joinTokens,
