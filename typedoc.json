@@ -1,0 +1,9 @@
+{
+    "mode": "modules",
+    "inputFiles": "src",
+    "readme": "none",
+    "exclude": ["src/index.ts"],
+    "excludeNotExported": true,
+    "excludePrivate": true,
+    "out": "docs"
+}
