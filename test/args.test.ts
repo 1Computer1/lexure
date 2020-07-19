@@ -177,4 +177,40 @@ describe('args', () => {
         expect(args.singleFromEnd()).toEqual('d');
         expect(args.manyFromEnd()).toEqual(ts.slice(0, 3));
     });
+
+    it('can retrieve flags with multiple names', () => {
+        const s = '--bar';
+        const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
+        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const args = new Args(po);
+
+        expect(args.flag('foo', 'bar', 'baz')).toEqual(true);
+    });
+
+    it('can retrieve options with multiple names', () => {
+        const s = '--bar=2';
+        const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
+        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const args = new Args(po);
+
+        expect(args.option('foo', 'bar', 'baz')).toEqual('2');
+    });
+
+    it('can retrieve options used mutiple times with multiple names', () => {
+        const s = '--foo=1 --bar=2 --baz=3';
+        const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
+        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const args = new Args(po);
+
+        expect(args.option('foo', 'bar', 'baz')).toEqual('1');
+    });
+
+    it('can retrieve all the values of an option used mutiple times with multiple names', () => {
+        const s = '--foo=1 --bar=2 --baz=3';
+        const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
+        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const args = new Args(po);
+
+        expect(args.options('foo', 'bar', 'baz')).toEqual(['1', '2', '3']);
+    });
 });

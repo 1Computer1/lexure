@@ -186,7 +186,7 @@ ___
 
 ###  flag
 
-* **flag**(key: string): boolean
+* **flag**(...keys: string[]): boolean
 
 Checks if a flag was given.
 
@@ -194,7 +194,7 @@ Checks if a flag was given.
 
 Name | Type | Description |
 ------ | ------ | ------ |
-key | string | The name of the flag. |
+...keys | string[] | The name(s) of the flag. |
 
 **Returns:** boolean
 
@@ -204,25 +204,26 @@ ___
 
 ###  option
 
-* **option**(key: string): string | null
+* **option**(...keys: string[]): string | null
 
 Gets the last value of an option.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-key | string | The name of the option. |
+Name | Type |
+------ | ------ |
+...keys | string[] |
 
 **Returns:** string | null
 
 The last value of the option if it was given.
+When there are multiple names, the last value of the first found name is given.
 
 ___
 
 ###  options
 
-* **options**(key: string): string[] | null
+* **options**(...keys: string[]): string[] | null
 
 Gets all the values of an option.
 
@@ -230,11 +231,11 @@ Gets all the values of an option.
 
 Name | Type | Description |
 ------ | ------ | ------ |
-key | string | The name of the option. |
+...keys | string[] | The name(s) of the option. |
 
 **Returns:** string[] | null
 
-The value of the option if it was given.
+The values of the option if it was given.
 
 ___
 

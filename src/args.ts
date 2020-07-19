@@ -136,32 +136,48 @@ export class Args {
 
     /**
      * Checks if a flag was given.
-     * @param key - The name of the flag.
+     * @param keys - The name(s) of the flag.
      * @returns Whether the flag was given.
      */
-    public flag(key: string): boolean {
-        return this.parserOutput.flags.has(key);
+    public flag(...keys: string[]): boolean {
+        return keys.some(key => this.parserOutput.flags.has(key));
     }
 
     /**
      * Gets the last value of an option.
-     * @param key - The name of the option.
+     * @param key - The name(s) of the option.
      * @returns The last value of the option if it was given.
+     * When there are multiple names, the last value of the first found name is given.
      */
-    public option(key: string): string | null {
-        const xs = this.options(key);
-        return xs == null ? null : xs[xs.length - 1];
+    public option(...keys: string[]): string | null {
+        for (const key of keys) {
+            if (this.parserOutput.options.has(key)) {
+                const xs = this.parserOutput.options.get(key)!;
+                if (xs.length !== 0) {
+                    return xs[xs.length - 1];
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
      * Gets all the values of an option.
-     * @param key - The name of the option.
-     * @returns The value of the option if it was given.
+     * @param keys - The name(s) of the option.
+     * @returns The values of the option if it was given.
      */
-    public options(key: string): string[] | null {
-        return this.parserOutput.options.has(key)
-            ? this.parserOutput.options.get(key)!
-            : null;
+    public options(...keys: string[]): string[] | null {
+        let found = false;
+        const ys: string[] = [];
+        for (const key of keys) {
+            if (this.parserOutput.options.has(key)) {
+                found = true;
+                ys.push(...this.parserOutput.options.get(key)!);
+            }
+        }
+
+        return found ? ys : null;
     }
 
     /**
