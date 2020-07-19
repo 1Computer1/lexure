@@ -1,4 +1,4 @@
-import { Token } from './tokens';
+import { Token, extractCommand, MatchPrefix } from './tokens';
 
 /**
  * The lexer turns input into a list of tokens.
@@ -20,6 +20,7 @@ export class Lexer implements IterableIterator<Token> {
      * Sets the quotes to use.
      * This can be done in the middle of lexing.
      * @param quotes - List of pairs of open and close quotes.
+     * @returns The lexer.
      */
     public setQuotes(quotes: [string, string][]): this {
         this.quotes = quotes;
@@ -52,6 +53,7 @@ export class Lexer implements IterableIterator<Token> {
 
     /**
      * Gets the next token.
+     * @returns An iterator result containing the next token.
      */
     public next(): IteratorResult<Token> {
         if (this.finished) {
@@ -122,9 +124,42 @@ export class Lexer implements IterableIterator<Token> {
 
     /**
      * Runs the lexer.
+     * This consumes the lexer.
+     * @returns All the tokens lexed.
      */
     public lex(): Token[] {
         return [...this];
+    }
+
+    /**
+     * Runs the lexer, matching a prefix and command.
+     * This consumes at least two tokens of the lexer.
+     * @param matchPrefix - A function that gives the length of the prefix if there is one.
+     * @returns The command and the rest of the lexed tokens, as long as the prefix was matched.
+     * The rest of the tokens are delayed as a function.
+     */
+    public lexCommand(matchPrefix: MatchPrefix): [Token, () => Token[]] | null {
+        const t1 = this.next();
+        if (t1.done) {
+            return null;
+        }
+
+        const cmd1 = extractCommand(matchPrefix, [t1.value]);
+        if (cmd1 != null) {
+            return [cmd1, () => [...this]];
+        }
+
+        const t2 = this.next();
+        if (t2.done) {
+            return null;
+        }
+
+        const cmd2 = extractCommand(matchPrefix, [t1.value, t2.value]);
+        if (cmd2 == null) {
+            return null;
+        }
+
+        return [cmd2, () => [...this]];
     }
 }
 

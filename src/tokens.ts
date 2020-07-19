@@ -44,6 +44,13 @@ export function joinTokens(tokens: Token[], separator: string | null = null, raw
 }
 
 /**
+ * A function to match a prefix.
+ * @param s - A string that may start with the prefix.
+ * @returns The length of the prefix if there is one.
+ */
+export type MatchPrefix = (s: string) => number | null;
+
+/**
  * Extracts a command from the first one or two tokens from a list of tokens.
  * The command format is '<prefix> <command>', and the space is optional.
  * @param matchPrefix - A function that gives the length of the prefix if there is one.
@@ -52,7 +59,7 @@ export function joinTokens(tokens: Token[], separator: string | null = null, raw
  * @returns The token containing the name of the command.
  * This may be a token from the list or a new token.
  */
-export function extractCommand(matchPrefix: (s: string) => number | null, tokens: Token[], mutate = true): Token | null {
+export function extractCommand(matchPrefix: MatchPrefix, tokens: Token[], mutate = true): Token | null {
     if (tokens.length < 1) {
         return null;
     }

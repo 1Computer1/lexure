@@ -7,21 +7,13 @@ describe('readme', () => {
         const lexer = new Lexure.Lexer(input)
             .setQuotes([['"', '"'], ['“', '”']]);
         
-        const tokens = lexer.lex();
-        expect(tokens).toEqual([
-            { value: '!hello', raw: '!hello', trailing: ' ' },
-            { value: 'world', raw: 'world', trailing: ' ' },
-            { value: 'cool stuff', raw: '"cool stuff"', trailing: ' ' },
-            { value: '--foo', raw: '--foo', trailing: ' ' },
-            { value: '--bar=baz', raw: '--bar=baz', trailing: ' ' },
-            { value: 'a', raw: 'a', trailing: ' ' },
-            { value: 'b', raw: 'b', trailing: ' ' },
-            { value: 'c', raw: 'c', trailing: '' }
-        ]);
-        
-        const c = Lexure.extractCommand(s => s.startsWith('!') ? 1 : null, tokens);
-        expect(c).toEqual({ value: 'hello', raw: 'hello', trailing: ' ' });
-        
+        const res = lexer.lexCommand(s => s.startsWith('!') ? 1 : null);
+        expect(res).not.toBeNull();
+
+        const cmd = res![0];
+        expect(cmd).toEqual({ value: 'hello', raw: 'hello', trailing: ' ' });
+
+        const tokens = res![1]();
         expect(tokens).toEqual([
             { value: 'world', raw: 'world', trailing: ' ' },
             { value: 'cool stuff', raw: '"cool stuff"', trailing: ' ' },
@@ -35,8 +27,8 @@ describe('readme', () => {
         const parser = new Lexure.Parser(tokens)
             .setUnorderedStrategy(Lexure.longStrategy());
 
-        const res = parser.parse();
-        expect(res).toEqual({
+        const out = parser.parse();
+        expect(out).toEqual({
             ordered: [
                 { value: 'world', raw: 'world', trailing: ' ' },
                 { value: 'cool stuff', raw: '"cool stuff"', trailing: ' ' },
@@ -48,10 +40,10 @@ describe('readme', () => {
             options: new Map([['bar', ['baz']]])
         });
 
-        const j = Lexure.joinTokens(res.ordered);
+        const j = Lexure.joinTokens(out.ordered);
         expect(j).toEqual('world "cool stuff" a b c');
 
-        const args = new Lexure.Args(res);
+        const args = new Lexure.Args(out);
         
         const a1 = args.single();
         expect(a1).toEqual('world');

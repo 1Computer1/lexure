@@ -35,6 +35,9 @@ const input = '!hello world "cool stuff" --foo --bar=baz a b c';
 We first tokenize the input string to individual tokens.  
 As you can see, lexure supports custom open and close quotes for devices with special keyboards and other locales.  
 
+The `!hello` part of the input is usually interpreted as a command, which the Lexer class can handle too.  
+The remaining input is delayed as a function so that you can ignore the rest of the input if it is an invalid command.  
+
 ```ts
 const lexer = new Lexure.Lexer(input)
     .setQuotes([
@@ -42,26 +45,12 @@ const lexer = new Lexure.Lexer(input)
         ['“', '”']
     ]);
 
-const tokens = lexer.lex();
->>> [
-    { value: '!hello',     raw: '!hello',       trailing: ' ' },
-    { value: 'world',      raw: 'world',        trailing: ' ' },
-    { value: 'cool stuff', raw: '"cool stuff"', trailing: ' ' },
-    { value: '--foo',      raw: '--foo',        trailing: ' ' },
-    { value: '--bar=baz',  raw: '--bar=baz',    trailing: ' ' },
-    { value: 'a',          raw: 'a',            trailing: ' ' },
-    { value: 'b',          raw: 'b',            trailing: ' ' },
-    { value: 'c',          raw: 'c',            trailing: ''  }
-]
-```
+const res = lexer.lexCommand(s => s.startsWith('!') ? 1 : null);
 
-The `!hello` part of the input is usually interpreted as a command, for which lexure has a utility function that will extract it from the tokens.  
-
-```ts
-Lexure.extractCommand(s => s.startsWith('!') ? 1 : null, tokens)
+const cmd = res[0];
 >>> { value: 'hello', raw: 'hello', trailing: ' ' }
 
-Lexure.tokens
+const tokens = res[1]();
 >>> [
     { value: 'world',      raw: 'world',        trailing: ' ' },
     { value: 'cool stuff', raw: '"cool stuff"', trailing: ' ' },
@@ -81,7 +70,7 @@ There are also several built-in strategies for common usecases.
 const parser = new Lexure.Parser(tokens)
     .setUnorderedStrategy(Lexure.longStrategy());
 
-const res = parser.parse();
+const out = parser.parse();
 >>> {
     ordered: [
         { value: 'world',      raw: 'world',        trailing: ' ' },
@@ -94,15 +83,15 @@ const res = parser.parse();
     options: Map { 'bar' => ['baz'] }
 }
 
-Lexure.joinTokens(res.ordered)
+Lexure.joinTokens(out.ordered)
 >>> 'world "cool stuff" a b c'
 ```
 
-A utility wrapper class is available for us to retrieve the arguments from the output of the parser.  
+A wrapper class Args is available for us to retrieve the arguments from the output of the parser.  
 It keeps track of what has already been retrieved and has several helpful methods.  
 
 ```ts
-const args = new Lexure.Args(res);
+const args = new Lexure.Args(out);
 
 args.single()
 >>> 'world'
@@ -127,7 +116,7 @@ args.option('bar')
 ```
 
 Suppose we would like to prompt the user input, and retry until a valid input is given.  
-Lexure has a utility for this, in which the logic of an input loop is abstracted out.  
+Lexure has various functions for this, in which the logic of an input loop is abstracted out.  
 
 ```ts
 // Suppose we have access to this function that prompts the user.
