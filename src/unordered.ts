@@ -144,7 +144,7 @@ export function prefixedStrategy(prefixes: string[], separators: string[]): Unor
 
 /**
  * Match unordered arguments according to a list of possible words in a case-sensitive manner.
- * Prefixes like '--' and separators like '=' should be apart of the word.
+ * Prefixes like '--' and separators like '=' should be a part of the word.
  * @param flags - Words usable as flags.
  * @param options - Words usable as options.
  * @param compactOptions - Words usable as the key of compact options.
@@ -172,7 +172,7 @@ export function exactStrategy(flags: string[], options: string[], compactOptions
 
 /**
  * Match unordered arguments according to a list of possible words in a case-insensitive manner.
- * Prefixes like '--' and separators like '=' should be apart of the word.
+ * Prefixes like '--' and separators like '=' should be a part of the word.
  * @param flags - Words usable as flags.
  * @param options - Words usable as options.
  * @param compactOptions - Words usable as the key of compact options.
