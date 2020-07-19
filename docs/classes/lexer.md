@@ -28,14 +28,13 @@ The lexer turns input into a list of tokens.
 * [next](lexer.md#next)
 * [[Symbol.iterator]](lexer.md#[symbol.iterator])
 * [lex](lexer.md#lex)
+* [lexCommand](lexer.md#lexcommand)
 
 ## Constructors
 
 ###  constructor
 
 * **new Lexer**(input: string): [Lexer](lexer.md)
-
-*Defined in [lexer.ts:10](https://github.com/1Computer1/lexure/blob/83985ea/src/lexer.ts#L10)*
 
 **Parameters:**
 
@@ -51,8 +50,6 @@ input | string | Input string.  |
 
 * **get finished**(): boolean
 
-*Defined in [lexer.ts:32](https://github.com/1Computer1/lexure/blob/83985ea/src/lexer.ts#L32)*
-
 Whether the lexer is finished.
 
 **Returns:** boolean
@@ -63,8 +60,6 @@ Whether the lexer is finished.
 
 * **setQuotes**(quotes: [string, string][]): this
 
-*Defined in [lexer.ts:24](https://github.com/1Computer1/lexure/blob/83985ea/src/lexer.ts#L24)*
-
 Sets the quotes to use.
 This can be done in the middle of lexing.
 
@@ -72,9 +67,11 @@ This can be done in the middle of lexing.
 
 Name | Type | Description |
 ------ | ------ | ------ |
-quotes | [string, string][] | List of pairs of open and close quotes.  |
+quotes | [string, string][] | List of pairs of open and close quotes. |
 
 **Returns:** this
+
+The lexer.
 
 ___
 
@@ -82,19 +79,17 @@ ___
 
 * **next**(): IteratorResult\<[Token](../interfaces/token.md)\>
 
-*Defined in [lexer.ts:56](https://github.com/1Computer1/lexure/blob/83985ea/src/lexer.ts#L56)*
-
 Gets the next token.
 
 **Returns:** IteratorResult\<[Token](../interfaces/token.md)\>
+
+An iterator result containing the next token.
 
 ___
 
 ###  [Symbol.iterator]
 
 * **[Symbol.iterator]**(): this
-
-*Defined in [lexer.ts:129](https://github.com/1Computer1/lexure/blob/83985ea/src/lexer.ts#L129)*
 
 **Returns:** this
 
@@ -104,8 +99,29 @@ ___
 
 * **lex**(): [Token](../interfaces/token.md)[]
 
-*Defined in [lexer.ts:136](https://github.com/1Computer1/lexure/blob/83985ea/src/lexer.ts#L136)*
-
 Runs the lexer.
+This consumes the lexer.
 
 **Returns:** [Token](../interfaces/token.md)[]
+
+All the tokens lexed.
+
+___
+
+###  lexCommand
+
+* **lexCommand**(matchPrefix: [MatchPrefix](../README.md#matchprefix)): [[Token](../interfaces/token.md), function] | null
+
+Runs the lexer, matching a prefix and command.
+This consumes at least two tokens of the lexer.
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+matchPrefix | [MatchPrefix](../README.md#matchprefix) | A function that gives the length of the prefix if there is one. |
+
+**Returns:** [[Token](../interfaces/token.md), function] | null
+
+The command and the rest of the lexed tokens, as long as the prefix was matched.
+The rest of the tokens are delayed as a function.

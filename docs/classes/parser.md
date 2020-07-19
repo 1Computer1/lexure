@@ -35,8 +35,6 @@ Parses a list of tokens to separate out flags and options.
 
 * **new Parser**(input: [Token](../interfaces/token.md)[]): [Parser](parser.md)
 
-*Defined in [parser.ts:12](https://github.com/1Computer1/lexure/blob/83985ea/src/parser.ts#L12)*
-
 **Parameters:**
 
 Name | Type | Description |
@@ -51,8 +49,6 @@ input | [Token](../interfaces/token.md)[] | The input tokens.  |
 
 * **get finished**(): boolean
 
-*Defined in [parser.ts:33](https://github.com/1Computer1/lexure/blob/83985ea/src/parser.ts#L33)*
-
 Whether the parser is finished.
 
 **Returns:** boolean
@@ -62,8 +58,6 @@ Whether the parser is finished.
 ###  setUnorderedStrategy
 
 * **setUnorderedStrategy**(s: [UnorderedStrategy](../interfaces/unorderedstrategy.md)): this
-
-*Defined in [parser.ts:25](https://github.com/1Computer1/lexure/blob/83985ea/src/parser.ts#L25)*
 
 Sets the strategy for parsing unordered arguments.
 This can be done in the middle of parsing.
@@ -82,8 +76,6 @@ ___
 
 * **next**(): IteratorResult\<[ParserOutput](../interfaces/parseroutput.md)\>
 
-*Defined in [parser.ts:44](https://github.com/1Computer1/lexure/blob/83985ea/src/parser.ts#L44)*
-
 Gets the next parsed tokens.
 
 **Returns:** IteratorResult\<[ParserOutput](../interfaces/parseroutput.md)\>
@@ -94,8 +86,6 @@ ___
 
 * **[Symbol.iterator]**(): this
 
-*Defined in [parser.ts:130](https://github.com/1Computer1/lexure/blob/83985ea/src/parser.ts#L130)*
-
 **Returns:** this
 
 ___
@@ -103,8 +93,6 @@ ___
 ###  parse
 
 * **parse**(): [ParserOutput](../interfaces/parseroutput.md)
-
-*Defined in [parser.ts:137](https://github.com/1Computer1/lexure/blob/83985ea/src/parser.ts#L137)*
 
 Runs the parser.
 

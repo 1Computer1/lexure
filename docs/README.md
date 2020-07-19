@@ -27,6 +27,7 @@
 
 ### Type aliases
 
+* [MatchPrefix](README.md#matchprefix)
 * [Option](README.md#option)
 * [LoopAction](README.md#loopaction)
 * [Result](README.md#result)
@@ -41,6 +42,7 @@
 * [outputFromJSON](README.md#outputfromjson)
 * [some](README.md#some)
 * [none](README.md#none)
+* [sliceTo](README.md#sliceto)
 * [step](README.md#step)
 * [step_](README.md#step_)
 * [finish](README.md#finish)
@@ -60,11 +62,31 @@
 
 ## Type aliases
 
+###  MatchPrefix
+
+* **MatchPrefix**: function
+
+A function to match a prefix.
+
+**`param`** A string that may start with the prefix.
+
+**`returns`** The length of the prefix if there is one.
+
+#### Type declaration:
+
+* (s: string): number | null
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+s | string |
+
+___
+
 ###  Option
 
 * **Option**: [Some](interfaces/some.md)\<T\> | [None](interfaces/none.md)
-
-*Defined in [option.ts:6](https://github.com/1Computer1/lexure/blob/83985ea/src/option.ts#L6)*
 
 A type that can express the lack of a value.
 Used in this library for when a generic type could be nullable.
@@ -75,8 +97,6 @@ ___
 
 * **LoopAction**: [Step](interfaces/step.md)\<A\> | [Finish](interfaces/finish.md)\<B\> | [Fail](interfaces/fail.md)\<E\>
 
-*Defined in [loopAction.ts:8](https://github.com/1Computer1/lexure/blob/83985ea/src/loopAction.ts#L8)*
-
 A type used to express actions in the loop.
 Each action can have a value with it.
 
@@ -86,8 +106,6 @@ ___
 
 * **Result**: [Ok](interfaces/ok.md)\<T\> | [Err](interfaces/err.md)\<E\>
 
-*Defined in [result.ts:6](https://github.com/1Computer1/lexure/blob/83985ea/src/result.ts#L6)*
-
 A type used to express computations that can fail.
 
 ## Functions
@@ -95,8 +113,6 @@ A type used to express computations that can fail.
 ###  joinTokens
 
 * **joinTokens**(tokens: [Token](interfaces/token.md)[], separator: string | null, raw: boolean): string
-
-*Defined in [tokens.ts:29](https://github.com/1Computer1/lexure/blob/83985ea/src/tokens.ts#L29)*
 
 Joins tokens together.
 By default, this keeps as much of the original input as possible.
@@ -117,34 +133,18 @@ ___
 
 ###  extractCommand
 
-* **extractCommand**(matchPrefix: function, tokens: [Token](interfaces/token.md)[], mutate: boolean): [Token](interfaces/token.md) | null
-
-*Defined in [tokens.ts:55](https://github.com/1Computer1/lexure/blob/83985ea/src/tokens.ts#L55)*
+* **extractCommand**(matchPrefix: [MatchPrefix](README.md#matchprefix), tokens: [Token](interfaces/token.md)[], mutate: boolean): [Token](interfaces/token.md) | null
 
 Extracts a command from the first one or two tokens from a list of tokens.
 The command format is '<prefix> <command>', and the space is optional.
 
 **Parameters:**
 
-* **matchPrefix**: function
-
-A function that gives the length of the prefix if there is one.
-
-* (s: string): number | null
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-s | string |
-
-* **tokens**: [Token](interfaces/token.md)[]
-
-Tokens to check.
-
-*default value  **mutate**: boolean= true
-
-Whether to mutate the list of tokens.
+Name | Type | Default | Description |
+------ | ------ | ------ | ------ |
+matchPrefix | [MatchPrefix](README.md#matchprefix) | - | A function that gives the length of the prefix if there is one. |
+tokens | [Token](interfaces/token.md)[] | - | Tokens to check. |
+mutate | boolean | true | Whether to mutate the list of tokens. |
 
 **Returns:** [Token](interfaces/token.md) | null
 
@@ -157,8 +157,6 @@ ___
 
 * **emptyOutput**(): [ParserOutput](interfaces/parseroutput.md)
 
-*Defined in [parserOutput.ts:27](https://github.com/1Computer1/lexure/blob/83985ea/src/parserOutput.ts#L27)*
-
 Creates an empty parser output.
 
 **Returns:** [ParserOutput](interfaces/parseroutput.md)
@@ -170,8 +168,6 @@ ___
 ###  mergeOutputs
 
 * **mergeOutputs**(...ps: [ParserOutput](interfaces/parseroutput.md)[]): [ParserOutput](interfaces/parseroutput.md)
-
-*Defined in [parserOutput.ts:41](https://github.com/1Computer1/lexure/blob/83985ea/src/parserOutput.ts#L41)*
 
 Merges multiple outputs into one.
 Flags and options that appear later will be preferred if there are duplicates.
@@ -192,8 +188,6 @@ ___
 
 * **outputToJSON**(p: [ParserOutput](interfaces/parseroutput.md)): Record\<string, unknown\>
 
-*Defined in [parserOutput.ts:75](https://github.com/1Computer1/lexure/blob/83985ea/src/parserOutput.ts#L75)*
-
 Converts an output to JSON, where the flags and options are turned into arrays of entries.
 You can recover the output with 'outputFromJSON'.
 
@@ -213,8 +207,6 @@ ___
 
 * **outputFromJSON**(obj: Record\<string, unknown\>): [ParserOutput](interfaces/parseroutput.md)
 
-*Defined in [parserOutput.ts:88](https://github.com/1Computer1/lexure/blob/83985ea/src/parserOutput.ts#L88)*
-
 Converts JSON to a parser output.
 
 **Parameters:**
@@ -232,8 +224,6 @@ ___
 ###  some
 
 * **some**\<**T**\>(x: T): [Some](interfaces/some.md)\<T\>
-
-*Defined in [option.ts:40](https://github.com/1Computer1/lexure/blob/83985ea/src/option.ts#L40)*
 
 Creates a Some.
 
@@ -259,8 +249,6 @@ ___
 
 * **none**(): [None](interfaces/none.md)
 
-*Defined in [option.ts:48](https://github.com/1Computer1/lexure/blob/83985ea/src/option.ts#L48)*
-
 Creates a None.
 
 **Returns:** [None](interfaces/none.md)
@@ -269,11 +257,24 @@ An Option.
 
 ___
 
+###  sliceTo
+
+* **sliceTo**(word: string, xs: string[]): string
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+word | string |
+xs | string[] |
+
+**Returns:** string
+
+___
+
 ###  step
 
 * **step**\<**A**\>(x: A): [Step](interfaces/step.md)\<A\>
-
-*Defined in [loopAction.ts:64](https://github.com/1Computer1/lexure/blob/83985ea/src/loopAction.ts#L64)*
 
 Creates a Step.
 
@@ -299,8 +300,6 @@ ___
 
 * **step_**(): [Step](interfaces/step.md)\<null\>
 
-*Defined in [loopAction.ts:72](https://github.com/1Computer1/lexure/blob/83985ea/src/loopAction.ts#L72)*
-
 Creates a Step with null value.
 
 **Returns:** [Step](interfaces/step.md)\<null\>
@@ -312,8 +311,6 @@ ___
 ###  finish
 
 * **finish**\<**B**\>(x: B): [Finish](interfaces/finish.md)\<B\>
-
-*Defined in [loopAction.ts:82](https://github.com/1Computer1/lexure/blob/83985ea/src/loopAction.ts#L82)*
 
 Creates a Finish.
 
@@ -339,8 +336,6 @@ ___
 
 * **fail**\<**E**\>(x: E): [Fail](interfaces/fail.md)\<E\>
 
-*Defined in [loopAction.ts:92](https://github.com/1Computer1/lexure/blob/83985ea/src/loopAction.ts#L92)*
-
 Creates a Fail.
 
 **Type parameters:**
@@ -364,8 +359,6 @@ ___
 ###  ok
 
 * **ok**\<**T**\>(x: T): [Ok](interfaces/ok.md)\<T\>
-
-*Defined in [result.ts:46](https://github.com/1Computer1/lexure/blob/83985ea/src/result.ts#L46)*
 
 Creates an Ok.
 
@@ -391,8 +384,6 @@ ___
 
 * **err**\<**E**\>(x: E): [Err](interfaces/err.md)\<E\>
 
-*Defined in [result.ts:56](https://github.com/1Computer1/lexure/blob/83985ea/src/result.ts#L56)*
-
 Creates an Err.
 
 **Type parameters:**
@@ -416,8 +407,6 @@ ___
 ###  loop
 
 * **loop**\<**S**, **A**, **Z**, **E**\>(intialInput: A, state: S, strat: [LoopStrategy](interfaces/loopstrategy.md)\<S, A, Z, E\>): [Result](README.md#result)\<Z, E\>
-
-*Defined in [loop.ts:102](https://github.com/1Computer1/lexure/blob/83985ea/src/loop.ts#L102)*
 
 Runs a loop which continuously gets input and attempts to parse it.
 The loop strategy used will determine how the loop continues and ends.
@@ -458,8 +447,6 @@ ___
 
 * **loop1**\<**S**, **A**, **Z**, **E**\>(state: S, strat: [LoopStrategy](interfaces/loopstrategy.md)\<S, A, Z, E\>): [Result](README.md#result)\<Z, E\>
 
-*Defined in [loop.ts:163](https://github.com/1Computer1/lexure/blob/83985ea/src/loop.ts#L163)*
-
 Runs a loop which continuously gets input and attempts to parse it.
 The loop strategy used will determine how the loop continues and ends.
 This variant has no initial input.
@@ -498,8 +485,6 @@ ___
 ###  loopAsync
 
 * **loopAsync**\<**S**, **A**, **Z**, **E**\>(intialInput: A, state: S, strat: [LoopStrategyAsync](interfaces/loopstrategyasync.md)\<S, A, Z, E\>): Promise\<[Result](README.md#result)\<Z, E\>\>
-
-*Defined in [loop.ts:222](https://github.com/1Computer1/lexure/blob/83985ea/src/loop.ts#L222)*
 
 Runs a loop which continuously gets input and attempts to parse it.
 The loop strategy used will determine how the loop continues and ends.
@@ -541,8 +526,6 @@ ___
 
 * **loop1Async**\<**S**, **A**, **Z**, **E**\>(state: S, strat: [LoopStrategyAsync](interfaces/loopstrategyasync.md)\<S, A, Z, E\>): Promise\<[Result](README.md#result)\<Z, E\>\>
 
-*Defined in [loop.ts:284](https://github.com/1Computer1/lexure/blob/83985ea/src/loop.ts#L284)*
-
 Runs a loop which continuously gets input and attempts to parse it.
 The loop strategy used will determine how the loop continues and ends.
 This variant has no initial input.
@@ -583,8 +566,6 @@ ___
 
 * **noStrategy**(): [UnorderedStrategy](interfaces/unorderedstrategy.md)
 
-*Defined in [unordered.ts:31](https://github.com/1Computer1/lexure/blob/83985ea/src/unordered.ts#L31)*
-
 Do not match any unordered argument at all.
 
 **Returns:** [UnorderedStrategy](interfaces/unorderedstrategy.md)
@@ -596,8 +577,6 @@ ___
 ###  longStrategy
 
 * **longStrategy**(): [UnorderedStrategy](interfaces/unorderedstrategy.md)
-
-*Defined in [unordered.ts:46](https://github.com/1Computer1/lexure/blob/83985ea/src/unordered.ts#L46)*
 
 Match unordered arguments according to conventional syntax.
 '--flag' is a flag.
@@ -614,8 +593,6 @@ ___
 
 * **longShortStrategy**(): [UnorderedStrategy](interfaces/unorderedstrategy.md)
 
-*Defined in [unordered.ts:68](https://github.com/1Computer1/lexure/blob/83985ea/src/unordered.ts#L68)*
-
 Match unordered arguments according to conventional syntax.
 '--flag' or '-f' is a flag.
 '--opt=' is an option.
@@ -630,8 +607,6 @@ ___
 ###  prefixedStrategy
 
 * **prefixedStrategy**(prefixes: string[], separators: string[]): [UnorderedStrategy](interfaces/unorderedstrategy.md)
-
-*Defined in [unordered.ts:91](https://github.com/1Computer1/lexure/blob/83985ea/src/unordered.ts#L91)*
 
 Match unordered arguments with custom prefix and separator.
 The prefix is the part the preceeds the key name, e.g. '--' in '--foo'.
@@ -654,8 +629,6 @@ ___
 
 * **exactStrategy**(flags: string[], options: string[], compactOptions: string[]): [UnorderedStrategy](interfaces/unorderedstrategy.md)
 
-*Defined in [unordered.ts:153](https://github.com/1Computer1/lexure/blob/83985ea/src/unordered.ts#L153)*
-
 Match unordered arguments according to a list of possible words in a case-sensitive manner.
 Prefixes like '--' and separators like '=' should be apart of the word.
 
@@ -676,8 +649,6 @@ ___
 ###  caseInsensitiveStrategy
 
 * **caseInsensitiveStrategy**(flags: string[], options: string[], compactOptions: string[], locale?: string | string[]): [UnorderedStrategy](interfaces/unorderedstrategy.md)
-
-*Defined in [unordered.ts:182](https://github.com/1Computer1/lexure/blob/83985ea/src/unordered.ts#L182)*
 
 Match unordered arguments according to a list of possible words in a case-insensitive manner.
 Prefixes like '--' and separators like '=' should be apart of the word.

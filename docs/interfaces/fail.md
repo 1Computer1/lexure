@@ -27,8 +27,6 @@ Type of errors.
 
 * **action**: "fail"
 
-*Defined in [loopAction.ts:50](https://github.com/1Computer1/lexure/blob/83985ea/src/loopAction.ts#L50)*
-
 Whether the loop should continue.
 
 ___
@@ -36,7 +34,5 @@ ___
 ###  error
 
 * **error**: E
-
-*Defined in [loopAction.ts:55](https://github.com/1Computer1/lexure/blob/83985ea/src/loopAction.ts#L55)*
 
 The resulting error.

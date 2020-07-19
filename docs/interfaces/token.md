@@ -22,8 +22,6 @@ Represents a token.
 
 * **value**: string
 
-*Defined in [tokens.ts:8](https://github.com/1Computer1/lexure/blob/83985ea/src/tokens.ts#L8)*
-
 The value of the token.
 
 ___
@@ -32,8 +30,6 @@ ___
 
 * **raw**: string
 
-*Defined in [tokens.ts:13](https://github.com/1Computer1/lexure/blob/83985ea/src/tokens.ts#L13)*
-
 The raw value of the token e.g. with quotes.
 
 ___
@@ -41,7 +37,5 @@ ___
 ### readonly trailing
 
 * **trailing**: string
-
-*Defined in [tokens.ts:18](https://github.com/1Computer1/lexure/blob/83985ea/src/tokens.ts#L18)*
 
 Trailing whitespace.

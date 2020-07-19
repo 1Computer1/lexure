@@ -27,8 +27,6 @@ Type of results.
 
 * **exists**: true
 
-*Defined in [option.ts:16](https://github.com/1Computer1/lexure/blob/83985ea/src/option.ts#L16)*
-
 Whether the value exists.
 
 ___
@@ -36,7 +34,5 @@ ___
 ###  value
 
 * **value**: T
-
-*Defined in [option.ts:21](https://github.com/1Computer1/lexure/blob/83985ea/src/option.ts#L21)*
 
 The value.

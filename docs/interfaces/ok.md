@@ -27,8 +27,6 @@ Type of results.
 
 * **success**: true
 
-*Defined in [result.ts:16](https://github.com/1Computer1/lexure/blob/83985ea/src/result.ts#L16)*
-
 Whether the computation is successful.
 
 ___
@@ -36,7 +34,5 @@ ___
 ###  value
 
 * **value**: T
-
-*Defined in [result.ts:21](https://github.com/1Computer1/lexure/blob/83985ea/src/result.ts#L21)*
 
 The resulting value.

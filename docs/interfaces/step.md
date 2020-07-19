@@ -27,8 +27,6 @@ Type of step results.
 
 * **action**: "step"
 
-*Defined in [loopAction.ts:18](https://github.com/1Computer1/lexure/blob/83985ea/src/loopAction.ts#L18)*
-
 Whether the loop should continue.
 
 ___
@@ -36,7 +34,5 @@ ___
 ###  value
 
 * **value**: A
-
-*Defined in [loopAction.ts:23](https://github.com/1Computer1/lexure/blob/83985ea/src/loopAction.ts#L23)*
 
 The resulting value.

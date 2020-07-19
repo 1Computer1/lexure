@@ -41,8 +41,6 @@ Error type.
 
 * **getInput**(state: S): Promise\<[LoopAction](../README.md#loopaction)\<A, Z, E\>\>
 
-*Defined in [loop.ts:60](https://github.com/1Computer1/lexure/blob/83985ea/src/loop.ts#L60)*
-
 Gets new input from somewhere e.g. reading a line.
 
 **Parameters:**
@@ -60,8 +58,6 @@ ___
 ###  parse
 
 * **parse**(input: A, state: S): Promise\<[LoopAction](../README.md#loopaction)\<null, Z, E\>\>
-
-*Defined in [loop.ts:68](https://github.com/1Computer1/lexure/blob/83985ea/src/loop.ts#L68)*
 
 Parses given input into the desired type.
 
@@ -82,8 +78,6 @@ ___
 
 * **onInputError**(error: E, state: S): Promise\<[LoopAction](../README.md#loopaction)\<null, Z, E\>\>
 
-*Defined in [loop.ts:77](https://github.com/1Computer1/lexure/blob/83985ea/src/loop.ts#L77)*
-
 Handles error on getting new input.
 This function intercepts the `fail` case of `getInput`.
 
@@ -103,8 +97,6 @@ ___
 ### optional onParseError
 
 * **onParseError**(error: E, input: A, state: S): Promise\<[LoopAction](../README.md#loopaction)\<null, Z, E\>\>
-
-*Defined in [loop.ts:87](https://github.com/1Computer1/lexure/blob/83985ea/src/loop.ts#L87)*
 
 Handles error on parsing input.
 This function intercepts the `fail` case of `parse`.
