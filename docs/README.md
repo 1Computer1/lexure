@@ -31,6 +31,7 @@
 * [Option](README.md#option)
 * [LoopAction](README.md#loopaction)
 * [Result](README.md#result)
+* [Pairing](README.md#pairing)
 
 ### Functions
 
@@ -107,6 +108,14 @@ ___
 * **Result**: [Ok](interfaces/ok.md)\<T\> | [Err](interfaces/err.md)\<E\>
 
 A type used to express computations that can fail.
+
+___
+
+###  Pairing
+
+* **Pairing**: Record\<string, string[]\>
+
+Pairing of flag/option names to the words usable for them.
 
 ## Functions
 
@@ -627,18 +636,18 @@ ___
 
 ###  exactStrategy
 
-* **exactStrategy**(flags: string[], options: string[], compactOptions: string[]): [UnorderedStrategy](interfaces/unorderedstrategy.md)
+* **exactStrategy**(flags: [Pairing](README.md#pairing), options: [Pairing](README.md#pairing), compactOptions: [Pairing](README.md#pairing)): [UnorderedStrategy](interfaces/unorderedstrategy.md)
 
-Match unordered arguments according to a list of possible words in a case-sensitive manner.
-Prefixes like '--' and separators like '=' should be apart of the word.
+Match unordered arguments according to a record of the names to the list of words in a case-sensitive manner.
+Prefixes like '--' and separators like '=' should be a part of the word.
 
 **Parameters:**
 
 Name | Type | Description |
 ------ | ------ | ------ |
-flags | string[] | Words usable as flags. |
-options | string[] | Words usable as options. |
-compactOptions | string[] | Words usable as the key of compact options. |
+flags | [Pairing](README.md#pairing) | Words usable as flags. |
+options | [Pairing](README.md#pairing) | Words usable as options. |
+compactOptions | [Pairing](README.md#pairing) | Words usable as the key of compact options. |
 
 **Returns:** [UnorderedStrategy](interfaces/unorderedstrategy.md)
 
@@ -648,18 +657,18 @@ ___
 
 ###  caseInsensitiveStrategy
 
-* **caseInsensitiveStrategy**(flags: string[], options: string[], compactOptions: string[], locale?: string | string[]): [UnorderedStrategy](interfaces/unorderedstrategy.md)
+* **caseInsensitiveStrategy**(flags: [Pairing](README.md#pairing), options: [Pairing](README.md#pairing), compactOptions: [Pairing](README.md#pairing), locale?: string | string[]): [UnorderedStrategy](interfaces/unorderedstrategy.md)
 
-Match unordered arguments according to a list of possible words in a case-insensitive manner.
-Prefixes like '--' and separators like '=' should be apart of the word.
+Match unordered arguments according to a record of the names to a list of words in a case-insensitive manner.
+Prefixes like '--' and separators like '=' should be a part of the word.
 
 **Parameters:**
 
 Name | Type | Description |
 ------ | ------ | ------ |
-flags | string[] | Words usable as flags. |
-options | string[] | Words usable as options. |
-compactOptions | string[] | Words usable as the key of compact options. |
+flags | [Pairing](README.md#pairing) | Words usable as flags. |
+options | [Pairing](README.md#pairing) | Words usable as options. |
+compactOptions | [Pairing](README.md#pairing) | Words usable as the key of compact options. |
 locale? | string &#124; string[] | The locale(s) to use to compare case. |
 
 **Returns:** [UnorderedStrategy](interfaces/unorderedstrategy.md)

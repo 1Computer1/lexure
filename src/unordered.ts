@@ -143,23 +143,39 @@ export function prefixedStrategy(prefixes: string[], separators: string[]): Unor
 }
 
 /**
- * Match unordered arguments according to a list of possible words in a case-sensitive manner.
+ * Pairing of flag/option names to the words usable for them.
+ */
+type Pairing = Record<string, string[]>;
+
+/**
+ * Match unordered arguments according to a record of the names to the list of words in a case-sensitive manner.
  * Prefixes like '--' and separators like '=' should be a part of the word.
  * @param flags - Words usable as flags.
  * @param options - Words usable as options.
  * @param compactOptions - Words usable as the key of compact options.
  * @returns The strategy.
  */
-export function exactStrategy(flags: string[], options: string[], compactOptions: string[]): UnorderedStrategy {
+export function exactStrategy(
+    flags: Pairing,
+    options: Pairing,
+    compactOptions: Pairing
+): UnorderedStrategy {
     return {
         matchFlag: (s: string) => {
-            return flags.find(x => s === x) ?? null;
+            return Object.entries(flags)
+                .find(xs =>
+                    xs[1].some(x => s === x))?.[0] ?? null;
         },
         matchOption: (s: string) => {
-            return options.find(x => s === x) ?? null;
+            return Object.entries(options)
+                .find(xs =>
+                    xs[1].some(x => s === x))?.[0] ?? null;
         },
         matchCompactOption: (s: string) => {
-            const k = compactOptions.find(x => s.startsWith(x)) ?? null;
+            const k = Object.entries(compactOptions)
+                .find(xs =>
+                    xs[1].some(x => s.startsWith(x)))?.[0] ?? null;
+
             if (k == null) {
                 return null;
             }
@@ -171,7 +187,7 @@ export function exactStrategy(flags: string[], options: string[], compactOptions
 }
 
 /**
- * Match unordered arguments according to a list of possible words in a case-insensitive manner.
+ * Match unordered arguments according to a record of the names to a list of words in a case-insensitive manner.
  * Prefixes like '--' and separators like '=' should be a part of the word.
  * @param flags - Words usable as flags.
  * @param options - Words usable as options.
@@ -180,23 +196,30 @@ export function exactStrategy(flags: string[], options: string[], compactOptions
  * @returns The strategy.
  */
 export function caseInsensitiveStrategy(
-    flags: string[],
-    options: string[],
-    compactOptions: string[],
+    flags: Pairing,
+    options: Pairing,
+    compactOptions: Pairing,
     locale?: string | string[]
 ): UnorderedStrategy {
     return {
         matchFlag: (s: string) => {
             s = s.toLocaleLowerCase(locale);
-            return flags.find(x => s === x.toLocaleLowerCase(locale)) ?? null;
+            return Object.entries(flags)
+                .find(xs =>
+                    xs[1].some(x => s === x.toLocaleLowerCase(locale)))?.[0] ?? null;
         },
         matchOption: (s: string) => {
             s = s.toLocaleLowerCase(locale);
-            return options.find(x => s === x.toLocaleLowerCase(locale)) ?? null;
+            return Object.entries(options)
+                .find(xs =>
+                    xs[1].some(x => s === x.toLocaleLowerCase(locale)))?.[0] ?? null;
         },
         matchCompactOption: (s: string) => {
             const s1 = s.toLocaleLowerCase(locale);
-            const k = compactOptions.find(x => s1.startsWith(x.toLocaleLowerCase(locale))) ?? null;
+            const k = Object.entries(compactOptions)
+                .find(xs =>
+                    xs[1].some(x => s1.startsWith(x.toLocaleLowerCase(locale))))?.[0] ?? null;
+
             if (k == null) {
                 return null;
             }
