@@ -9,6 +9,7 @@ tsconfig.json
 # Output
 coverage
 docs
+package-lock.json
 
 # Other
 .DS_Store

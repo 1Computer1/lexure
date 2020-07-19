@@ -4,6 +4,7 @@ node_modules
 # Output
 coverage
 dist
+package-lock.json
 
 # Other
 .DS_Store
