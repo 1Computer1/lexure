@@ -90,7 +90,7 @@ export class Lexer implements IterableIterator<Token> {
             this.shift(open.length);
 
             let inner = this.matchR(/^[^]+/)?.[0] ?? '';
-            inner = Lexer.sliceTo(inner, [closeQ]);
+            inner = sliceTo(inner, [closeQ]);
             this.shift(inner.length);
 
             const close = this.match(closeQ) ?? '';
@@ -109,21 +109,11 @@ export class Lexer implements IterableIterator<Token> {
             return null;
         }
 
-        w = Lexer.sliceTo(w, this.quotes.flat());
+        w = sliceTo(w, this.quotes.flat());
         this.shift(w.length);
 
         const s = this.pWs();
         return { value: w, raw: w, trailing: s };
-    }
-
-    private static sliceTo(word: string, xs: string[]): string {
-        const is = xs.map(x => word.indexOf(x));
-        const i = Math.min(...is);
-        if (i !== -1) {
-            return word.slice(0, i);
-        }
-
-        return word;
     }
 
     public [Symbol.iterator](): this {
@@ -136,4 +126,14 @@ export class Lexer implements IterableIterator<Token> {
     public lex(): Token[] {
         return [...this];
     }
+}
+
+function sliceTo(word: string, xs: string[]): string {
+    const is = xs.map(x => word.indexOf(x));
+    const i = Math.min(...is);
+    if (i !== -1) {
+        return word.slice(0, i);
+    }
+
+    return word;
 }
