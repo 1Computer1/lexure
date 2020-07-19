@@ -146,7 +146,7 @@ export class Args {
     /**
      * Gets the last value of an option.
      * @param key - The name of the option.
-     * @returns The lastvalue of the option if it was given.
+     * @returns The last value of the option if it was given.
      */
     public option(key: string): string | null {
         const xs = this.options(key);

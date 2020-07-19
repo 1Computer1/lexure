@@ -216,7 +216,7 @@ key | string | The name of the option. |
 
 **Returns:** string | null
 
-The lastvalue of the option if it was given.
+The last value of the option if it was given.
 
 ___
 
