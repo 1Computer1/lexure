@@ -1,7 +1,7 @@
 {
   "name": "lexure",
-  "version": "0.9.0",
-  "description": "Lexer and parser for semi-structured user input.",
+  "version": "0.10.0",
+  "description": "Parser and utilities for non-technical user input.",
   "keywords": [
     "lexer",
     "parser",
