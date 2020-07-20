@@ -60,6 +60,14 @@ describe('long short strategy', () => {
         expect(s.matchCompactOption(x)).toEqual(null);
     });
 
+    it('should parse a short option exclusively', () => {
+        const s = longShortStrategy();
+        const x = '-f=';
+        expect(s.matchFlag(x)).toEqual(null);
+        expect(s.matchOption(x)).toEqual('f');
+        expect(s.matchCompactOption(x)).toEqual(null);
+    });
+
     it('should parse a compact option exclusively', () => {
         const s = longShortStrategy();
         const x = '--foo=x';
@@ -70,7 +78,7 @@ describe('long short strategy', () => {
 
     it('should parse a short compact option exclusively', () => {
         const s = longShortStrategy();
-        const x = '-f3';
+        const x = '-f=3';
         expect(s.matchFlag(x)).toEqual(null);
         expect(s.matchOption(x)).toEqual(null);
         expect(s.matchCompactOption(x)).toEqual(['f', '3']);

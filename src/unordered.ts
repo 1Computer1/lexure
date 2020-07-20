@@ -44,40 +44,18 @@ export function noStrategy(): UnorderedStrategy {
  * @returns The strategy.
  */
 export function longStrategy(): UnorderedStrategy {
-    return {
-        matchFlag: (s: string) => s.match(/^--([^=]+)$/)?.[1] ?? null,
-        matchOption: (s: string) => s.match(/^--(.+)=$/)?.[1] ?? null,
-        matchCompactOption: (s: string) => {
-            const m = s.match(/^--(.+)=(.+)$/);
-            if (m == null) {
-                return null;
-            }
-
-            return [m[1], m[2]];
-        }
-    };
+    return prefixedStrategy(['--'], ['=']);
 }
 
 /**
  * Match unordered arguments according to conventional syntax.
- * '--flag' or '-f' is a flag.
- * '--opt=' is an option.
- * '--opt=123' or '-o123' is a compact option.
+ * '--flag' or '-flag' is a flag.
+ * '--opt=' or '-opt=' is an option.
+ * '--opt=123' or '-opt=123' is a compact option.
  * @returns The strategy.
  */
 export function longShortStrategy(): UnorderedStrategy {
-    return {
-        matchFlag: (s: string) => s.match(/^--([^=]+)$/)?.[1] ?? s.match(/^-([^=])$/)?.[1] ?? null,
-        matchOption: (s: string) => s.match(/^--(.+)=$/)?.[1] ?? null,
-        matchCompactOption: (s: string) => {
-            const m = s.match(/^--(.+)=(.+)$/) || s.match(/^-([^-])(.+)$/);
-            if (m == null) {
-                return null;
-            }
-
-            return [m[1], m[2]];
-        }
-    };
+    return prefixedStrategy(['--', '-'], ['=']);
 }
 
 /**
@@ -85,7 +63,9 @@ export function longShortStrategy(): UnorderedStrategy {
  * The prefix is the part the preceeds the key name, e.g. '--' in '--foo'.
  * The separator is the part that delimits the key and value e.g. '=' in '--key=value'.
  * @param prefixes - The prefixes to use for unordered arguments.
- * @param separators - The symbol to use to separate the key and value in options.
+ * They should be ordered by length in non-increasing order.
+ * @param separators - The symbols to use to separate the key and value in options.
+ * They should be ordered by length in non-increasing order.
  * @returns The strategy.
  */
 export function prefixedStrategy(prefixes: string[], separators: string[]): UnorderedStrategy {
@@ -153,6 +133,7 @@ type Pairing = Record<string, string[]>;
  * @param flags - Words usable as flags.
  * @param options - Words usable as options.
  * @param compactOptions - Words usable as the key of compact options.
+ * They should be ordered by length in non-increasing order.
  * @returns The strategy.
  */
 export function exactStrategy(
@@ -192,6 +173,7 @@ export function exactStrategy(
  * @param flags - Words usable as flags.
  * @param options - Words usable as options.
  * @param compactOptions - Words usable as the key of compact options.
+ * They should be ordered by length in non-increasing order.
  * @param locale - The locale(s) to use to compare case.
  * @returns The strategy.
  */

@@ -603,9 +603,9 @@ ___
 * **longShortStrategy**(): [UnorderedStrategy](interfaces/unorderedstrategy.md)
 
 Match unordered arguments according to conventional syntax.
-'--flag' or '-f' is a flag.
-'--opt=' is an option.
-'--opt=123' or '-o123' is a compact option.
+'--flag' or '-flag' is a flag.
+'--opt=' or '-opt=' is an option.
+'--opt=123' or '-opt=123' is a compact option.
 
 **Returns:** [UnorderedStrategy](interfaces/unorderedstrategy.md)
 
@@ -625,8 +625,8 @@ The separator is the part that delimits the key and value e.g. '=' in '--key=val
 
 Name | Type | Description |
 ------ | ------ | ------ |
-prefixes | string[] | The prefixes to use for unordered arguments. |
-separators | string[] | The symbol to use to separate the key and value in options. |
+prefixes | string[] | The prefixes to use for unordered arguments. They should be ordered by length in non-increasing order. |
+separators | string[] | The symbols to use to separate the key and value in options. They should be ordered by length in non-increasing order. |
 
 **Returns:** [UnorderedStrategy](interfaces/unorderedstrategy.md)
 
@@ -647,7 +647,7 @@ Name | Type | Description |
 ------ | ------ | ------ |
 flags | [Pairing](README.md#pairing) | Words usable as flags. |
 options | [Pairing](README.md#pairing) | Words usable as options. |
-compactOptions | [Pairing](README.md#pairing) | Words usable as the key of compact options. |
+compactOptions | [Pairing](README.md#pairing) | Words usable as the key of compact options. They should be ordered by length in non-increasing order. |
 
 **Returns:** [UnorderedStrategy](interfaces/unorderedstrategy.md)
 
@@ -668,7 +668,7 @@ Name | Type | Description |
 ------ | ------ | ------ |
 flags | [Pairing](README.md#pairing) | Words usable as flags. |
 options | [Pairing](README.md#pairing) | Words usable as options. |
-compactOptions | [Pairing](README.md#pairing) | Words usable as the key of compact options. |
+compactOptions | [Pairing](README.md#pairing) | Words usable as the key of compact options. They should be ordered by length in non-increasing order. |
 locale? | string &#124; string[] | The locale(s) to use to compare case. |
 
 **Returns:** [UnorderedStrategy](interfaces/unorderedstrategy.md)
