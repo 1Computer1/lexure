@@ -133,7 +133,7 @@ export class Lexer implements IterableIterator<Token> {
 
     /**
      * Runs the lexer, matching a prefix and command.
-     * This consumes at least two tokens of the lexer.
+     * This consumes at most two tokens of the lexer.
      * @param matchPrefix - A function that gives the length of the prefix if there is one.
      * @returns The command and the rest of the lexed tokens, as long as the prefix was matched.
      * The rest of the tokens are delayed as a function.

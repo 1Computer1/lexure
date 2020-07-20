@@ -113,7 +113,7 @@ ___
 * **lexCommand**(matchPrefix: [MatchPrefix](../README.md#matchprefix)): [[Token](../interfaces/token.md), function] | null
 
 Runs the lexer, matching a prefix and command.
-This consumes at least two tokens of the lexer.
+This consumes at most two tokens of the lexer.
 
 **Parameters:**
 
