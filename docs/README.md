@@ -155,6 +155,19 @@ ___
 Joins tokens together.
 By default, this keeps as much of the original input as possible.
 
+```ts
+// Note three trailing spaces.
+const tokens = new Lexer('hello   "world"')
+  .setQuotes([['"', '"']])
+  .lex();
+
+console.log(joinTokens(tokens));
+>>> 'hello   "world"'
+
+console.log(joinTokens(tokens, ' ', false));
+>>> 'hello world'
+```
+
 **Parameters:**
 
 Name | Type | Default | Description |
@@ -449,6 +462,25 @@ ___
 Runs a loop which continuously gets input and attempts to parse it.
 The loop strategy used will determine how the loop continues and ends.
 
+```ts
+const getInputFromSomewhere = () => '2';
+
+const x = loop('1', null, {
+  getInput() {
+    const i = getInputFromSomewhere();
+    return i == null ? fail('no input') : step(i);
+  },
+
+  parse(x: string) {
+    const n = Number(x);
+    return isNaN(n) ? fail('bad input') : finish(n);
+  }
+});
+
+console.log(x);
+>>> 1
+```
+
 **Type parameters:**
 
 * **S**
@@ -488,6 +520,25 @@ ___
 Runs a loop which continuously gets input and attempts to parse it.
 The loop strategy used will determine how the loop continues and ends.
 This variant has no initial input.
+
+```ts
+const getInputFromSomewhere = () => '2';
+
+const x = loop1(null, {
+  getInput() {
+    const i = getInputFromSomewhere();
+    return i == null ? fail('no input') : step(i);
+  },
+
+  parse(x: string) {
+    const n = Number(x);
+    return isNaN(n) ? fail('bad input') : finish(n);
+  }
+});
+
+console.log(x);
+>>> 2
+```
 
 **Type parameters:**
 
@@ -649,6 +700,19 @@ ___
 Match unordered arguments with custom prefix and separator.
 The prefix is the part the preceeds the key name, e.g. '--' in '--foo'.
 The separator is the part that delimits the key and value e.g. '=' in '--key=value'.
+It is expected that there are no spaces in the prefixes and separators.
+
+```ts
+const st = prefixedStrategy(['--'], ['=']);
+console.log(st.matchFlag('--f'));
+>>> 'f'
+
+console.log(st.matchOption('--opt='));
+>>> 'opt'
+
+console.log(st.matchCompactOption('--opt=15'));
+>>> ['opt', '15']
+```
 
 **Parameters:**
 
@@ -669,6 +733,16 @@ ___
 
 Match unordered arguments according to a record of the names to the list of words in a case-sensitive manner.
 Prefixes like '--' and separators like '=' should be a part of the word.
+For case-insensitive matching, use [`caseInsensitiveStrategy`](README.md#caseinsensitivestrategy).
+
+```ts
+const st = exactStrategy({ flag: ['--flag', '-f'] }, {}, {});
+console.log(st.matchFlag('--flag'));
+>>> 'flag'
+
+console.log(st.matchOption('-f'));
+>>> 'flag'
+```
 
 **Parameters:**
 
@@ -690,6 +764,16 @@ ___
 
 Match unordered arguments according to a record of the names to a list of words in a case-insensitive manner.
 Prefixes like '--' and separators like '=' should be a part of the word.
+For case-sensitive matching, use [`exactStrategy`](README.md#exactstrategy).
+
+```ts
+const st = caseInsensitiveStrategy({ flag: ['--flag', '-f'] }, {}, {});
+console.log(st.matchFlag('--FlAg'));
+>>> 'flag'
+
+console.log(st.matchOption('-F'));
+>>> 'flag'
+```
 
 **Parameters:**
 

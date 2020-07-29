@@ -63,11 +63,19 @@ Whether the lexer is finished.
 Sets the quotes to use.
 This can be done in the middle of lexing.
 
+```ts
+const lexer = new Lexer('"hello"');
+lexer.setQuotes([['"', '"']]);
+const xs = lexer.lex();
+console.log(xs);
+>>> [{ value: 'hello', raw: '"hello"', trailing: '' }]
+```
+
 **Parameters:**
 
 Name | Type | Description |
 ------ | ------ | ------ |
-quotes | [string, string][] | List of pairs of open and close quotes. |
+quotes | [string, string][] | List of pairs of open and close quotes. It is required that these strings do not contain any whitespace characters. |
 
 **Returns:** this
 
@@ -102,6 +110,16 @@ ___
 Runs the lexer.
 This consumes the lexer.
 
+```ts
+const lexer = new Lexer('hello world');
+const xs = lexer.lex();
+console.log(xs);
+>>> [
+  { value: 'hello', raw: 'hello', trailing: ' ' },
+  { value: 'world', raw: 'world', trailing: '' }
+]
+```
+
 **Returns:** [Token](../interfaces/token.md)[]
 
 All the tokens lexed.
@@ -114,6 +132,19 @@ ___
 
 Runs the lexer, matching a prefix and command.
 This consumes at most two tokens of the lexer.
+This uses [`extractCommand`](../README.md#extractcommand) under the hood.
+
+```ts
+const lexer = new Lexer('!help me');
+const r = lexer.lexCommand(s => s.startsWith('!') ? 1 : null);
+if (r != null) {
+  const [command, getRest] = r;
+  console.log(command.value);
+  >>> 'help'
+  console.log(getRest()[0].value);
+  >>> 'me'
+}
+```
 
 **Parameters:**
 

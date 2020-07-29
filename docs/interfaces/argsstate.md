@@ -2,6 +2,8 @@
 
 # Interface: ArgsState
 
+The state for the argument wrapper.
+
 ## Hierarchy
 
 * **ArgsState**

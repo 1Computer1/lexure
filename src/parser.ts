@@ -21,6 +21,14 @@ export class Parser implements IterableIterator<ParserOutput> {
     /**
      * Sets the strategy for parsing unordered arguments.
      * This can be done in the middle of parsing.
+     * 
+     * ```ts
+     * const parser = new Parser(tokens)
+     *   .setUnorderedStrategy(longStrategy())
+     *   .parse();
+     * ```
+     * 
+     * @returns The parser.
      */
     public setUnorderedStrategy(s: UnorderedStrategy): this {
         this.unorderedStrategy = s;
@@ -133,6 +141,15 @@ export class Parser implements IterableIterator<ParserOutput> {
 
     /**
      * Runs the parser.
+     * 
+     * ```ts
+     * const lexer = new Lexer(input);
+     * const tokens = lexer.lex();
+     * const parser = new Parser(tokens);
+     * const output = parser.parse();
+     * ```
+     * 
+     * @returns The parser output.
      */
     public parse(): ParserOutput {
         return mergeOutputs(...this);

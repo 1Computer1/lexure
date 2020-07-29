@@ -62,6 +62,12 @@ Whether the parser is finished.
 Sets the strategy for parsing unordered arguments.
 This can be done in the middle of parsing.
 
+```ts
+const parser = new Parser(tokens)
+  .setUnorderedStrategy(longStrategy())
+  .parse();
+```
+
 **Parameters:**
 
 Name | Type |
@@ -69,6 +75,8 @@ Name | Type |
 s | [UnorderedStrategy](../interfaces/unorderedstrategy.md) |
 
 **Returns:** this
+
+The parser.
 
 ___
 
@@ -96,4 +104,13 @@ ___
 
 Runs the parser.
 
+```ts
+const lexer = new Lexer(input);
+const tokens = lexer.lex();
+const parser = new Parser(tokens);
+const output = parser.parse();
+```
+
 **Returns:** [ParserOutput](../interfaces/parseroutput.md)
+
+The parser output.

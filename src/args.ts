@@ -2,6 +2,9 @@ import { ParserOutput } from './parserOutput';
 import { Token } from './tokens';
 import { Option, some, none } from './option';
 
+/**
+ * The state for the argument wrapper.
+ */
 export interface ArgsState {
     /**
      * The indices of the ordered tokens already retrieved.
@@ -71,6 +74,22 @@ export class Args {
     /**
      * Retrieves the value of the next unused ordered token.
      * That token will now be consider used.
+     * 
+     * ```ts
+     * // Suppose args are from '1 2 3'.
+     * console.log(args.single());
+     * >>> '1'
+     * 
+     * console.log(args.single());
+     * >>> '2'
+     * 
+     * console.log(args.single());
+     * >>> '3'
+     * 
+     * console.log(args.single());
+     * >>> null
+     * ```
+     * 
      * @returns The value if there are tokens left.
      */
     public single(): string | null {
@@ -89,6 +108,18 @@ export class Args {
     /**
      * Retrieves the value of the next unused ordered token, but only if it could be transformed.
      * That token will now be consider used if the transformation succeeds.
+     * 
+     * ```ts
+     * // Suppose args are from '1 2 3'.
+     * const parse = (x: string) => {
+     *   const n = Number(x);
+     *   return isNaN(n) ? none() : some(n);
+     * };
+     * 
+     * console.log(args.singleMap(parse));
+     * >>> { exists: true, value: 1 }
+     * ```
+     * 
      * @typeparam T - Output type.
      * @param f - Gives an option of either the resulting value, or nothing if failed.
      * @returns The value if there are tokens left and the transformation succeeds.
@@ -130,6 +161,22 @@ export class Args {
     /**
      * Retrieves the value of the next unused ordered token from the end.
      * That token will now be consider used.
+     * 
+     * ```ts
+     * // Suppose args are from '1 2 3'.
+     * console.log(args.singleFromEnd());
+     * >>> '3'
+     * 
+     * console.log(args.singleFromEnd());
+     * >>> '2'
+     * 
+     * console.log(args.singleFromEnd());
+     * >>> '1'
+     * 
+     * console.log(args.singleFromEnd());
+     * >>> null
+     * ```
+     * 
      * @returns The value if there are tokens left.
      */
     public singleFromEnd(): string | null {
@@ -147,6 +194,19 @@ export class Args {
 
     /**
      * Retrieves many unused tokens.
+     * 
+     * ```ts
+     * // Suppose args are from '1 2 3'.
+     * const xs = args.many();
+     * console.log(joinTokens(xs));
+     * >>> '1 2 3'
+     * 
+     * // Suppose args are from '1 2 3'.
+     * const xs = args.many(2);
+     * console.log(joinTokens(xs));
+     * >>> '1 2'
+     * ```
+     * 
      * @param limit - The limit on the amount of tokens to retrieve; defaults to infinite.
      * @param from - Where to start looking for tokens; defaults to current position.
      * @returns The tokens.
@@ -168,6 +228,19 @@ export class Args {
     /**
      * Retrieves many unused tokens from the end.
      * Note that the order of retrieved tokens will be the same order as in the ordered tokens list.
+     * 
+     * ```ts
+     * // Suppose args are from '1 2 3'.
+     * const xs = args.manyFromEnd();
+     * console.log(joinTokens(xs));
+     * >>> '1 2 3'
+     * 
+     * // Suppose args are from '1 2 3'.
+     * const xs = args.manyFromEnd(2);
+     * console.log(joinTokens(xs));
+     * >>> '2 3'
+     * ```
+     * 
      * @param limit - The limit on the amount of tokens to retrieve; defaults to infinite.
      * @param from - Where to start looking for tokens; defaults to current position from end.
      * @returns The tokens.
@@ -188,6 +261,19 @@ export class Args {
 
     /**
      * Checks if a flag was given.
+     * 
+     * ```ts
+     * // Suppose args are from '--f --g'.
+     * console.log(args.flag('f'));
+     * >>> true
+     * 
+     * console.log(args.flag('g', 'h'));
+     * >>> true
+     * 
+     * console.log(args.flag('h'));
+     * >>> false
+     * ```
+     * 
      * @param keys - The name(s) of the flag.
      * @returns Whether the flag was given.
      */
@@ -197,6 +283,19 @@ export class Args {
 
     /**
      * Gets the last value of an option.
+     * 
+     * ```ts
+     * // Suppose args are from '--a=1 --b=2 --c=3'.
+     * console.log(args.option('a'));
+     * >>> '1'
+     * 
+     * console.log(args.option('b', 'c'));
+     * >>> '2'
+     * 
+     * console.log(args.option('d'));
+     * >>> null
+     * ```
+     * 
      * @param keys - The name(s) of the option.
      * @returns The last value of the option if it was given.
      * When there are multiple names, the last value of the first found name is given.
@@ -216,6 +315,19 @@ export class Args {
 
     /**
      * Gets all the values of an option.
+     * 
+     * ```ts
+     * // Suppose args are from '--a=1 --a=1 --b=2 --c=3'.
+     * console.log(args.options('a'));
+     * >>> ['1', '1']
+     * 
+     * console.log(args.option('b', 'c'));
+     * >>> ['2', '3']
+     * 
+     * console.log(args.option('d'));
+     * >>> null
+     * ```
+     * 
      * @param keys - The name(s) of the option.
      * @returns The values of the option if it was given.
      */
@@ -235,6 +347,18 @@ export class Args {
     /**
      * Finds and retrieves the first unused token that could be transformed.
      * That token will now be consider used.
+     * 
+     * ```ts
+     * // Suppose args are from '1 2 3'.
+     * const parse = (x: string) => {
+     *   const n = Number(x);
+     *   return isNaN(n) || n === 1 ? none() : some(n);
+     * };
+     * 
+     * console.log(args.findMap(parse));
+     * >>> { exists: true, value: 2 }
+     * ```
+     * 
      * @typeparam T - Output type.
      * @param f - Gives an option of either the resulting value, or nothing if failed.
      * @param from - Where to start looking for tokens; defaults to current position.
@@ -289,6 +413,18 @@ export class Args {
     /**
      * Filters and retrieves all unused tokens that could be transformed.
      * Those tokens will now be consider used.
+     * 
+     * ```ts
+     * // Suppose args are from '1 2 3'.
+     * const parse = (x: string) => {
+     *   const n = Number(x);
+     *   return isNaN(n) || n === 1 ? none() : some(n);
+     * };
+     * 
+     * console.log(args.filterMap(parse));
+     * >>> [2, 3]
+     * ```
+     * 
      * @typeparam T - Output type.
      * @param f - Gives an option of either the resulting value, or nothing if failed.
      * @param limit - The limit on the amount of tokens to retrieve; defaults to infinite.
@@ -346,7 +482,7 @@ export class Args {
     }
 
     /**
-     * Saves the current state that can then be restored later.
+     * Saves the current state that can then be restored later by using {@linkcode Args#restore}.
      * @returns The current state.
      */
     public save(): ArgsState {
@@ -358,7 +494,7 @@ export class Args {
     }
 
     /**
-     * Sets the current state to the given state.
+     * Sets the current state to the given state from {@linkcode Args#save}.
      * Use this to backtrack after a series of retrievals.
      * @param state - State to restore to.
      */

@@ -21,6 +21,20 @@ export interface Token {
 /**
  * Joins tokens together.
  * By default, this keeps as much of the original input as possible.
+ * 
+ * ```ts
+ * // Note three trailing spaces.
+ * const tokens = new Lexer('hello   "world"')
+ *   .setQuotes([['"', '"']])
+ *   .lex();
+ * 
+ * console.log(joinTokens(tokens));
+ * >>> 'hello   "world"'
+ * 
+ * console.log(joinTokens(tokens, ' ', false));
+ * >>> 'hello world'
+ * ```
+ * 
  * @param tokens - Tokens to join.
  * @param separator - The separator, if null, will use original trailing whitespace; defaults to null.
  * @param raw - Whether to use raw values e.g. with quotes; defaults to true.

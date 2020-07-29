@@ -92,6 +92,26 @@ export interface LoopStrategyAsync<S, A, Z, E> {
 /**
  * Runs a loop which continuously gets input and attempts to parse it.
  * The loop strategy used will determine how the loop continues and ends.
+ * 
+ * ```ts
+ * const getInputFromSomewhere = () => '2';
+ * 
+ * const x = loop('1', null, {
+ *   getInput() {
+ *     const i = getInputFromSomewhere();
+ *     return i == null ? fail('no input') : step(i);
+ *   },
+ * 
+ *   parse(x: string) {
+ *     const n = Number(x);
+ *     return isNaN(n) ? fail('bad input') : finish(n);
+ *   }
+ * });
+ * 
+ * console.log(x);
+ * >>> 1
+ * ```
+ * 
  * @typeparam S - Custom state type.
  * @typeparam A - Input type.
  * @typeparam Z - Output type.
@@ -154,6 +174,26 @@ export function loop<S, A, Z, E>(
  * Runs a loop which continuously gets input and attempts to parse it.
  * The loop strategy used will determine how the loop continues and ends.
  * This variant has no initial input.
+ * 
+ * ```ts
+ * const getInputFromSomewhere = () => '2';
+ * 
+ * const x = loop1(null, {
+ *   getInput() {
+ *     const i = getInputFromSomewhere();
+ *     return i == null ? fail('no input') : step(i);
+ *   },
+ * 
+ *   parse(x: string) {
+ *     const n = Number(x);
+ *     return isNaN(n) ? fail('bad input') : finish(n);
+ *   }
+ * });
+ * 
+ * console.log(x);
+ * >>> 2
+ * ```
+ * 
  * @typeparam S - Custom state type.
  * @typeparam A - Input type.
  * @typeparam Z - Output type.

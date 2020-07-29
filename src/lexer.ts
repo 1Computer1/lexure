@@ -19,7 +19,17 @@ export class Lexer implements IterableIterator<Token> {
     /**
      * Sets the quotes to use.
      * This can be done in the middle of lexing.
+     * 
+     * ```ts
+     * const lexer = new Lexer('"hello"');
+     * lexer.setQuotes([['"', '"']]);
+     * const xs = lexer.lex();
+     * console.log(xs);
+     * >>> [{ value: 'hello', raw: '"hello"', trailing: '' }]
+     * ```
+     * 
      * @param quotes - List of pairs of open and close quotes.
+     * It is required that these strings do not contain any whitespace characters.
      * @returns The lexer.
      */
     public setQuotes(quotes: [string, string][]): this {
@@ -125,6 +135,17 @@ export class Lexer implements IterableIterator<Token> {
     /**
      * Runs the lexer.
      * This consumes the lexer.
+     * 
+     * ```ts
+     * const lexer = new Lexer('hello world');
+     * const xs = lexer.lex();
+     * console.log(xs);
+     * >>> [
+     *   { value: 'hello', raw: 'hello', trailing: ' ' },
+     *   { value: 'world', raw: 'world', trailing: '' }
+     * ]
+     * ```
+     * 
      * @returns All the tokens lexed.
      */
     public lex(): Token[] {
@@ -134,6 +155,20 @@ export class Lexer implements IterableIterator<Token> {
     /**
      * Runs the lexer, matching a prefix and command.
      * This consumes at most two tokens of the lexer.
+     * This uses {@linkcode extractCommand} under the hood.
+     * 
+     * ```ts
+     * const lexer = new Lexer('!help me');
+     * const r = lexer.lexCommand(s => s.startsWith('!') ? 1 : null);
+     * if (r != null) {
+     *   const [command, getRest] = r;
+     *   console.log(command.value);
+     *   >>> 'help'
+     *   console.log(getRest()[0].value);
+     *   >>> 'me'
+     * }
+     * ```
+     * 
      * @param matchPrefix - A function that gives the length of the prefix if there is one.
      * @returns The command and the rest of the lexed tokens, as long as the prefix was matched.
      * The rest of the tokens are delayed as a function.
