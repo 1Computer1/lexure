@@ -28,6 +28,8 @@ A wrapper around the parser output for retrieving command arguments.
 ### Methods
 
 * [single](args.md#single)
+* [singleMap](args.md#singlemap)
+* [singleMapAsync](args.md#singlemapasync)
 * [singleFromEnd](args.md#singlefromend)
 * [many](args.md#many)
 * [manyFromEnd](args.md#manyfromend)
@@ -35,7 +37,9 @@ A wrapper around the parser output for retrieving command arguments.
 * [option](args.md#option)
 * [options](args.md#options)
 * [findMap](args.md#findmap)
+* [findMapAsync](args.md#findmapasync)
 * [filterMap](args.md#filtermap)
+* [filterMapAsync](args.md#filtermapasync)
 * [save](args.md#save)
 * [restore](args.md#restore)
 
@@ -111,6 +115,73 @@ That token will now be consider used.
 **Returns:** string | null
 
 The value if there are tokens left.
+
+___
+
+###  singleMap
+
+* **singleMap**\<**T**\>(f: function): [Option](../README.md#option)\<T\>
+
+Retrieves the value of the next unused ordered token, but only if it could be transformed.
+That token will now be consider used if the transformation succeeds.
+
+**Type parameters:**
+
+* **T**
+
+Output type.
+
+**Parameters:**
+
+* **f**: function
+
+Gives an option of either the resulting value, or nothing if failed.
+
+* (x: string): [Option](../README.md#option)\<T\>
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+x | string |
+
+**Returns:** [Option](../README.md#option)\<T\>
+
+The value if there are tokens left and the transformation succeeds.
+
+___
+
+###  singleMapAsync
+
+* **singleMapAsync**\<**T**\>(f: function): Promise\<[Option](../README.md#option)\<T\>\>
+
+Retrieves the value of the next unused ordered token, but only if it could be transformed.
+This variant of the function is asynchronous using `Promise`.
+That token will now be consider used if the transformation succeeds.
+
+**Type parameters:**
+
+* **T**
+
+Output type.
+
+**Parameters:**
+
+* **f**: function
+
+Gives an option of either the resulting value, or nothing if failed.
+
+* (x: string): Promise\<[Option](../README.md#option)\<T\>\>
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+x | string |
+
+**Returns:** Promise\<[Option](../README.md#option)\<T\>\>
+
+The value if there are tokens left and the transformation succeeds.
 
 ___
 
@@ -238,7 +309,7 @@ Output type.
 
 * **f**: function
 
-Gives a pair of whether the transformation worked, and the resulting value.
+Gives an option of either the resulting value, or nothing if failed.
 
 * (x: string): [Option](../README.md#option)\<T\>
 
@@ -253,6 +324,44 @@ x | string |
 Where to start looking for tokens; defaults to current position.
 
 **Returns:** [Option](../README.md#option)\<T\>
+
+The resulting value if it was found.
+
+___
+
+###  findMapAsync
+
+* **findMapAsync**\<**T**\>(f: function, from: number): Promise\<[Option](../README.md#option)\<T\>\>
+
+Finds and retrieves the first unused token that could be transformed.
+This variant of the function is asynchronous using `Promise`.
+That token will now be consider used.
+
+**Type parameters:**
+
+* **T**
+
+Output type.
+
+**Parameters:**
+
+* **f**: function
+
+Gives an option of either the resulting value, or nothing if failed.
+
+* (x: string): Promise\<[Option](../README.md#option)\<T\>\>
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+x | string |
+
+*default value  **from**: number= this.state.position
+
+Where to start looking for tokens; defaults to current position.
+
+**Returns:** Promise\<[Option](../README.md#option)\<T\>\>
 
 The resulting value if it was found.
 
@@ -275,7 +384,7 @@ Output type.
 
 * **f**: function
 
-Gives a pair of whether the transformation worked, and the resulting value.
+Gives an option of either the resulting value, or nothing if failed.
 
 * (x: string): [Option](../README.md#option)\<T\>
 
@@ -294,6 +403,48 @@ The limit on the amount of tokens to retrieve; defaults to infinite.
 Where to start looking for tokens; defaults to current position.
 
 **Returns:** T[]
+
+The resulting values.
+
+___
+
+###  filterMapAsync
+
+* **filterMapAsync**\<**T**\>(f: function, limit: number, from: number): Promise\<T[]\>
+
+Filters and retrieves all unused tokens that could be transformed.
+This variant of the function is asynchronous using `Promise`.
+Those tokens will now be consider used.
+
+**Type parameters:**
+
+* **T**
+
+Output type.
+
+**Parameters:**
+
+* **f**: function
+
+Gives an option of either the resulting value, or nothing if failed.
+
+* (x: string): Promise\<[Option](../README.md#option)\<T\>\>
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+x | string |
+
+*default value  **limit**: number= Infinity
+
+The limit on the amount of tokens to retrieve; defaults to infinite.
+
+*default value  **from**: number= this.state.position
+
+Where to start looking for tokens; defaults to current position.
+
+**Returns:** Promise\<T[]\>
 
 The resulting values.
 

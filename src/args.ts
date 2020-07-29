@@ -87,6 +87,47 @@ export class Args {
     }
 
     /**
+     * Retrieves the value of the next unused ordered token, but only if it could be transformed.
+     * That token will now be consider used if the transformation succeeds.
+     * @typeparam T - Output type.
+     * @param f - Gives an option of either the resulting value, or nothing if failed.
+     * @returns The value if there are tokens left and the transformation succeeds.
+     */
+    public singleMap<T>(f: (x: string) => Option<T>): Option<T> {
+        if (this.finished) {
+            return none();
+        }
+
+        while (this.state.usedIndices.has(this.state.position)) {
+            this.state.position++;
+        }
+
+        this.state.usedIndices.add(this.state.position);
+        return f(this.parserOutput.ordered[this.state.position++].value);
+    }
+
+    /**
+     * Retrieves the value of the next unused ordered token, but only if it could be transformed.
+     * This variant of the function is asynchronous using `Promise`.
+     * That token will now be consider used if the transformation succeeds.
+     * @typeparam T - Output type.
+     * @param f - Gives an option of either the resulting value, or nothing if failed.
+     * @returns The value if there are tokens left and the transformation succeeds.
+     */
+    public singleMapAsync<T>(f: (x: string) => Promise<Option<T>>): Promise<Option<T>> {
+        if (this.finished) {
+            return Promise.resolve(none());
+        }
+
+        while (this.state.usedIndices.has(this.state.position)) {
+            this.state.position++;
+        }
+
+        this.state.usedIndices.add(this.state.position);
+        return f(this.parserOutput.ordered[this.state.position++].value);
+    }
+
+    /**
      * Retrieves the value of the next unused ordered token from the end.
      * That token will now be consider used.
      * @returns The value if there are tokens left.
@@ -195,7 +236,7 @@ export class Args {
      * Finds and retrieves the first unused token that could be transformed.
      * That token will now be consider used.
      * @typeparam T - Output type.
-     * @param f - Gives a pair of whether the transformation worked, and the resulting value.
+     * @param f - Gives an option of either the resulting value, or nothing if failed.
      * @param from - Where to start looking for tokens; defaults to current position.
      * @returns The resulting value if it was found.
      */
@@ -217,10 +258,39 @@ export class Args {
     }
 
     /**
+     * Finds and retrieves the first unused token that could be transformed.
+     * This variant of the function is asynchronous using `Promise`.
+     * That token will now be consider used.
+     * @typeparam T - Output type.
+     * @param f - Gives an option of either the resulting value, or nothing if failed.
+     * @param from - Where to start looking for tokens; defaults to current position.
+     * @returns The resulting value if it was found.
+     */
+    public async findMapAsync<T>(
+        f: (x: string) => Promise<Option<T>>,
+        from = this.state.position
+    ): Promise<Option<T>> {
+        for (let i = from; i < this.length; i++) {
+            if (this.state.usedIndices.has(i)) {
+                continue;
+            }
+
+            const x = this.parserOutput.ordered[i];
+            const o = await f(x.value);
+            if (o.exists) {
+                this.state.usedIndices.add(i);
+                return some(o.value);
+            }
+        }
+
+        return none();
+    }
+
+    /**
      * Filters and retrieves all unused tokens that could be transformed.
      * Those tokens will now be consider used.
      * @typeparam T - Output type.
-     * @param f - Gives a pair of whether the transformation worked, and the resulting value.
+     * @param f - Gives an option of either the resulting value, or nothing if failed.
      * @param limit - The limit on the amount of tokens to retrieve; defaults to infinite.
      * @param from - Where to start looking for tokens; defaults to current position.
      * @returns The resulting values.
@@ -234,6 +304,38 @@ export class Args {
 
             const x = this.parserOutput.ordered[i];
             const o = f(x.value);
+            if (o.exists) {
+                this.state.usedIndices.add(i);
+                ys.push(o.value);
+            }
+        }
+
+        return ys;
+    }
+
+    /**
+     * Filters and retrieves all unused tokens that could be transformed.
+     * This variant of the function is asynchronous using `Promise`.
+     * Those tokens will now be consider used.
+     * @typeparam T - Output type.
+     * @param f - Gives an option of either the resulting value, or nothing if failed.
+     * @param limit - The limit on the amount of tokens to retrieve; defaults to infinite.
+     * @param from - Where to start looking for tokens; defaults to current position.
+     * @returns The resulting values.
+     */
+    public async filterMapAsync<T>(
+        f: (x: string) => Promise<Option<T>>,
+        limit = Infinity,
+        from = this.state.position
+    ): Promise<T[]> {
+        const ys = [];
+        for (let i = from; i < this.length && ys.length < limit; i++) {
+            if (this.state.usedIndices.has(i)) {
+                continue;
+            }
+
+            const x = this.parserOutput.ordered[i];
+            const o = await f(x.value);
             if (o.exists) {
                 this.state.usedIndices.add(i);
                 ys.push(o.value);

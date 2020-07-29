@@ -109,6 +109,26 @@ describe('args', () => {
         expect(y).toEqual(none());
     });
 
+    it('can find a token (async)', async () => {
+        const s = 'hello "world" baz "quux"';
+        const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
+        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const args = new Args(po);
+
+        const y = await args.findMapAsync(async x => x === 'hello' ? some(10) : none());
+        expect(y).toEqual(some(10));
+    });
+
+    it('cannot find a token (async)', async () => {
+        const s = 'hello "world" baz "quux"';
+        const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
+        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const args = new Args(po);
+
+        const y = await args.findMapAsync(async x => x === 'goodbye' ? some(10) : none());
+        expect(y).toEqual(none());
+    });
+
     it('can filter multiple tokens', () => {
         const s = 'hello "world" hello "quux"';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
@@ -116,6 +136,16 @@ describe('args', () => {
         const args = new Args(po);
 
         const y = args.filterMap(x => x === 'hello' ? some(10) : none());
+        expect(y).toEqual([10, 10]);
+    });
+
+    it('can filter multiple tokens (async)', async () => {
+        const s = 'hello "world" hello "quux"';
+        const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
+        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const args = new Args(po);
+
+        const y = await args.filterMapAsync(async x => x === 'hello' ? some(10) : none());
         expect(y).toEqual([10, 10]);
     });
 
@@ -238,5 +268,31 @@ describe('args', () => {
         });
 
         expect(args.single()).toEqual('b');
+    });
+
+    it('can retrieve and map a single argument', () => {
+        const s = 'a b c';
+        const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
+        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const args = new Args(po);
+
+        const a = args.singleMap(x => x === 'a' ? some(1) : none());
+        expect(a).toEqual(some(1));
+
+        const b = args.singleMap(x => x === 'a' ? some(1) : none());
+        expect(b).toEqual(none());
+    });
+
+    it('can retrieve and map a single argument (async)', async () => {
+        const s = 'a b c';
+        const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
+        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const args = new Args(po);
+
+        const a = await args.singleMapAsync(async x => x === 'a' ? some(1) : none());
+        expect(a).toEqual(some(1));
+
+        const b = await args.singleMapAsync(async x => x === 'a' ? some(1) : none());
+        expect(b).toEqual(none());
     });
 });
