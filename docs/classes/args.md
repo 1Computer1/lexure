@@ -17,9 +17,7 @@ A wrapper around the parser output for retrieving command arguments.
 ### Properties
 
 * [parserOutput](args.md#readonly-parseroutput)
-* [usedIndices](args.md#readonly-usedindices)
-* [position](args.md#position)
-* [positionFromEnd](args.md#positionfromend)
+* [state](args.md#state)
 
 ### Accessors
 
@@ -38,6 +36,8 @@ A wrapper around the parser output for retrieving command arguments.
 * [options](args.md#options)
 * [findMap](args.md#findmap)
 * [filterMap](args.md#filtermap)
+* [save](args.md#save)
+* [restore](args.md#restore)
 
 ## Constructors
 
@@ -63,29 +63,11 @@ The parser output.
 
 ___
 
-### readonly usedIndices
+###  state
 
-* **usedIndices**: Set\<number\> = new Set()
+* **state**: [ArgsState](../interfaces/argsstate.md)
 
-The indices of the ordered tokens already retrieved.
-
-___
-
-###  position
-
-* **position**: number = 0
-
-The current position in the ordered tokens.
-Increments from 0.
-
-___
-
-###  positionFromEnd
-
-* **positionFromEnd**: number
-
-The current position backwards in the ordered tokens.
-Decrements from the end.
+The state of this instance.
 
 ## Accessors
 
@@ -156,7 +138,7 @@ Retrieves many unused tokens.
 Name | Type | Default | Description |
 ------ | ------ | ------ | ------ |
 limit | number | Infinity | The limit on the amount of tokens to retrieve; defaults to infinite. |
-from | number | this.position | Where to start looking for tokens; defaults to current position. |
+from | number | this.state.position | Where to start looking for tokens; defaults to current position. |
 
 **Returns:** [Token](../interfaces/token.md)[]
 
@@ -176,7 +158,7 @@ Note that the order of retrieved tokens will be the same order as in the ordered
 Name | Type | Default | Description |
 ------ | ------ | ------ | ------ |
 limit | number | Infinity | The limit on the amount of tokens to retrieve; defaults to infinite. |
-from | number | this.positionFromEnd | Where to start looking for tokens; defaults to current position from end. |
+from | number | this.state.positionFromEnd | Where to start looking for tokens; defaults to current position from end. |
 
 **Returns:** [Token](../interfaces/token.md)[]
 
@@ -266,7 +248,7 @@ Name | Type |
 ------ | ------ |
 x | string |
 
-*default value  **from**: number= this.position
+*default value  **from**: number= this.state.position
 
 Where to start looking for tokens; defaults to current position.
 
@@ -307,10 +289,39 @@ x | string |
 
 The limit on the amount of tokens to retrieve; defaults to infinite.
 
-*default value  **from**: number= this.position
+*default value  **from**: number= this.state.position
 
 Where to start looking for tokens; defaults to current position.
 
 **Returns:** T[]
 
 The resulting values.
+
+___
+
+###  save
+
+* **save**(): [ArgsState](../interfaces/argsstate.md)
+
+Saves the current state that can then be restored later.
+
+**Returns:** [ArgsState](../interfaces/argsstate.md)
+
+The current state.
+
+___
+
+###  restore
+
+* **restore**(state: [ArgsState](../interfaces/argsstate.md)): void
+
+Sets the current state to the given state.
+Use this to backtrack after a series of retrievals.
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+state | [ArgsState](../interfaces/argsstate.md) | State to restore to.  |
+
+**Returns:** void

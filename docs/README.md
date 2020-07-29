@@ -16,6 +16,7 @@
 * [ParserOutput](interfaces/parseroutput.md)
 * [Some](interfaces/some.md)
 * [None](interfaces/none.md)
+* [ArgsState](interfaces/argsstate.md)
 * [Step](interfaces/step.md)
 * [Finish](interfaces/finish.md)
 * [Fail](interfaces/fail.md)

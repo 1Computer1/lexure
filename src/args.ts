@@ -2,6 +2,25 @@ import { ParserOutput } from './parserOutput';
 import { Token } from './tokens';
 import { Option, some, none } from './option';
 
+export interface ArgsState {
+    /**
+     * The indices of the ordered tokens already retrieved.
+     */
+    usedIndices: Set<number>;
+
+    /**
+     * The current position in the ordered tokens.
+     * Increments from 0.
+     */
+    position: number;
+
+    /**
+     * The current position backwards in the ordered tokens.
+     * Decrements from the end.
+     */
+    positionFromEnd: number;
+}
+
 /**
  * A wrapper around the parser output for retrieving command arguments.
  */
@@ -12,35 +31,27 @@ export class Args {
     public readonly parserOutput: ParserOutput;
 
     /**
-     * The indices of the ordered tokens already retrieved.
+     * The state of this instance.
      */
-    public readonly usedIndices: Set<number> = new Set();
-
-    /**
-     * The current position in the ordered tokens.
-     * Increments from 0.
-     */
-    public position = 0;
-
-    /**
-     * The current position backwards in the ordered tokens.
-     * Decrements from the end.
-     */
-    public positionFromEnd: number;
+    public state: ArgsState;
 
     /**
      * @param parserOutput - The parser output.
      */
     public constructor(parserOutput: ParserOutput) {
         this.parserOutput = parserOutput;
-        this.positionFromEnd = parserOutput.ordered.length - 1;
+        this.state = {
+            usedIndices: new Set(),
+            position: 0,
+            positionFromEnd: parserOutput.ordered.length - 1
+        };
     }
 
     /**
      * Whether all ordered tokens have been used.
      */
     public get finished(): boolean {
-        return this.usedIndices.size === this.parserOutput.ordered.length;
+        return this.state.usedIndices.size === this.parserOutput.ordered.length;
     }
 
     /**
@@ -54,7 +65,7 @@ export class Args {
      * The amount of remaining ordered tokens.
      */
     public get remaining(): number {
-        return this.parserOutput.ordered.length - this.usedIndices.size;
+        return this.parserOutput.ordered.length - this.state.usedIndices.size;
     }
 
     /**
@@ -67,12 +78,12 @@ export class Args {
             return null;
         }
 
-        while (this.usedIndices.has(this.position)) {
-            this.position++;
+        while (this.state.usedIndices.has(this.state.position)) {
+            this.state.position++;
         }
 
-        this.usedIndices.add(this.position);
-        return this.parserOutput.ordered[this.position++].value;
+        this.state.usedIndices.add(this.state.position);
+        return this.parserOutput.ordered[this.state.position++].value;
     }
 
     /**
@@ -85,12 +96,12 @@ export class Args {
             return null;
         }
 
-        while (this.usedIndices.has(this.positionFromEnd)) {
-            this.positionFromEnd--;
+        while (this.state.usedIndices.has(this.state.positionFromEnd)) {
+            this.state.positionFromEnd--;
         }
 
-        this.usedIndices.add(this.positionFromEnd);
-        return this.parserOutput.ordered[this.positionFromEnd--].value;
+        this.state.usedIndices.add(this.state.positionFromEnd);
+        return this.parserOutput.ordered[this.state.positionFromEnd--].value;
     }
 
     /**
@@ -99,14 +110,14 @@ export class Args {
      * @param from - Where to start looking for tokens; defaults to current position.
      * @returns The tokens.
      */
-    public many(limit = Infinity, from = this.position): Token[] {
+    public many(limit = Infinity, from = this.state.position): Token[] {
         const ts = [];
         for (let i = from; i < this.length && ts.length < limit; i++) {
-            if (this.usedIndices.has(i)) {
+            if (this.state.usedIndices.has(i)) {
                 continue;
             }
 
-            this.usedIndices.add(i);
+            this.state.usedIndices.add(i);
             ts.push(this.parserOutput.ordered[i]);
         }
 
@@ -120,14 +131,14 @@ export class Args {
      * @param from - Where to start looking for tokens; defaults to current position from end.
      * @returns The tokens.
      */
-    public manyFromEnd(limit = Infinity, from = this.positionFromEnd): Token[] {
+    public manyFromEnd(limit = Infinity, from = this.state.positionFromEnd): Token[] {
         const ts = [];
         for (let i = from; i >= 0 && ts.length < limit; i--) {
-            if (this.usedIndices.has(i)) {
+            if (this.state.usedIndices.has(i)) {
                 continue;
             }
 
-            this.usedIndices.add(i);
+            this.state.usedIndices.add(i);
             ts.unshift(this.parserOutput.ordered[i]);
         }
 
@@ -188,16 +199,16 @@ export class Args {
      * @param from - Where to start looking for tokens; defaults to current position.
      * @returns The resulting value if it was found.
      */
-    public findMap<T>(f: (x: string) => Option<T>, from = this.position): Option<T> {
+    public findMap<T>(f: (x: string) => Option<T>, from = this.state.position): Option<T> {
         for (let i = from; i < this.length; i++) {
-            if (this.usedIndices.has(i)) {
+            if (this.state.usedIndices.has(i)) {
                 continue;
             }
 
             const x = this.parserOutput.ordered[i];
             const o = f(x.value);
             if (o.exists) {
-                this.usedIndices.add(i);
+                this.state.usedIndices.add(i);
                 return some(o.value);
             }
         }
@@ -214,21 +225,42 @@ export class Args {
      * @param from - Where to start looking for tokens; defaults to current position.
      * @returns The resulting values.
      */
-    public filterMap<T>(f: (x: string) => Option<T>, limit = Infinity, from = this.position): T[] {
+    public filterMap<T>(f: (x: string) => Option<T>, limit = Infinity, from = this.state.position): T[] {
         const ys = [];
         for (let i = from; i < this.length && ys.length < limit; i++) {
-            if (this.usedIndices.has(i)) {
+            if (this.state.usedIndices.has(i)) {
                 continue;
             }
 
             const x = this.parserOutput.ordered[i];
             const o = f(x.value);
             if (o.exists) {
-                this.usedIndices.add(i);
+                this.state.usedIndices.add(i);
                 ys.push(o.value);
             }
         }
 
         return ys;
+    }
+
+    /**
+     * Saves the current state that can then be restored later.
+     * @returns The current state.
+     */
+    public save(): ArgsState {
+        return {
+            usedIndices: new Set(this.state.usedIndices.values()),
+            position: this.state.position,
+            positionFromEnd: this.state.positionFromEnd
+        };
+    }
+
+    /**
+     * Sets the current state to the given state.
+     * Use this to backtrack after a series of retrievals.
+     * @param state - State to restore to.
+     */
+    public restore(state: ArgsState): void {
+        this.state = state;
     }
 }

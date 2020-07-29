@@ -71,7 +71,7 @@ describe('args', () => {
         expect(args.length).toEqual(4);
         expect(args.remaining).toEqual(4);
         expect(args.finished).toEqual(false);
-        expect(args.usedIndices).toEqual(new Set());
+        expect(args.state.usedIndices).toEqual(new Set());
 
         args.single();
         args.single();
@@ -79,14 +79,14 @@ describe('args', () => {
         expect(args.length).toEqual(4);
         expect(args.remaining).toEqual(2);
         expect(args.finished).toEqual(false);
-        expect(args.usedIndices).toEqual(new Set([0, 1]));
+        expect(args.state.usedIndices).toEqual(new Set([0, 1]));
 
         args.many();
 
         expect(args.length).toEqual(4);
         expect(args.remaining).toEqual(0);
         expect(args.finished).toEqual(true);
-        expect(args.usedIndices).toEqual(new Set([0, 1, 2, 3]));
+        expect(args.state.usedIndices).toEqual(new Set([0, 1, 2, 3]));
     });
 
     it('can find a token', () => {
@@ -126,10 +126,10 @@ describe('args', () => {
         const args = new Args(po);
 
         args.findMap(x => x === 'hello' ? some(10) : none());
-        expect(args.usedIndices).toEqual(new Set([0]));
+        expect(args.state.usedIndices).toEqual(new Set([0]));
         expect(args.single()).toEqual('world');
-        expect(args.usedIndices).toEqual(new Set([0, 1]));
-        expect(args.position).toEqual(2);
+        expect(args.state.usedIndices).toEqual(new Set([0, 1]));
+        expect(args.state.position).toEqual(2);
     });
 
     it('will skip over multiple used tokens', () => {
@@ -139,9 +139,9 @@ describe('args', () => {
         const args = new Args(po);
 
         args.filterMap(x => x === 'hello' ? some(10) : none());
-        expect(args.usedIndices).toEqual(new Set([0, 2]));
+        expect(args.state.usedIndices).toEqual(new Set([0, 2]));
         expect(args.many()).toEqual([{ value: 'a', raw: 'a', trailing: ' ' }, { value: 'b', raw: 'b', trailing: '' }]);
-        expect(args.usedIndices).toEqual(new Set([0, 1, 2, 3]));
+        expect(args.state.usedIndices).toEqual(new Set([0, 1, 2, 3]));
     });
 
     it('can retrieve single from end', () => {
@@ -212,5 +212,31 @@ describe('args', () => {
         const args = new Args(po);
 
         expect(args.options('foo', 'bar', 'baz')).toEqual(['1', '2', '3']);
+    });
+
+    it('can save and restore state', () => {
+        const s = 'a b c';
+        const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
+        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const args = new Args(po);
+
+        args.single();
+        const st = args.save();
+        expect(st).toEqual({
+            usedIndices: new Set([0]),
+            position: 1,
+            positionFromEnd: 2
+        });
+
+        args.single();
+        args.single();
+        args.restore(st);
+        expect(st).toEqual({
+            usedIndices: new Set([0]),
+            position: 1,
+            positionFromEnd: 2
+        });
+
+        expect(args.single()).toEqual('b');
     });
 });
