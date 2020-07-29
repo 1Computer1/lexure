@@ -25,7 +25,7 @@ Type of finish results.
 
 ###  action
 
-* **action**: "finish"
+* **action**: [FINISH](../enums/looptag.md#finish)
 
 Whether the loop should continue.
 

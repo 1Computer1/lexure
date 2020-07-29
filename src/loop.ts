@@ -1,5 +1,7 @@
-import { LoopAction, fail, step_ } from './loopAction';
+import { LoopAction, fail, step_, LoopTag } from './loopAction';
 import { Result, ok, err } from './result';
+
+const { STEP, FINISH, FAIL } = LoopTag;
 
 /**
  * A strategy for running an input loop.
@@ -108,16 +110,16 @@ export function loop<S, A, Z, E>(
     let parsed = strat.parse(inp, state);
     for (;;) {
         switch (parsed.action) {
-            case 'finish':
+            case FINISH:
                 return ok(parsed.value);
             
-            case 'fail': {
+            case FAIL: {
                 const r = strat.onParseError?.(parsed.error, inp, state) ?? step_();
                 switch (r.action) {
-                    case 'finish':
+                    case FINISH:
                         return ok(r.value);
                     
-                    case 'fail':
+                    case FAIL:
                         return err(r.error);
                 }
             }
@@ -125,22 +127,22 @@ export function loop<S, A, Z, E>(
 
         const got = strat.getInput(state);
         switch (got.action) {            
-            case 'step': {
+            case STEP: {
                 inp = got.value;
                 parsed = strat.parse(inp, state);
                 break;
             }
 
-            case 'finish':
+            case FINISH:
                 return ok(got.value);
 
-            case 'fail': {
+            case FAIL: {
                 const r = strat.onInputError?.(got.error, state) ?? fail(got.error);
                 switch (r.action) {
-                    case 'finish':
+                    case FINISH:
                         return ok(r.value);
 
-                    case 'fail':
+                    case FAIL:
                         return err(r.error);
                 }
             }
@@ -167,20 +169,20 @@ export function loop1<S, A, Z, E>(
     for (;;) {
         const got = strat.getInput(state);
         switch (got.action) {
-            case 'step': {
+            case STEP: {
                 const inp = got.value;
                 const parsed = strat.parse(inp, state);
                 switch (parsed.action) {
-                    case 'finish':
+                    case FINISH:
                         return ok(parsed.value);
 
-                    case 'fail': {
+                    case FAIL: {
                         const r = strat.onParseError?.(parsed.error, inp, state) ?? step_();
                         switch (r.action) {
-                            case 'finish':
+                            case FINISH:
                                 return ok(r.value);
 
-                            case 'fail':
+                            case FAIL:
                                 return err(r.error);
                         }
                     }
@@ -189,16 +191,16 @@ export function loop1<S, A, Z, E>(
                 break;
             }
 
-            case 'finish':
+            case FINISH:
                 return ok(got.value);
 
-            case 'fail': {
+            case FAIL: {
                 const r = strat.onInputError?.(got.error, state) ?? fail(got.error);
                 switch (r.action) {
-                    case 'finish':
+                    case FINISH:
                         return ok(r.value);
 
-                    case 'fail':
+                    case FAIL:
                         return err(r.error);
                 }
             }
@@ -228,16 +230,16 @@ export async function loopAsync<S, A, Z, E>(
     let parsed = await strat.parse(inp, state);
     for (;;) {
         switch (parsed.action) {
-            case 'finish':
+            case FINISH:
                 return ok(parsed.value);
             
-            case 'fail': {
+            case FAIL: {
                 const r = await strat.onParseError?.(parsed.error, inp, state) ?? step_();
                 switch (r.action) {
-                    case 'finish':
+                    case FINISH:
                         return ok(r.value);
                     
-                    case 'fail':
+                    case FAIL:
                         return err(r.error);
                 }
             }
@@ -245,22 +247,22 @@ export async function loopAsync<S, A, Z, E>(
 
         const got = await strat.getInput(state);
         switch (got.action) {            
-            case 'step': {
+            case STEP: {
                 inp = got.value;
                 parsed = await strat.parse(inp, state);
                 break;
             }
 
-            case 'finish':
+            case FINISH:
                 return ok(got.value);
 
-            case 'fail': {
+            case FAIL: {
                 const r = await strat.onInputError?.(got.error, state) ?? fail(got.error);
                 switch (r.action) {
-                    case 'finish':
+                    case FINISH:
                         return ok(r.value);
 
-                    case 'fail':
+                    case FAIL:
                         return err(r.error);
                 }
             }
@@ -288,20 +290,20 @@ export async function loop1Async<S, A, Z, E>(
     for (;;) {
         const got = await strat.getInput(state);
         switch (got.action) {
-            case 'step': {
+            case STEP: {
                 const inp = got.value;
                 const parsed = await strat.parse(inp, state);
                 switch (parsed.action) {
-                    case 'finish':
+                    case FINISH:
                         return ok(parsed.value);
 
-                    case 'fail': {
+                    case FAIL: {
                         const r = await strat.onParseError?.(parsed.error, inp, state) ?? step_();
                         switch (r.action) {
-                            case 'finish':
+                            case FINISH:
                                 return ok(r.value);
 
-                            case 'fail':
+                            case FAIL:
                                 return err(r.error);
                         }
                     }
@@ -310,16 +312,16 @@ export async function loop1Async<S, A, Z, E>(
                 break;
             }
 
-            case 'finish':
+            case FINISH:
                 return ok(got.value);
 
-            case 'fail': {
+            case FAIL: {
                 const r = await strat.onInputError?.(got.error, state) ?? fail(got.error);
                 switch (r.action) {
-                    case 'finish':
+                    case FINISH:
                         return ok(r.value);
 
-                    case 'fail':
+                    case FAIL:
                         return err(r.error);
                 }
             }

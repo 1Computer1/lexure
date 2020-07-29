@@ -8,6 +8,15 @@
 export type LoopAction<A, B, E> = Step<A> | Finish<B> | Fail<E>;
 
 /**
+ * Tag for the loop action variants.
+ */
+export enum LoopTag {
+    STEP = 'step',
+    FINISH = 'finish',
+    FAIL = 'fail'
+}
+
+/**
  * The loop should continue being stepped through.
  * @typeparam A - Type of step results.
  */
@@ -15,7 +24,7 @@ export interface Step<A> {
     /**
      * Whether the loop should continue.
      */
-    action: 'step';
+    action: LoopTag.STEP;
 
     /**
      * The resulting value.
@@ -31,7 +40,7 @@ export interface Finish<B> {
     /**
      * Whether the loop should continue.
      */
-    action: 'finish';
+    action: LoopTag.FINISH;
 
     /**
      * The resulting value.
@@ -47,7 +56,7 @@ export interface Fail<E> {
     /**
      * Whether the loop should continue.
      */
-    action: 'fail';
+    action: LoopTag.FAIL;
 
     /**
      * The resulting error.
@@ -62,7 +71,7 @@ export interface Fail<E> {
  * @returns A LoopAction.
  */
 export function step<A>(x: A): Step<A> {
-    return { action: 'step', value: x };
+    return { action: LoopTag.STEP, value: x };
 }
 
 /**
@@ -70,7 +79,7 @@ export function step<A>(x: A): Step<A> {
  * @returns A LoopAction.
  */
 export function step_(): Step<null> {
-    return { action: 'step', value: null };
+    return { action: LoopTag.STEP, value: null };
 }
 
 /**
@@ -80,7 +89,7 @@ export function step_(): Step<null> {
  * @returns A LoopAction.
  */
 export function finish<B>(x: B): Finish<B> {
-    return { action: 'finish', value: x };
+    return { action: LoopTag.FINISH, value: x };
 }
 
 /**
@@ -90,5 +99,5 @@ export function finish<B>(x: B): Finish<B> {
  * @returns A LoopAction.
  */
 export function fail<E>(x: E): Fail<E> {
-    return { action: 'fail', error: x };
+    return { action: LoopTag.FAIL, error: x };
 }

@@ -4,6 +4,10 @@
 
 ## Index
 
+### Enumerations
+
+* [LoopTag](enums/looptag.md)
+
 ### Classes
 
 * [Args](classes/args.md)
@@ -33,6 +37,12 @@
 * [LoopAction](README.md#loopaction)
 * [Result](README.md#result)
 * [Pairing](README.md#pairing)
+
+### Variables
+
+* [STEP](README.md#step)
+* [FINISH](README.md#finish)
+* [FAIL](README.md#fail)
 
 ### Functions
 
@@ -117,6 +127,24 @@ ___
 * **Pairing**: Record\<string, string[]\>
 
 Pairing of flag/option names to the words usable for them.
+
+## Variables
+
+###  STEP
+
+* **STEP**: [STEP](enums/looptag.md#step)
+
+___
+
+###  FINISH
+
+* **FINISH**: [FINISH](enums/looptag.md#finish)
+
+___
+
+###  FAIL
+
+* **FAIL**: [FAIL](enums/looptag.md#fail)
 
 ## Functions
 

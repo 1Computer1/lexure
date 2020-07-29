@@ -25,7 +25,7 @@ Type of step results.
 
 ###  action
 
-* **action**: "step"
+* **action**: [STEP](../enums/looptag.md#step)
 
 Whether the loop should continue.
 

@@ -25,7 +25,7 @@ Type of errors.
 
 ###  action
 
-* **action**: "fail"
+* **action**: [FAIL](../enums/looptag.md#fail)
 
 Whether the loop should continue.
 

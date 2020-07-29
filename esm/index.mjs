@@ -11,6 +11,7 @@ export const {
     loopAsync,
     loop1Async,
     // loopAction.js
+    LoopTag,
     step,
     step_,
     finish,
