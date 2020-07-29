@@ -263,9 +263,9 @@ Gets the last value of an option.
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-...keys | string[] |
+Name | Type | Description |
+------ | ------ | ------ |
+...keys | string[] | The name(s) of the option. |
 
 **Returns:** string | null
 

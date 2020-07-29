@@ -197,7 +197,7 @@ export class Args {
 
     /**
      * Gets the last value of an option.
-     * @param key - The name(s) of the option.
+     * @param keys - The name(s) of the option.
      * @returns The last value of the option if it was given.
      * When there are multiple names, the last value of the first found name is given.
      */
