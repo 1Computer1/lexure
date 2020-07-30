@@ -1,4 +1,5 @@
 import * as lexure from '../src';
+import { Lexer, Parser, Args, Result, loopAsync, loop1Async, err, ok, step, finish, fail } from '../src';
 
 describe('readme', () => {
     it('should work', () => {
@@ -91,5 +92,245 @@ describe('readme', () => {
         });
 
         expect(result).toEqual({ success: true, value: 100 });
+    });
+});
+
+describe('parsing-with-loops', () => {
+    let aski = 0;
+    let asks: string[] = [];
+    function ask(): Promise<string | null> {
+        if (aski >= asks.length) {
+            return Promise.resolve(null);
+        }
+
+        return Promise.resolve(asks[aski++]);
+    }
+
+    let says: string[] = [];
+    function say(s: string): Promise<void> {
+        says.push(s);
+        return Promise.resolve();
+    }
+
+    function sayError(e: ParseError): Promise<void> {
+        switch (e) {
+            case ParseError.PARSE_FAILURE:
+                return say('Invalid input.');
+    
+            case ParseError.NO_INPUT_GIVEN:
+                return say('You did not give a value in time.');
+    
+            case ParseError.TOO_MANY_TRIES:
+                return say('You took too many tries.');
+        }
+    }
+
+    enum ParseError {
+        PARSE_FAILURE,
+        NO_INPUT_GIVEN,
+        TOO_MANY_TRIES
+    }
+
+    type Parser<T> = (x: string) => Result<T, ParseError>;
+    type ParserAsync<T> = (x: string) => Promise<Result<T, ParseError>>;
+
+    function loopParse<T>(expected: string, runParser: Parser<T>): ParserAsync<T> {
+        return (init: string) => {
+            let retries = 0;
+            return loopAsync(init, {
+                async getInput() {
+                    if (retries >= 3) {
+                        return fail(ParseError.TOO_MANY_TRIES);
+                    }
+
+                    const s = await ask();
+                    retries++;
+                    if (s == null) {
+                        return fail(ParseError.NO_INPUT_GIVEN);
+                    }
+
+                    return step(s);
+                },
+
+                async parse(s: string) {
+                    const res = runParser(s);
+                    if (res.success) {
+                        return finish(res.value);
+                    }
+    
+                    await say(`Invalid input ${s}, please give a valid ${expected}.`);
+                    return fail(ParseError.PARSE_FAILURE);
+                }
+            });
+        };
+    }
+
+    async function loop1Parse<T>(expected: string, runParser: Parser<T>): Promise<Result<T, ParseError>> {
+        let retries = 0;
+        await say(`No input given, please give a valid ${expected}.`);
+
+        return loop1Async({
+            async getInput() {
+                if (retries >= 3) {
+                    return fail(ParseError.TOO_MANY_TRIES);
+                }
+
+                const s = await ask();
+                retries++;
+                if (s == null) {
+                    return fail(ParseError.NO_INPUT_GIVEN);
+                }
+    
+                return step(s);
+            },
+    
+            async parse(s: string) {
+                const res = runParser(s);
+                if (res.success) {
+                    return finish(res.value);
+                }
+    
+                await say(`Invalid input ${s}, please give a valid ${expected}.`);
+                return fail(ParseError.PARSE_FAILURE);
+            }
+        });
+    }
+
+    async function singleLoop<T>(args: Args, expected: string, parser: Parser<T>): Promise<Result<T, ParseError>> {
+        const r1 = await args.singleParseAsync(loopParse(expected, parser));
+        if (r1.success) {
+            return r1;
+        }
+
+        if (r1.error.exists) {
+            return err(r1.error.value);
+        }
+
+        return loop1Parse(expected, parser);
+    }
+
+    function parseNumber(x: string): Result<number, ParseError> {
+        const n = Number(x);
+        return isNaN(n) ? err(ParseError.PARSE_FAILURE) : ok(n);
+    }
+
+    async function addCommand(args: Args): Promise<void> {
+        const n1 = await singleLoop(args, 'number', parseNumber);
+        if (!n1.success) {
+            return sayError(n1.error);
+        }
+
+        const n2 = await singleLoop(args, 'number', parseNumber);
+        if (!n2.success) {
+            return sayError(n2.error);
+        }
+
+        const z = n1.value + n2.value;
+        return say(`That adds to ${z}.`);
+    }
+
+    it('should work with correct inputs', async () => {
+        asks = [];
+
+        const input = '1 3';
+        const args = new Args(new Parser(new Lexer(input).lex()).parse());
+        await addCommand(args);
+        expect(aski).toEqual(0);
+        expect(says).toEqual(['That adds to 4.']);
+
+        aski = 0;
+        asks = [];
+        says = [];
+    });
+
+    it('should work with one incorrect input, one retry', async () => {
+        asks = ['ok', '3'];
+
+        const input = '1 b';
+        const args = new Args(new Parser(new Lexer(input).lex()).parse());
+        await addCommand(args);
+        expect(aski).toEqual(2);
+        expect(says).toEqual([
+            'Invalid input b, please give a valid number.',
+            'Invalid input ok, please give a valid number.',
+            'That adds to 4.'
+        ]);
+
+        aski = 0;
+        asks = [];
+        says = [];
+    });
+
+    it('should work with two incorrect inputs, no retries', async () => {
+        asks = ['1', '3'];
+
+        const input = 'a b';
+        const args = new Args(new Parser(new Lexer(input).lex()).parse());
+        await addCommand(args);
+        expect(aski).toEqual(2);
+        expect(says).toEqual([
+            'Invalid input a, please give a valid number.',
+            'Invalid input b, please give a valid number.',
+            'That adds to 4.'
+        ]);
+
+        aski = 0;
+        asks = [];
+        says = [];
+    });
+
+    it('should work with no initial inputs', async () => {
+        asks = ['1', '3'];
+
+        const input = '';
+        const args = new Args(new Parser(new Lexer(input).lex()).parse());
+        await addCommand(args);
+        expect(aski).toEqual(2);
+        expect(says).toEqual([
+            'No input given, please give a valid number.',
+            'No input given, please give a valid number.',
+            'That adds to 4.'
+        ]);
+
+        aski = 0;
+        asks = [];
+        says = [];
+    });
+
+    it('should work with two incorrect inputs, retry limit reached', async () => {
+        asks = ['a', 'a', 'a', 'a', 'a'];
+
+        const input = 'a b';
+        const args = new Args(new Parser(new Lexer(input).lex()).parse());
+        await addCommand(args);
+        expect(aski).toEqual(3);
+        expect(says).toEqual([
+            'Invalid input a, please give a valid number.',
+            'Invalid input a, please give a valid number.',
+            'Invalid input a, please give a valid number.',
+            'Invalid input a, please give a valid number.',
+            'You took too many tries.'
+        ]);
+
+        aski = 0;
+        asks = [];
+        says = [];
+    });
+
+    it('should work with two incorrect inputs, no input given', async () => {
+        asks = [];
+
+        const input = 'a b';
+        const args = new Args(new Parser(new Lexer(input).lex()).parse());
+        await addCommand(args);
+        expect(aski).toEqual(0);
+        expect(says).toEqual([
+            'Invalid input a, please give a valid number.',
+            'You did not give a value in time.'
+        ]);
+
+        aski = 0;
+        asks = [];
+        says = [];
     });
 });
