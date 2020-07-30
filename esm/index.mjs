@@ -51,6 +51,7 @@ export const {
     exactStrategy,
     caseInsensitiveStrategy,
     // util.js
+    util,
     someToOk,
     okToSome,
     errToSome,
