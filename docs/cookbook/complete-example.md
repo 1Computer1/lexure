@@ -81,14 +81,14 @@ See it in action!
 import { runCommand } from './mycommand';
 
 console.log(runCommand('!add 1 2'));
->>> The answer is 3.
+>>> 'The answer is 3.'
 
 console.log(runCommand('!add 1 x'));
->>> The answer is NaN.
+>>> 'The answer is NaN.'
 
 console.log(runCommand('!foo'));
->>> Not an implemented command.
+>>> 'Not an implemented command.'
 
 console.log(runCommand('hello'));
->>> Not a command.
+>>> 'Not a command.'
 ```
