@@ -70,7 +70,7 @@ describe('readme', () => {
             return '100';
         }
 
-        const result = lexure.loop1(null, {
+        const result = lexure.loop1({
             getInput() {
                 const input = prompt();
                 if (input == null) {
