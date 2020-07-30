@@ -5,7 +5,7 @@ describe('loop', () => {
         const inputs = ['hello', 'world', '100', 'extra'];
         let i = 0;
 
-        const result = loop(inputs[i++], null, {
+        const result = loop(inputs[i++], {
             getInput() {
                 return i < inputs.length
                     ? step(inputs[i++])
@@ -38,7 +38,7 @@ describe('loop', () => {
         const inputs = ['hello', 'world', 'extra'];
         let i = 0;
 
-        const result = loop(inputs[i++], null, {
+        const result = loop(inputs[i++], {
             getInput() {
                 return i < inputs.length
                     ? step(inputs[i++])
@@ -71,7 +71,7 @@ describe('loop', () => {
         const inputs = ['hello', 'world', 'extra'];
         let i = 0;
 
-        const result = loop(inputs[i++], null, {
+        const result = loop(inputs[i++], {
             getInput() {
                 return i < inputs.length
                     ? step(inputs[i++])
@@ -106,7 +106,7 @@ describe('loop1', () => {
         const inputs = ['hello', 'world', '100', 'extra'];
         let i = 0;
 
-        const result = loop1(null, {
+        const result = loop1({
             getInput() {
                 return i < inputs.length
                     ? step(inputs[i++])
@@ -139,7 +139,7 @@ describe('loop1', () => {
         const inputs = ['hello', 'world', 'extra'];
         let i = 0;
 
-        const result = loop1(null, {
+        const result = loop1({
             getInput() {
                 return i < inputs.length
                     ? step(inputs[i++])
@@ -172,7 +172,7 @@ describe('loop1', () => {
         const inputs = ['hello', 'world', 'extra'];
         let i = 0;
 
-        const result = loop1(null, {
+        const result = loop1({
             getInput() {
                 return i < inputs.length
                     ? step(inputs[i++])
@@ -207,7 +207,7 @@ describe('loopAsync', () => {
         const inputs = ['hello', 'world', '100', 'extra'];
         let i = 0;
 
-        const result = await loopAsync(inputs[i++], null, {
+        const result = await loopAsync(inputs[i++], {
             async getInput() {
                 return i < inputs.length
                     ? step(inputs[i++])
@@ -240,7 +240,7 @@ describe('loopAsync', () => {
         const inputs = ['hello', 'world', 'extra'];
         let i = 0;
 
-        const result = await loopAsync(inputs[i++], null, {
+        const result = await loopAsync(inputs[i++], {
             async getInput() {
                 return i < inputs.length
                     ? step(inputs[i++])
@@ -273,7 +273,7 @@ describe('loopAsync', () => {
         const inputs = ['hello', 'world', 'extra'];
         let i = 0;
 
-        const result = await loopAsync(inputs[i++], null, {
+        const result = await loopAsync(inputs[i++], {
             async getInput() {
                 return i < inputs.length
                     ? step(inputs[i++])
@@ -305,10 +305,10 @@ describe('loopAsync', () => {
     it('(complex) can do complicated things (too many retries)', async () => {
         const inputs = ['hello', 'world', 'extra'];
         let i = 0;
-        const state = { retries: 0 };
+        const st = { retries: 0 };
 
-        const result = await loopAsync(inputs[i++], state, {
-            async getInput(st) {
+        const result = await loopAsync(inputs[i++], {
+            async getInput() {
                 if (st.retries > 1) {
                     return fail('too many retries');
                 }
@@ -341,14 +341,14 @@ describe('loopAsync', () => {
 
         expect(result).toEqual(err('too many retries'));
         expect(i).toEqual(3);
-        expect(state).toEqual({ retries: 2 });
+        expect(st).toEqual({ retries: 2 });
     });
 
     it('(complex) can do complicated things (cancellation input)', async () => {
         const inputs = ['hello', 'cancel', 'extra'];
         let i = 0;
 
-        const result = await loopAsync(inputs[i++], null, {
+        const result = await loopAsync(inputs[i++], {
             async getInput() {
                 if (i < inputs.length) {
                     const inp = inputs[i++];
@@ -387,10 +387,10 @@ describe('loopAsync', () => {
     it('(complex) can do complicated things (collect multiple inputs)', async () => {
         const inputs = ['10', 'bad', '20', '30', 'stop', '40'];
         let i = 0;
-        const state: number[] = [];
+        const st: number[] = [];
 
-        const result = await loopAsync(inputs[i++], state, {
-            async getInput(st) {
+        const result = await loopAsync(inputs[i++], {
+            async getInput() {
                 if (i < inputs.length) {
                     const inp = inputs[i++];
                     if (inp === 'stop') {
@@ -403,7 +403,7 @@ describe('loopAsync', () => {
                 return finish(st);
             },
 
-            async parse(s, st) {
+            async parse(s) {
                 const n = Number(s);
                 if (isNaN(n)) {
                     return fail('bad input');
@@ -424,7 +424,7 @@ describe('loopAsync', () => {
 
         expect(result).toEqual(ok([10, 20, 30]));
         expect(i).toEqual(5);
-        expect(state).toEqual([10, 20, 30]);
+        expect(st).toEqual([10, 20, 30]);
     });
 });
 
@@ -434,7 +434,7 @@ describe('loop1Async', () => {
         const inputs = ['hello', 'world', '100', 'extra'];
         let i = 0;
 
-        const result = await loop1Async(null, {
+        const result = await loop1Async({
             async getInput() {
                 return i < inputs.length
                     ? step(inputs[i++])
@@ -467,7 +467,7 @@ describe('loop1Async', () => {
         const inputs = ['hello', 'world', 'extra'];
         let i = 0;
 
-        const result = await loop1Async(null, {
+        const result = await loop1Async({
             async getInput() {
                 return i < inputs.length
                     ? step(inputs[i++])
@@ -500,7 +500,7 @@ describe('loop1Async', () => {
         const inputs = ['hello', 'world', 'extra'];
         let i = 0;
 
-        const result = await loop1Async(null, {
+        const result = await loop1Async({
             async getInput() {
                 return i < inputs.length
                     ? step(inputs[i++])
@@ -532,10 +532,10 @@ describe('loop1Async', () => {
     it('(complex) can do complicated things (too many retries)', async () => {
         const inputs = ['hello', 'world', 'extra'];
         let i = 0;
-        const state = { retries: 0 };
+        const st = { retries: 0 };
 
-        const result = await loop1Async(state, {
-            async getInput(st) {
+        const result = await loop1Async({
+            async getInput() {
                 if (st.retries > 1) {
                     return fail('too many retries');
                 }
@@ -568,14 +568,14 @@ describe('loop1Async', () => {
 
         expect(result).toEqual(err('too many retries'));
         expect(i).toEqual(2);
-        expect(state).toEqual({ retries: 2 });
+        expect(st).toEqual({ retries: 2 });
     });
 
     it('(complex) can do complicated things (cancellation input)', async () => {
         const inputs = ['hello', 'cancel', 'extra'];
         let i = 0;
 
-        const result = await loop1Async(null, {
+        const result = await loop1Async({
             async getInput() {
                 if (i < inputs.length) {
                     const inp = inputs[i++];
@@ -614,10 +614,10 @@ describe('loop1Async', () => {
     it('(complex) can do complicated things (collect multiple inputs)', async () => {
         const inputs = ['10', 'bad', '20', '30', 'stop', '40'];
         let i = 0;
-        const state: number[] = [];
+        const st: number[] = [];
 
-        const result = await loop1Async(state, {
-            async getInput(st) {
+        const result = await loop1Async({
+            async getInput() {
                 if (i < inputs.length) {
                     const inp = inputs[i++];
                     if (inp === 'stop') {
@@ -630,7 +630,7 @@ describe('loop1Async', () => {
                 return finish(st);
             },
 
-            async parse(s, st) {
+            async parse(s) {
                 const n = Number(s);
                 if (isNaN(n)) {
                     return fail('bad input');
@@ -651,6 +651,6 @@ describe('loop1Async', () => {
 
         expect(result).toEqual(ok([10, 20, 30]));
         expect(i).toEqual(5);
-        expect(state).toEqual([10, 20, 30]);
+        expect(st).toEqual([10, 20, 30]);
     });
 });
