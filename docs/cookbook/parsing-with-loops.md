@@ -41,7 +41,7 @@ Now, we will write functions on top of `loopAsync` and `loop1Async`.
 // helpers.ts
 // ----------
 
-import { Args, Result, LoopStrategy, loopAsync, loop1Async, step, fail, finish } from 'lexure';
+import { Args, Result, loopAsync, loop1Async, err, ok, step, fail, finish } from 'lexure';
 import { ask, say } from 'talking';
 
 /**
