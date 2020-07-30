@@ -6,7 +6,6 @@ This is a complete example of using lexure from the lexer to the arguments wrapp
 // -----------
 // myparser.ts
 // -----------
-
 import { Lexer, Parser, Args, prefixedStrategy } from 'lexure';
 
 /**
@@ -43,7 +42,6 @@ export function parseCommand(s: string): [string, Args] | null {
 // ------------
 // mycommand.ts
 // ------------
-
 import { parseCommand } from 'myparser';
 
 /**
@@ -57,7 +55,7 @@ export function runCommand(s: string): string {
 
     const [command, args] = out;
     if (command === 'add') {
-        // These calls to Args#single can give a string or null.
+        // These calls to `Args#single` can give a string or null.
         const x = args.single();
         const y = args.single();
         // Which means this could give NaN on bad inputs.
@@ -73,8 +71,7 @@ export function runCommand(s: string): string {
 // --------
 // index.ts
 // --------
-
-import { runCommand } from 'mycommand.ts';
+import { runCommand } from 'mycommand';
 
 console.log(runCommand('!add 1 2'));
 >>> The answer is 3.
