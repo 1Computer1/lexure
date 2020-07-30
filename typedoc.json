@@ -2,7 +2,7 @@
     "mode": "file",
     "inputFiles": "src",
     "readme": "none",
-    "exclude": ["src/index.ts"],
+    "exclude": ["src/index.ts", "test/**"],
     "excludeNotExported": true,
     "excludePrivate": true,
     "disableSources": true,
