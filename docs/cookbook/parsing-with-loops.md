@@ -79,7 +79,7 @@ type ParserAsync<T> = (x: string) => Promise<Result<T, ParseError>>;
  * We will also take in a string, for the expected type of value.
  */
 export async function loopParse<T>(expected: string, parse: Parser<T>): ParserAsync<T> {
-    // We return a `Parser<T>`, which is a function.
+    // We return a `ParserAsync<T>`, which is a function.
     return (s: string) => {
         // We will use an integer to count how many retries have been taken.
         const retries = 0;
