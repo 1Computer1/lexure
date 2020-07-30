@@ -56,3 +56,11 @@ export function ok<T>(x: T): Ok<T> {
 export function err<E>(x: E): Err<E> {
     return { success: false, error: x };
 }
+
+/**
+ * Creates an Err with null value.
+ * @returns A Result.
+ */
+export function err_(): Err<null> {
+    return { success: false, error: null };
+}
