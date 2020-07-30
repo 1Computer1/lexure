@@ -30,6 +30,8 @@ A wrapper around the parser output for retrieving command arguments.
 * [single](args.md#single)
 * [singleMap](args.md#singlemap)
 * [singleMapAsync](args.md#singlemapasync)
+* [singleParse](args.md#singleparse)
+* [singleParseAsync](args.md#singleparseasync)
 * [singleFromEnd](args.md#singlefromend)
 * [many](args.md#many)
 * [manyFromEnd](args.md#manyfromend)
@@ -38,6 +40,8 @@ A wrapper around the parser output for retrieving command arguments.
 * [options](args.md#options)
 * [findMap](args.md#findmap)
 * [findMapAsync](args.md#findmapasync)
+* [findParse](args.md#findparse)
+* [findParseAsync](args.md#findparseasync)
 * [filterMap](args.md#filtermap)
 * [filterMapAsync](args.md#filtermapasync)
 * [save](args.md#save)
@@ -208,6 +212,102 @@ x | string |
 **Returns:** Promise\<[Option](../README.md#option)\<T\>\>
 
 The value if there are tokens left and the transformation succeeds.
+
+___
+
+###  singleParse
+
+* **singleParse**\<**T**, **E**\>(f: function): [Result](../README.md#result)\<T, [Option](../README.md#option)\<E\>\>
+
+Retrieves the value of the next unused ordered token, but only if it could be transformed.
+That token will now be consider used if the transformation succeeds.
+This is a variant of {@linkcode Args#singleMap} that allows for a Result to be returned.
+
+```ts
+// Suppose args are from '1 a'.
+const parse = (x: string) => {
+  const n = Number(x);
+  return isNaN(n) ? err(x + ' is not a number') : ok(n);
+};
+
+console.log(args.singleParse(parse));
+>>> { success: true, value: 1 }
+
+console.log(args.singleParse(parse));
+>>> { success: false, error: { exists: true, 'a is not a number' } }
+
+console.log(args.singleParse(parse));
+>>> { success: false, error: { exists: true, 'no input' } }
+```
+
+**Type parameters:**
+
+* **T**
+
+Output type.
+
+* **E**
+
+Error type.
+
+**Parameters:**
+
+* **f**: function
+
+Gives a result of either the resulting value, or an error.
+
+* (x: string): [Result](../README.md#result)\<T, E\>
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+x | string |
+
+**Returns:** [Result](../README.md#result)\<T, [Option](../README.md#option)\<E\>\>
+
+The result which succeeds if there are tokens left and the transformation succeeds.
+If there are no tokens left, the error will not exist.
+
+___
+
+###  singleParseAsync
+
+* **singleParseAsync**\<**T**, **E**\>(f: function): Promise\<[Result](../README.md#result)\<T, [Option](../README.md#option)\<E\>\>\>
+
+Retrieves the value of the next unused ordered token, but only if it could be transformed.
+That token will now be consider used if the transformation succeeds.
+This variant of the function is asynchronous using `Promise`.
+This is a variant of {@linkcode Args#singleMapAsync} that allows for a Result to be returned.
+
+**Type parameters:**
+
+* **T**
+
+Output type.
+
+* **E**
+
+Error type.
+
+**Parameters:**
+
+* **f**: function
+
+Gives a result of either the resulting value, or an error.
+
+* (x: string): Promise\<[Result](../README.md#result)\<T, E\>\>
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+x | string |
+
+**Returns:** Promise\<[Result](../README.md#result)\<T, [Option](../README.md#option)\<E\>\>\>
+
+The result which succeeds if there are tokens left and the transformation succeeds.
+If there are no tokens left, the error will not exist.
 
 ___
 
@@ -476,6 +576,91 @@ Where to start looking for tokens; defaults to current position.
 **Returns:** Promise\<[Option](../README.md#option)\<T\>\>
 
 The resulting value if it was found.
+
+___
+
+###  findParse
+
+* **findParse**\<**T**, **E**\>(f: function, from: number): [Result](../README.md#result)\<T, E[]\>
+
+Finds and retrieves the first unused token that could be transformed.
+That token will now be consider used.
+This is a variant of {@linkcode Args#findMap} that allows for a Result to be returned.
+
+**Type parameters:**
+
+* **T**
+
+Output type.
+
+* **E**
+
+Error type.
+
+**Parameters:**
+
+* **f**: function
+
+Gives a result of either the resulting value, or an error.
+
+* (x: string): [Result](../README.md#result)\<T, E\>
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+x | string |
+
+*default value  **from**: number= this.state.position
+
+Where to start looking for tokens; defaults to current position.
+
+**Returns:** [Result](../README.md#result)\<T, E[]\>
+
+The resulting value if it was found or a list of errors during parsing.
+
+___
+
+###  findParseAsync
+
+* **findParseAsync**\<**T**, **E**\>(f: function, from: number): Promise\<[Result](../README.md#result)\<T, E[]\>\>
+
+Finds and retrieves the first unused token that could be transformed.
+That token will now be consider used.
+This variant of the function is asynchronous using `Promise`.
+This is a variant of {@linkcode Args#findMapAsync} that allows for a Result to be returned.
+
+**Type parameters:**
+
+* **T**
+
+Output type.
+
+* **E**
+
+Error type.
+
+**Parameters:**
+
+* **f**: function
+
+Gives a result of either the resulting value, or an error.
+
+* (x: string): Promise\<[Result](../README.md#result)\<T, E\>\>
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+x | string |
+
+*default value  **from**: number= this.state.position
+
+Where to start looking for tokens; defaults to current position.
+
+**Returns:** Promise\<[Result](../README.md#result)\<T, E[]\>\>
+
+The resulting value if it was found or a list of errors during parsing.
 
 ___
 

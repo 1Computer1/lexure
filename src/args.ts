@@ -1,6 +1,7 @@
 import { ParserOutput } from './parserOutput';
 import { Token } from './tokens';
 import { Option, some, none } from './option';
+import { Result, err } from './result';
 
 /**
  * The state for the argument wrapper.
@@ -156,6 +157,81 @@ export class Args {
 
         this.state.usedIndices.add(this.state.position);
         return f(this.parserOutput.ordered[this.state.position++].value);
+    }
+
+    /**
+     * Retrieves the value of the next unused ordered token, but only if it could be transformed.
+     * That token will now be consider used if the transformation succeeds.
+     * This is a variant of {@linkcode Args#singleMap} that allows for a Result to be returned.
+     * 
+     * ```ts
+     * // Suppose args are from '1 a'.
+     * const parse = (x: string) => {
+     *   const n = Number(x);
+     *   return isNaN(n) ? err(x + ' is not a number') : ok(n);
+     * };
+     * 
+     * console.log(args.singleParse(parse));
+     * >>> { success: true, value: 1 }
+     * 
+     * console.log(args.singleParse(parse));
+     * >>> { success: false, error: { exists: true, 'a is not a number' } }
+     * 
+     * console.log(args.singleParse(parse));
+     * >>> { success: false, error: { exists: true, 'no input' } }
+     * ```
+     * 
+     * @typeparam T - Output type.
+     * @typeparam E - Error type.
+     * @param f - Gives a result of either the resulting value, or an error.
+     * @returns The result which succeeds if there are tokens left and the transformation succeeds.
+     * If there are no tokens left, the error will not exist.
+     */
+    public singleParse<T, E>(f: (x: string) => Result<T, E>): Result<T, Option<E>> {
+        if (this.finished) {
+            return err(none());
+        }
+
+        while (this.state.usedIndices.has(this.state.position)) {
+            this.state.position++;
+        }
+
+        this.state.usedIndices.add(this.state.position);
+        const o = f(this.parserOutput.ordered[this.state.position++].value);
+        if (o.success) {
+            return o;
+        }
+
+        return err(some(o.error));
+    }
+
+    /**
+     * Retrieves the value of the next unused ordered token, but only if it could be transformed.
+     * That token will now be consider used if the transformation succeeds.
+     * This variant of the function is asynchronous using `Promise`.
+     * This is a variant of {@linkcode Args#singleMapAsync} that allows for a Result to be returned.
+     * @typeparam T - Output type.
+     * @typeparam E - Error type.
+     * @param f - Gives a result of either the resulting value, or an error.
+     * @returns The result which succeeds if there are tokens left and the transformation succeeds.
+     * If there are no tokens left, the error will not exist.
+     */
+    public async singleParseAsync<T, E>(f: (x: string) => Promise<Result<T, E>>): Promise<Result<T, Option<E>>> {
+        if (this.finished) {
+            return err(none());
+        }
+
+        while (this.state.usedIndices.has(this.state.position)) {
+            this.state.position++;
+        }
+
+        this.state.usedIndices.add(this.state.position);
+        const o = await f(this.parserOutput.ordered[this.state.position++].value);
+        if (o.success) {
+            return o;
+        }
+
+        return err(some(o.error));
     }
 
     /**
@@ -408,6 +484,70 @@ export class Args {
         }
 
         return none();
+    }
+
+    /**
+     * Finds and retrieves the first unused token that could be transformed.
+     * That token will now be consider used.
+     * This is a variant of {@linkcode Args#findMap} that allows for a Result to be returned.
+     * @typeparam T - Output type.
+     * @typeparam E - Error type.
+     * @param f - Gives a result of either the resulting value, or an error.
+     * @param from - Where to start looking for tokens; defaults to current position.
+     * @returns The resulting value if it was found or a list of errors during parsing.
+     */
+    public findParse<T, E>(f: (x: string) => Result<T, E>, from = this.state.position): Result<T, E[]> {
+        const errors: E[] = [];
+        for (let i = from; i < this.length; i++) {
+            if (this.state.usedIndices.has(i)) {
+                continue;
+            }
+
+            const x = this.parserOutput.ordered[i];
+            const o = f(x.value);
+            if (o.success) {
+                this.state.usedIndices.add(i);
+                return o;
+            }
+
+            errors.push(o.error);
+        }
+
+        return err(errors);
+    }
+
+    /**
+     * Finds and retrieves the first unused token that could be transformed.
+     * That token will now be consider used.
+     * This variant of the function is asynchronous using `Promise`.
+     * This is a variant of {@linkcode Args#findMapAsync} that allows for a Result to be returned.
+     * @typeparam T - Output type.
+     * @typeparam E - Error type.
+     * @param f - Gives a result of either the resulting value, or an error.
+     * @param from - Where to start looking for tokens; defaults to current position.
+     * @returns The resulting value if it was found or a list of errors during parsing.
+     */
+    public async findParseAsync<T, E>(
+        f: (x: string) => Promise<Result<T, E>>,
+        from = this.state.position
+    ): Promise<Result<T, E[]>> {
+        const errors: E[] = [];
+        for (let i = from; i < this.length; i++) {
+            if (this.state.usedIndices.has(i)) {
+                continue;
+            }
+
+            const x = this.parserOutput.ordered[i];
+            const o = await f(x.value);
+            if (o.success) {
+                this.state.usedIndices.add(i);
+                return o;
+            }
+
+            errors.push(o.error);
+        }
+
+        return err(errors);
     }
 
     /**

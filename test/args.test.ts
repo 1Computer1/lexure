@@ -1,4 +1,4 @@
-import { Lexer, Parser, Args, some, none, longStrategy } from '../src';
+import { Lexer, Parser, Args, some, none, longStrategy, ok, err } from '../src';
 
 describe('args', () => {
     it('can retrieve single and many args', () => {
@@ -89,7 +89,7 @@ describe('args', () => {
         expect(args.state.usedIndices).toEqual(new Set([0, 1, 2, 3]));
     });
 
-    it('can find a token', () => {
+    it('can find and map a token', () => {
         const s = 'hello "world" baz "quux"';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
@@ -99,7 +99,7 @@ describe('args', () => {
         expect(y).toEqual(some(10));
     });
 
-    it('cannot find a token', () => {
+    it('cannot find and map a token', () => {
         const s = 'hello "world" baz "quux"';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
@@ -109,7 +109,7 @@ describe('args', () => {
         expect(y).toEqual(none());
     });
 
-    it('can find a token (async)', async () => {
+    it('can find and map a token (async)', async () => {
         const s = 'hello "world" baz "quux"';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
@@ -119,7 +119,7 @@ describe('args', () => {
         expect(y).toEqual(some(10));
     });
 
-    it('cannot find a token (async)', async () => {
+    it('cannot find and map a token (async)', async () => {
         const s = 'hello "world" baz "quux"';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
@@ -270,7 +270,7 @@ describe('args', () => {
         expect(args.single()).toEqual('b');
     });
 
-    it('can retrieve and map a single argument', () => {
+    it('can retrieve and map arguments', () => {
         const s = 'a b c';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
@@ -283,7 +283,7 @@ describe('args', () => {
         expect(b).toEqual(none());
     });
 
-    it('can retrieve and map a single argument (async)', async () => {
+    it('can retrieve and map arguments (async)', async () => {
         const s = 'a b c';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
@@ -294,5 +294,77 @@ describe('args', () => {
 
         const b = await args.singleMapAsync(async x => x === 'a' ? some(1) : none());
         expect(b).toEqual(none());
+    });
+
+    it('can retrieve and parse arguments', () => {
+        const s = 'a b';
+        const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
+        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const args = new Args(po);
+
+        const a = args.singleParse(x => x === 'a' ? ok(1) : err('bad'));
+        expect(a).toEqual(ok(1));
+
+        const b = args.singleParse(x => x === 'a' ? ok(1) : err('bad'));
+        expect(b).toEqual(err(some('bad')));
+
+        const c = args.singleParse(x => x === 'a' ? ok(1) : err('bad'));
+        expect(c).toEqual(err(none()));
+    });
+
+    it('can retrieve and parse arguments (async)', async () => {
+        const s = 'a b';
+        const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
+        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const args = new Args(po);
+
+        const a = await args.singleParseAsync(async x => x === 'a' ? ok(1) : err('bad'));
+        expect(a).toEqual(ok(1));
+
+        const b = await args.singleParseAsync(async x => x === 'a' ? ok(1) : err('bad'));
+        expect(b).toEqual(err(some('bad')));
+
+        const c = await args.singleParseAsync(async x => x === 'a' ? ok(1) : err('bad'));
+        expect(c).toEqual(err(none()));
+    });
+
+    it('can find and parse a token', () => {
+        const s = 'hello "world" baz "quux"';
+        const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
+        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const args = new Args(po);
+
+        const y = args.findParse(x => x === 'hello' ? ok(10) : err('bad'));
+        expect(y).toEqual(ok(10));
+    });
+
+    it('cannot find and parse a token', () => {
+        const s = 'hello "world" baz "quux"';
+        const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
+        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const args = new Args(po);
+
+        const y = args.findParse(x => x === 'goodbye' ? ok(10) : err('bad'));
+        expect(y).toEqual(err(['bad', 'bad', 'bad', 'bad']));
+    });
+
+    it('can find and parse a token (async)', async () => {
+        const s = 'hello "world" baz "quux"';
+        const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
+        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const args = new Args(po);
+
+        const y = await args.findParseAsync(async x => x === 'hello' ? ok(10) : err('bad'));
+        expect(y).toEqual(ok(10));
+    });
+
+    it('cannot find and parse a token (async)', async () => {
+        const s = 'hello "world" baz "quux"';
+        const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
+        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const args = new Args(po);
+
+        const y = await args.findParseAsync(async x => x === 'goodbye' ? ok(10) : err('bad'));
+        expect(y).toEqual(err(['bad', 'bad', 'bad', 'bad']));
     });
 });

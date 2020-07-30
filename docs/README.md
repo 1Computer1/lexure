@@ -20,12 +20,12 @@
 * [ParserOutput](interfaces/parseroutput.md)
 * [Some](interfaces/some.md)
 * [None](interfaces/none.md)
+* [Ok](interfaces/ok.md)
+* [Err](interfaces/err.md)
 * [ArgsState](interfaces/argsstate.md)
 * [Step](interfaces/step.md)
 * [Finish](interfaces/finish.md)
 * [Fail](interfaces/fail.md)
-* [Ok](interfaces/ok.md)
-* [Err](interfaces/err.md)
 * [LoopStrategy](interfaces/loopstrategy.md)
 * [LoopStrategyAsync](interfaces/loopstrategyasync.md)
 * [UnorderedStrategy](interfaces/unorderedstrategy.md)
@@ -34,8 +34,8 @@
 
 * [MatchPrefix](README.md#matchprefix)
 * [Option](README.md#option)
-* [LoopAction](README.md#loopaction)
 * [Result](README.md#result)
+* [LoopAction](README.md#loopaction)
 * [Pairing](README.md#pairing)
 
 ### Variables
@@ -54,13 +54,14 @@
 * [outputFromJSON](README.md#outputfromjson)
 * [some](README.md#some)
 * [none](README.md#none)
+* [ok](README.md#ok)
+* [err](README.md#err)
+* [err_](README.md#err_)
 * [sliceTo](README.md#sliceto)
 * [step](README.md#step)
 * [step_](README.md#step_)
 * [finish](README.md#finish)
 * [fail](README.md#fail)
-* [ok](README.md#ok)
-* [err](README.md#err)
 * [loop](README.md#loop)
 * [loop1](README.md#loop1)
 * [loopAsync](README.md#loopasync)
@@ -105,20 +106,20 @@ Used in this library for when a generic type could be nullable.
 
 ___
 
+###  Result
+
+* **Result**: [Ok](interfaces/ok.md)\<T\> | [Err](interfaces/err.md)\<E\>
+
+A type used to express computations that can fail.
+
+___
+
 ###  LoopAction
 
 * **LoopAction**: [Step](interfaces/step.md)\<A\> | [Finish](interfaces/finish.md)\<B\> | [Fail](interfaces/fail.md)\<E\>
 
 A type used to express actions in the loop.
 Each action can have a value with it.
-
-___
-
-###  Result
-
-* **Result**: [Ok](interfaces/ok.md)\<T\> | [Err](interfaces/err.md)\<E\>
-
-A type used to express computations that can fail.
 
 ___
 
@@ -308,6 +309,66 @@ An Option.
 
 ___
 
+###  ok
+
+* **ok**\<**T**\>(x: T): [Ok](interfaces/ok.md)\<T\>
+
+Creates an Ok.
+
+**Type parameters:**
+
+* **T**
+
+Type of results.
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+x | T | Value to use. |
+
+**Returns:** [Ok](interfaces/ok.md)\<T\>
+
+A Result.
+
+___
+
+###  err
+
+* **err**\<**E**\>(x: E): [Err](interfaces/err.md)\<E\>
+
+Creates an Err.
+
+**Type parameters:**
+
+* **E**
+
+Type of errors.
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+x | E | Value to use. |
+
+**Returns:** [Err](interfaces/err.md)\<E\>
+
+A Result.
+
+___
+
+###  err_
+
+* **err_**(): [Err](interfaces/err.md)\<null\>
+
+Creates an Err with null value.
+
+**Returns:** [Err](interfaces/err.md)\<null\>
+
+A Result.
+
+___
+
 ###  sliceTo
 
 * **sliceTo**(word: string, xs: string[]): string
@@ -404,54 +465,6 @@ x | E | Value to use. |
 **Returns:** [Fail](interfaces/fail.md)\<E\>
 
 A LoopAction.
-
-___
-
-###  ok
-
-* **ok**\<**T**\>(x: T): [Ok](interfaces/ok.md)\<T\>
-
-Creates an Ok.
-
-**Type parameters:**
-
-* **T**
-
-Type of results.
-
-**Parameters:**
-
-Name | Type | Description |
------- | ------ | ------ |
-x | T | Value to use. |
-
-**Returns:** [Ok](interfaces/ok.md)\<T\>
-
-A Result.
-
-___
-
-###  err
-
-* **err**\<**E**\>(x: E): [Err](interfaces/err.md)\<E\>
-
-Creates an Err.
-
-**Type parameters:**
-
-* **E**
-
-Type of errors.
-
-**Parameters:**
-
-Name | Type | Description |
------- | ------ | ------ |
-x | E | Value to use. |
-
-**Returns:** [Err](interfaces/err.md)\<E\>
-
-A Result.
 
 ___
 
