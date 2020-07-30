@@ -1,3 +1,0 @@
-# lexure
-
-Cookbook for lexure.  
