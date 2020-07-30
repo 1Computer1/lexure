@@ -8,6 +8,7 @@ export * as parserOutput from './parserOutput';
 export * as result from './result';
 export * as tokens from './tokens';
 export * as unordered from './unordered';
+export * as util from './util';
 
 export * from './args';
 export * from './lexer';
@@ -19,3 +20,4 @@ export * from './parserOutput';
 export * from './result';
 export * from './tokens';
 export * from './unordered';
+export * from './util';

@@ -49,5 +49,13 @@ export const {
     longShortStrategy,
     prefixedStrategy,
     exactStrategy,
-    caseInsensitiveStrategy
+    caseInsensitiveStrategy,
+    // util.js
+    someToOk,
+    okToSome,
+    errToSome,
+    someToStep,
+    someToFinish,
+    okToStep,
+    okToFinish
 } = lexure;

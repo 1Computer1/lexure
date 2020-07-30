@@ -73,6 +73,13 @@
 * [prefixedStrategy](README.md#prefixedstrategy)
 * [exactStrategy](README.md#exactstrategy)
 * [caseInsensitiveStrategy](README.md#caseinsensitivestrategy)
+* [someToOk](README.md#sometook)
+* [okToSome](README.md#oktosome)
+* [errToSome](README.md#errtosome)
+* [someToStep](README.md#sometostep)
+* [someToFinish](README.md#sometofinish)
+* [okToStep](README.md#oktostep)
+* [okToFinish](README.md#oktofinish)
 
 ## Type aliases
 
@@ -793,3 +800,196 @@ locale? | string &#124; string[] | The locale(s) to use to compare case. |
 **Returns:** [UnorderedStrategy](interfaces/unorderedstrategy.md)
 
 The strategy.
+
+___
+
+###  someToOk
+
+* **someToOk**\<**T**, **E**\>(x: [Option](README.md#option)\<T\>, error: E): [Result](README.md#result)\<T, E\>
+
+Converts an Option to a Result.
+- Some -> Ok
+- None -> Err
+
+**Type parameters:**
+
+* **T**
+
+* **E**
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+x | [Option](README.md#option)\<T\> | The Option. |
+error | E | The error if None. |
+
+**Returns:** [Result](README.md#result)\<T, E\>
+
+A Result.
+
+___
+
+###  okToSome
+
+* **okToSome**\<**T**, **E**\>(x: [Result](README.md#result)\<T, E\>): [Option](README.md#option)\<T\>
+
+Converts a Result to an Option.
+- Ok -> Some
+- Err -> None
+
+**Type parameters:**
+
+* **T**
+
+* **E**
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+x | [Result](README.md#result)\<T, E\> | The Result. |
+
+**Returns:** [Option](README.md#option)\<T\>
+
+An Option.
+
+___
+
+###  errToSome
+
+* **errToSome**\<**T**, **E**\>(x: [Result](README.md#result)\<T, E\>): [Option](README.md#option)\<E\>
+
+Converts a Result to an Option.
+- Ok -> None
+- Err -> Some
+
+**Type parameters:**
+
+* **T**
+
+* **E**
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+x | [Result](README.md#result)\<T, E\> | The Result. |
+
+**Returns:** [Option](README.md#option)\<E\>
+
+An Option.
+
+___
+
+###  someToStep
+
+* **someToStep**\<**A**, **B**, **E**\>(x: [Option](README.md#option)\<A\>, error: E): [LoopAction](README.md#loopaction)\<A, B, E\>
+
+Converts an Option to a LoopAction.
+- Some -> Step
+- None -> Fail
+
+**Type parameters:**
+
+* **A**
+
+* **B**
+
+* **E**
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+x | [Option](README.md#option)\<A\> | The Option. |
+error | E | The error if None. |
+
+**Returns:** [LoopAction](README.md#loopaction)\<A, B, E\>
+
+A LoopAction.
+
+___
+
+###  someToFinish
+
+* **someToFinish**\<**A**, **B**, **E**\>(x: [Option](README.md#option)\<B\>, error: E): [LoopAction](README.md#loopaction)\<A, B, E\>
+
+Converts an Option to a LoopAction.
+- Some -> Finish
+- None -> Fail
+
+**Type parameters:**
+
+* **A**
+
+* **B**
+
+* **E**
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+x | [Option](README.md#option)\<B\> | The Option. |
+error | E | The error if None. |
+
+**Returns:** [LoopAction](README.md#loopaction)\<A, B, E\>
+
+A LoopAction.
+
+___
+
+###  okToStep
+
+* **okToStep**\<**A**, **B**, **E**\>(x: [Result](README.md#result)\<A, E\>): [LoopAction](README.md#loopaction)\<A, B, E\>
+
+Converts a Result to a LoopAction.
+- Ok -> Step
+- Err -> Fail
+
+**Type parameters:**
+
+* **A**
+
+* **B**
+
+* **E**
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+x | [Result](README.md#result)\<A, E\> | The Result. |
+
+**Returns:** [LoopAction](README.md#loopaction)\<A, B, E\>
+
+A LoopAction.
+
+___
+
+###  okToFinish
+
+* **okToFinish**\<**A**, **B**, **E**\>(x: [Result](README.md#result)\<B, E\>): [LoopAction](README.md#loopaction)\<A, B, E\>
+
+Converts a Result to a LoopAction.
+- Ok -> Finish
+- Err -> Fail
+
+**Type parameters:**
+
+* **A**
+
+* **B**
+
+* **E**
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+x | [Result](README.md#result)\<B, E\> | The Result. |
+
+**Returns:** [LoopAction](README.md#loopaction)\<A, B, E\>
+
+A LoopAction.
