@@ -78,16 +78,17 @@ type ParserAsync<T> = (x: string) => Promise<Result<T, ParseError>>;
  * In other words, it is a higher-order function.
  * We will also take in a string, for the expected type of value.
  */
-export async function loopParse<T>(expected: string, parse: Parser<T>): ParserAsync<T> {
+export async function loopParse<T>(expected: string, runParser: Parser<T>): ParserAsync<T> {
     // We return a `ParserAsync<T>`, which is a function.
-    return (s: string) => {
+    return (init: string) => {
         // We will use an integer to count how many retries have been taken.
         const retries = 0;
 
-        // `loopAsync` takes an object of functions.
+        // `loopAsync` takes the initial input and an object of functions.
         // Each function must return a `LoopAction`, which is one of `step`, `fail`, or `finish`.
-        return loopAsync(s, {
+        return loopAsync(init, {
             // This function will be called to prompt for input.
+            // It will be skipped for `parse` for the initial input.
             async getInput() {
                 // Allow only three tries.
                 // That is, there can only be three calls to `ask`.
@@ -108,9 +109,9 @@ export async function loopParse<T>(expected: string, parse: Parser<T>): ParserAs
                 return step(s);
             }
 
-            // This function is called to parse the input from `getInput`.
+            // This function is called to parse the input from `getInput`, as well as the initial input.
             async parse(s) {
-                const res = parse(s);
+                const res = runParser(s);
                 if (res.success) {
                     // `finish` exits us out the loop too.
                     // It should be called with the successfully parsed value.
