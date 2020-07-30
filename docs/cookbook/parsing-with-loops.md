@@ -148,7 +148,7 @@ Now we can use our new function.
 // ------------
 
 import { Args, Result, ok, err } from 'lexure';
-import { ParseError, loopParse, sayError } from 'helpers';
+import { ParseError, loopParse, sayError } from './helpers';
 import { ask, say } from 'talking';
 
 /**

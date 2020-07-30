@@ -46,7 +46,7 @@ We can now use our `parseCommand` function to write a command runner.
 // mycommand.ts
 // ------------
 
-import { parseCommand } from 'myparser';
+import { parseCommand } from './myparser';
 
 /**
  * This function runs a command that replies with a string.
@@ -78,7 +78,7 @@ See it in action!
 // index.ts
 // --------
 
-import { runCommand } from 'mycommand';
+import { runCommand } from './mycommand';
 
 console.log(runCommand('!add 1 2'));
 >>> The answer is 3.
