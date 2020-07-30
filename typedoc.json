@@ -6,5 +6,5 @@
     "excludeNotExported": true,
     "excludePrivate": true,
     "disableSources": true,
-    "out": "docs"
+    "out": "docs/reference"
 }

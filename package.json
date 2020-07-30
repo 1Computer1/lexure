@@ -34,7 +34,7 @@
   "scripts": {
     "lint": "eslint ./src ./test --ext .ts",
     "build": "rimraf dist && tsc",
-    "docs": "rimraf docs && typedoc",
+    "docs": "rimraf docs/reference && typedoc",
     "test": "jest --coverage",
     "prepublishOnly": "npm run test && npm run build"
   },

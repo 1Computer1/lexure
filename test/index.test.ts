@@ -1,12 +1,12 @@
-import * as Lexure from '../src';
+import * as lexure from '../src';
 
 describe('readme', () => {
     it('should work', () => {
         const input = '!hello world "cool stuff" --foo --bar=baz a b c';
-        
-        const lexer = new Lexure.Lexer(input)
+
+        const lexer = new lexure.Lexer(input)
             .setQuotes([['"', '"'], ['“', '”']]);
-        
+
         const res = lexer.lexCommand(s => s.startsWith('!') ? 1 : null);
         expect(res).not.toBeNull();
 
@@ -23,9 +23,9 @@ describe('readme', () => {
             { value: 'b', raw: 'b', trailing: ' ' },
             { value: 'c', raw: 'c', trailing: '' }
         ]);
-        
-        const parser = new Lexure.Parser(tokens)
-            .setUnorderedStrategy(Lexure.longStrategy());
+
+        const parser = new lexure.Parser(tokens)
+            .setUnorderedStrategy(lexure.longStrategy());
 
         const out = parser.parse();
         expect(out).toEqual({
@@ -40,29 +40,29 @@ describe('readme', () => {
             options: new Map([['bar', ['baz']]])
         });
 
-        const j = Lexure.joinTokens(out.ordered);
+        const j = lexure.joinTokens(out.ordered);
         expect(j).toEqual('world "cool stuff" a b c');
 
-        const args = new Lexure.Args(out);
-        
+        const args = new lexure.Args(out);
+
         const a1 = args.single();
         expect(a1).toEqual('world');
-        
+
         const a2 = args.single();
         expect(a2).toEqual('cool stuff');
-        
-        const a3 = args.findMap(x => x === 'c' ? Lexure.some('it was a C') : Lexure.none());
+
+        const a3 = args.findMap(x => x === 'c' ? lexure.some('it was a C') : lexure.none());
         expect(a3).toEqual({ exists: true, value: 'it was a C' });
-        
+
         const a4 = args.many();
         expect(a4).toEqual([
             { value: 'a', raw: 'a', trailing: ' ' },
             { value: 'b', raw: 'b', trailing: ' ' }
         ]);
-        
+
         const a5 = args.flag('foo');
         expect(a5).toEqual(true);
-        
+
         const a6 = args.option('bar');
         expect(a6).toEqual('baz');
 
@@ -70,22 +70,22 @@ describe('readme', () => {
             return '100';
         }
 
-        const result = Lexure.loop1(null, {
+        const result = lexure.loop1(null, {
             getInput() {
                 const input = prompt();
                 if (input == null) {
-                    return Lexure.fail('bad input');
+                    return lexure.fail('bad input');
                 } else {
-                    return Lexure.step(input);
+                    return lexure.step(input);
                 }
             },
-        
+
             parse(s: string) {
                 const n = Number(s);
                 if (isNaN(n)) {
-                    return Lexure.fail('bad input');
+                    return lexure.fail('bad input');
                 } else {
-                    return Lexure.finish(n);
+                    return lexure.finish(n);
                 }
             }
         });

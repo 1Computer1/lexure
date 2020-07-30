@@ -3,7 +3,7 @@
 `npm i lexure`  
 
 Parser and utilities for non-technical user input.  
-[Documentation available here](https://github.com/1Computer1/lexure/tree/master/docs).
+[Documentation (includes reference and cookbook) available here](./docs).  
 
 ## Features
 
@@ -20,10 +20,10 @@ First, import lexure:
 
 ```ts
 // TypeScript or ES Module
-import * as Lexure from 'lexure';
+import * as lexure from 'lexure';
 
 // CommonJS
-const Lexure = require('lexure');
+const lexure = require('lexure');
 ```
 
 Consider some user input in the form of a command like so:  
@@ -39,7 +39,7 @@ The `!hello` part of the input is usually interpreted as a command, which the Le
 The remaining input is delayed as a function so that you can ignore the rest of the input if it is an invalid command.  
 
 ```ts
-const lexer = new Lexure.Lexer(input)
+const lexer = new lexure.Lexer(input)
     .setQuotes([
         ['"', '"'],
         ['“', '”']
@@ -67,8 +67,8 @@ In lexure, you are free to describe how you want to match unordered arguments li
 There are also several built-in strategies for common usecases.  
 
 ```ts
-const parser = new Lexure.Parser(tokens)
-    .setUnorderedStrategy(Lexure.longStrategy());
+const parser = new lexure.Parser(tokens)
+    .setUnorderedStrategy(lexure.longStrategy());
 
 const out = parser.parse();
 >>> {
@@ -83,7 +83,7 @@ const out = parser.parse();
     options: Map { 'bar' => ['baz'] }
 }
 
-Lexure.joinTokens(out.ordered)
+lexure.joinTokens(out.ordered)
 >>> 'world "cool stuff" a b c'
 ```
 
@@ -91,7 +91,7 @@ A wrapper class Args is available for us to retrieve the arguments from the outp
 It keeps track of what has already been retrieved and has several helpful methods.  
 
 ```ts
-const args = new Lexure.Args(out);
+const args = new lexure.Args(out);
 
 args.single()
 >>> 'world'
@@ -99,7 +99,7 @@ args.single()
 args.single()
 >>> 'cool stuff'
 
-args.findMap(x => x === 'c' ? Lexure.some('it was a C') : Lexure.none())
+args.findMap(x => x === 'c' ? lexure.some('it was a C') : lexure.none())
 >>> { exists: true, value: 'it was a C' }
 
 args.many()
@@ -116,7 +116,7 @@ args.option('bar')
 ```
 
 Suppose we would like to prompt the user input, and retry until a valid input is given.  
-Lexure has various functions for this, in which the logic of an input loop is abstracted out.  
+lexure has various functions for this, in which the logic of an input loop is abstracted out.  
 
 ```ts
 // Suppose we have access to this function that prompts the user.
@@ -125,22 +125,22 @@ function prompt(): string | null {
     return '100';
 }
 
-const result = Lexure.loop1(null, {
+const result = lexure.loop1(null, {
     getInput() {
         const input = prompt();
         if (input == null) {
-            return Lexure.fail('no input');
+            return lexure.fail('no input');
         } else {
-            return Lexure.step(input);
+            return lexure.step(input);
         }
     }
 
     parse(s: string) {
         const n = Number(s);
         if (isNaN(n)) {
-            return Lexure.fail('cannot parse input');
+            return lexure.fail('cannot parse input');
         } else {
-            return Lexure.finish(n);
+            return lexure.finish(n);
         }
     }
 });
