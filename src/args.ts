@@ -175,10 +175,10 @@ export class Args {
      * >>> { success: true, value: 1 }
      * 
      * console.log(args.singleParse(parse));
-     * >>> { success: false, error: { exists: true, 'a is not a number' } }
+     * >>> { success: false, error: { exists: true, error: 'a is not a number' } }
      * 
      * console.log(args.singleParse(parse));
-     * >>> { success: false, error: { exists: true, 'no input' } }
+     * >>> { success: false, error: { exists: false } }
      * ```
      * 
      * @typeparam T - Output type.
