@@ -6,6 +6,7 @@ This is a complete example of using lexure from the lexer to the arguments wrapp
 // -----------
 // myparser.ts
 // -----------
+
 import { Lexer, Parser, Args, prefixedStrategy } from 'lexure';
 
 /**
@@ -38,10 +39,13 @@ export function parseCommand(s: string): [string, Args] | null {
 }
 ```
 
+We can now use our `parseCommand` function to write a command runner.  
+
 ```ts
 // ------------
 // mycommand.ts
 // ------------
+
 import { parseCommand } from 'myparser';
 
 /**
@@ -67,10 +71,13 @@ export function runCommand(s: string): string {
 }
 ```
 
+See it in action!  
+
 ```ts
 // --------
 // index.ts
 // --------
+
 import { runCommand } from 'mycommand';
 
 console.log(runCommand('!add 1 2'));
