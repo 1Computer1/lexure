@@ -33,7 +33,7 @@
   },
   "scripts": {
     "lint": "eslint ./src ./test --ext .ts",
-    "build": "rimraf dist && tsc",
+    "build": "rimraf dist && tsc -p tsconfig.build.json",
     "docs": "rimraf docs/reference && typedoc",
     "test": "jest --coverage",
     "prepublishOnly": "npm run test && npm run build"
@@ -54,7 +54,12 @@
     ],
     "collectCoverageFrom": [
       "src/*.{ts,js}"
-    ]
+    ],
+    "global": {
+      "ts-jest": {
+        "tsConfig": "tsconfig.json"
+      }
+    }
   },
   "devDependencies": {
     "@types/jest": "^26.0.0",

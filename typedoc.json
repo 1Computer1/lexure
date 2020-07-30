@@ -1,5 +1,6 @@
 {
     "mode": "file",
+    "tsconfig": "tsconfig.json",
     "inputFiles": "src",
     "readme": "none",
     "exclude": ["src/index.ts", "test/**"],
