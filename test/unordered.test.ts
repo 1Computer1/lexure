@@ -1,6 +1,6 @@
 import { noStrategy, longStrategy, longShortStrategy, caseInsensitiveStrategy, exactStrategy, prefixedStrategy } from '../src/';
 
-describe('no strategy', () => {
+describe('noStrategy', () => {
     it('should be false and null', () => {
         const s = noStrategy();
         expect(s.matchFlag('foo')).toEqual(null);
@@ -9,7 +9,7 @@ describe('no strategy', () => {
     });
 });
 
-describe('long strategy', () => {
+describe('longStrategy', () => {
     it('should parse a flag exclusively', () => {
         const s = longStrategy();
         const x = '--foo';
@@ -35,7 +35,7 @@ describe('long strategy', () => {
     });
 });
 
-describe('long short strategy', () => {
+describe('longShortStrategy', () => {
     it('should parse a flag exclusively', () => {
         const s = longShortStrategy();
         const x = '--foo';
@@ -85,7 +85,7 @@ describe('long short strategy', () => {
     });
 });
 
-describe('prefixed strategy', () => {
+describe('prefixedStrategy', () => {
     it('should parse a flag exclusively', () => {
         const s = prefixedStrategy(['--'], ['=']);
         const x = '--foo';
@@ -135,7 +135,7 @@ describe('prefixed strategy', () => {
     });
 });
 
-describe('exact strategy', () => {
+describe('exactStrategy', () => {
     it('should work when exact', () => {
         const s = exactStrategy({ flag: ['flag'] }, { option: ['option'] }, { compactOption: ['compactOption'] });
         const x = 'flag';
@@ -159,7 +159,7 @@ describe('exact strategy', () => {
     });
 });
 
-describe('case insensitive strategy', () => {
+describe('caseInsensitiveStrategy', () => {
     it('should parse a flag', () => {
         const s = caseInsensitiveStrategy({ flag: ['flag'] }, { option: ['option'] }, { compactOption: ['compactOption'] });
         const x = 'FLAG';

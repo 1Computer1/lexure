@@ -1,7 +1,7 @@
 import * as fc from 'fast-check';
 import { Lexer, Parser, longStrategy } from '../src';
 
-describe('parser', () => {
+describe('Parser#parse', () => {
     it('should parse normal words', () => {
         const ts = new Lexer('foo bar baz').lex();
         const out = new Parser(ts).parse();

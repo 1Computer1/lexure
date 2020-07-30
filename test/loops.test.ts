@@ -1,7 +1,7 @@
 import { loop, loop1, loopAsync, loop1Async, ok, err, step, step_, finish, fail } from '../src';
 
 describe('loop', () => {
-    it('(simple) loops until parsing completes', () => {
+    it('loops until parsing completes (simple)', () => {
         const inputs = ['hello', 'world', '100', 'extra'];
         let i = 0;
 
@@ -34,7 +34,7 @@ describe('loop', () => {
         expect(i).toEqual(3);
     });
 
-    it('(simple) loops until no more input', () => {
+    it('loops until no more input (simple)', () => {
         const inputs = ['hello', 'world', 'extra'];
         let i = 0;
 
@@ -67,7 +67,7 @@ describe('loop', () => {
         expect(i).toEqual(3);
     });
 
-    it('(simple) loops until first bad parse', () => {
+    it('loops until first bad parse (simple)', () => {
         const inputs = ['hello', 'world', 'extra'];
         let i = 0;
 
@@ -102,7 +102,7 @@ describe('loop', () => {
 });
 
 describe('loop1', () => {
-    it('(simple) loops until parsing completes', () => {
+    it('loops until parsing completes (simple)', () => {
         const inputs = ['hello', 'world', '100', 'extra'];
         let i = 0;
 
@@ -135,7 +135,7 @@ describe('loop1', () => {
         expect(i).toEqual(3);
     });
 
-    it('(simple) loops until no more input', () => {
+    it('loops until no more input (simple)', () => {
         const inputs = ['hello', 'world', 'extra'];
         let i = 0;
 
@@ -168,7 +168,7 @@ describe('loop1', () => {
         expect(i).toEqual(3);
     });
 
-    it('(simple) loops until first bad parse', () => {
+    it('loops until first bad parse (simple)', () => {
         const inputs = ['hello', 'world', 'extra'];
         let i = 0;
 
@@ -203,7 +203,7 @@ describe('loop1', () => {
 });
 
 describe('loopAsync', () => {
-    it('(simple) loops until parsing completes', async () => {
+    it('loops until parsing completes (simple)', async () => {
         const inputs = ['hello', 'world', '100', 'extra'];
         let i = 0;
 
@@ -236,7 +236,7 @@ describe('loopAsync', () => {
         expect(i).toEqual(3);
     });
 
-    it('(simple) loops until no more input', async () => {
+    it('loops until no more input (simple)', async () => {
         const inputs = ['hello', 'world', 'extra'];
         let i = 0;
 
@@ -269,7 +269,7 @@ describe('loopAsync', () => {
         expect(i).toEqual(3);
     });
 
-    it('(simple) loops until bad parse', async () => {
+    it('loops until bad parse (simple)', async () => {
         const inputs = ['hello', 'world', 'extra'];
         let i = 0;
 
@@ -302,7 +302,7 @@ describe('loopAsync', () => {
         expect(i).toEqual(1);
     });
 
-    it('(complex) can do complicated things (too many retries)', async () => {
+    it('can do complicated things: too many retries (complex)', async () => {
         const inputs = ['hello', 'world', 'extra'];
         let i = 0;
         const st = { retries: 0 };
@@ -344,7 +344,7 @@ describe('loopAsync', () => {
         expect(st).toEqual({ retries: 2 });
     });
 
-    it('(complex) can do complicated things (cancellation input)', async () => {
+    it('can do complicated things: cancellation input (complex)', async () => {
         const inputs = ['hello', 'cancel', 'extra'];
         let i = 0;
 
@@ -384,7 +384,7 @@ describe('loopAsync', () => {
         expect(i).toEqual(2);
     });
 
-    it('(complex) can do complicated things (collect multiple inputs)', async () => {
+    it('can do complicated things: collect multiple inputs (complex)', async () => {
         const inputs = ['10', 'bad', '20', '30', 'stop', '40'];
         let i = 0;
         const st: number[] = [];
@@ -430,7 +430,7 @@ describe('loopAsync', () => {
 
 
 describe('loop1Async', () => {
-    it('(simple) loops until parsing completes', async () => {
+    it('loops until parsing completes (simple)', async () => {
         const inputs = ['hello', 'world', '100', 'extra'];
         let i = 0;
 
@@ -463,7 +463,7 @@ describe('loop1Async', () => {
         expect(i).toEqual(3);
     });
 
-    it('(simple) loops until no more input', async () => {
+    it('loops until no more input (simple)', async () => {
         const inputs = ['hello', 'world', 'extra'];
         let i = 0;
 
@@ -496,7 +496,7 @@ describe('loop1Async', () => {
         expect(i).toEqual(3);
     });
 
-    it('(simple) loops until bad parse', async () => {
+    it('loops until bad parse (simple)', async () => {
         const inputs = ['hello', 'world', 'extra'];
         let i = 0;
 
@@ -529,7 +529,7 @@ describe('loop1Async', () => {
         expect(i).toEqual(1);
     });
 
-    it('(complex) can do complicated things (too many retries)', async () => {
+    it('can do complicated things: too many retries (complex)', async () => {
         const inputs = ['hello', 'world', 'extra'];
         let i = 0;
         const st = { retries: 0 };
@@ -571,7 +571,7 @@ describe('loop1Async', () => {
         expect(st).toEqual({ retries: 2 });
     });
 
-    it('(complex) can do complicated things (cancellation input)', async () => {
+    it('can do complicated things: cancellation input (complex)', async () => {
         const inputs = ['hello', 'cancel', 'extra'];
         let i = 0;
 
@@ -611,7 +611,7 @@ describe('loop1Async', () => {
         expect(i).toEqual(2);
     });
 
-    it('(complex) can do complicated things (collect multiple inputs)', async () => {
+    it('can do complicated things: collect multiple inputs (complex)', async () => {
         const inputs = ['10', 'bad', '20', '30', 'stop', '40'];
         let i = 0;
         const st: number[] = [];

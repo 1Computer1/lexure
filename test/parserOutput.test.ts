@@ -57,7 +57,7 @@ describe('mergeOutputs', () => {
     });
 });
 
-describe('json conversion', () => {
+describe('output{To,From}JSON', () => {
     it('works', () => {
         const a: ParserOutput = {
             ordered: [

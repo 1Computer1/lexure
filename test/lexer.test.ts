@@ -1,7 +1,7 @@
 import * as fc from 'fast-check';
 import { Lexer } from '../src';
 
-describe('lexer', () => {
+describe('Lexer#lex', () => {
     it('with no quotes, parses text without quotes', () => {
         const s = 'simple text   here';
         const ts = new Lexer(s).lex();
@@ -100,6 +100,15 @@ describe('lexer', () => {
         ]);
     });
 
+    it('should never error', () => {
+        fc.property(fc.string(), s => {
+            const l = new Lexer(s);
+            expect(() => l.lex()).not.toThrow();
+        });
+    });
+});
+
+describe('Lexer#lexCommand', () => {
     it('can match a prefix and command together', () => {
         const s = '!command here';
         const ts = new Lexer(s).lexCommand(s => s.startsWith('!') ? 1 : null);
@@ -116,7 +125,7 @@ describe('lexer', () => {
         expect(ts![1]()).toEqual([{ value: 'here', raw: 'here', trailing: '' }]);
     });
 
-    it('match a prefix and command together lazily', () => {
+    it('can match a prefix and command together lazily', () => {
         const s = '!first second third';
         const l = new Lexer(s);
         const ts = l.lexCommand(s => s.startsWith('!') ? 1 : null);
@@ -133,7 +142,7 @@ describe('lexer', () => {
         expect(ts![1]()).toEqual([]);
     });
 
-    it('match a prefix and command separately lazily', () => {
+    it('can match a prefix and command separately lazily', () => {
         const s = '! first second third';
         const l = new Lexer(s);
         const ts = l.lexCommand(s => s.startsWith('!') ? 1 : null);
@@ -160,12 +169,5 @@ describe('lexer', () => {
         const s = '';
         const ts = new Lexer(s).lexCommand(s => s.startsWith('!') ? 1 : null);
         expect(ts).toBeNull();
-    });
-
-    it('should never error', () => {
-        fc.property(fc.string(), s => {
-            const l = new Lexer(s);
-            expect(() => l.lex()).not.toThrow();
-        });
     });
 });
