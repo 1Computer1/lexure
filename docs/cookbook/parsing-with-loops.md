@@ -70,18 +70,11 @@ export function sayError(e: ParseError): Promise<void> {
 }
 
 /**
- * The type of an asynchronous parser.
- * Not all parsers need to be asynchronous, but for simplicity this will be the case in this example.
- * We input a string and get either the value or a parse error.
- */
-export type Parser<T> = (x: string) => Promise<Result<T, ParseError>>;
-
-/**
  * This function wraps an existing parser with a loop, allowing us to prompt until the user inputs correctly.
  * In other words, it is a higher-order function.
  * We will also take in a string, for the expected type of value.
  */
-export async function loopParse<T>(expected: string, parse: Parser<T>): Parser<T> {
+export async function loopParse<T>(expected: string, parse: (x: string) => Result<T, ParseError>): (x: string) => Promise<Result<T, ParseError>> {
     // We return a `Parser<T>`, which is a function.
     return (s: string) => {
         // We will use an integer to count how many retries have been taken.
@@ -113,7 +106,7 @@ export async function loopParse<T>(expected: string, parse: Parser<T>): Parser<T
 
             // This function is called to parse the input from `getInput`.
             async parse(s) {
-                const res = await parse(s);
+                const res = parse(s);
                 if (res.success) {
                     // `finish` exits us out the loop too.
                     // It should be called with the successfully parsed value.
@@ -143,9 +136,9 @@ export async function loopParse<T>(expected: string, parse: Parser<T>): Parser<T
 Now we can use our new function.  
 
 ```ts
-// ------------
-// somewhere.ts
-// ------------
+// ------
+// add.ts
+// ------
 
 import { Args, Result, ok, err } from 'lexure';
 import { ParseError, loopParse, sayError } from './helpers';
@@ -171,7 +164,7 @@ export async function addCommand(args: Args): Promise<void> {
 /**
  * This parses a number.
  */
-async function parseNumber(x: string): Promise<Result<T, ParseError>> {
+function parseNumber(x: string): Result<number, ParseError> {
     const n = Number(x);
     return isNaN(n) ? err(ParseError.PARSE_FAILURE) : ok(n);
 }
