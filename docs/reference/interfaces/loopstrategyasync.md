@@ -1,14 +1,10 @@
 [lexure](../README.md) › [LoopStrategyAsync](loopstrategyasync.md)
 
-# Interface: LoopStrategyAsync \<**S, A, Z, E**\>
+# Interface: LoopStrategyAsync \<**A, Z, E**\>
 
 A strategy for running an input loop asynchronously via `Promise`.
 
 ## Type parameters
-
-* **S**
-
-Custom state type.
 
 * **A**
 
@@ -39,15 +35,9 @@ Error type.
 
 ###  getInput
 
-* **getInput**(state: S): Promise\<[LoopAction](../README.md#loopaction)\<A, Z, E\>\>
+* **getInput**(): Promise\<[LoopAction](../README.md#loopaction)\<A, Z, E\>\>
 
 Gets new input from somewhere e.g. reading a line.
-
-**Parameters:**
-
-Name | Type | Description |
------- | ------ | ------ |
-state | S | Custom state. |
 
 **Returns:** Promise\<[LoopAction](../README.md#loopaction)\<A, Z, E\>\>
 
@@ -57,7 +47,7 @@ ___
 
 ###  parse
 
-* **parse**(input: A, state: S): Promise\<[LoopAction](../README.md#loopaction)\<null, Z, E\>\>
+* **parse**(input: A): Promise\<[LoopAction](../README.md#loopaction)\<null, Z, E\>\>
 
 Parses given input into the desired type.
 
@@ -66,7 +56,6 @@ Parses given input into the desired type.
 Name | Type | Description |
 ------ | ------ | ------ |
 input | A | The input. |
-state | S | Custom state. |
 
 **Returns:** Promise\<[LoopAction](../README.md#loopaction)\<null, Z, E\>\>
 
@@ -76,7 +65,7 @@ ___
 
 ### optional onInputError
 
-* **onInputError**(error: E, state: S): Promise\<[LoopAction](../README.md#loopaction)\<null, Z, E\>\>
+* **onInputError**(error: E): Promise\<[LoopAction](../README.md#loopaction)\<null, Z, E\>\>
 
 Handles error on getting new input.
 This function intercepts the `fail` case of `getInput`.
@@ -86,7 +75,6 @@ This function intercepts the `fail` case of `getInput`.
 Name | Type | Description |
 ------ | ------ | ------ |
 error | E | The error encountered. |
-state | S | Custom state. |
 
 **Returns:** Promise\<[LoopAction](../README.md#loopaction)\<null, Z, E\>\>
 
@@ -96,7 +84,7 @@ ___
 
 ### optional onParseError
 
-* **onParseError**(error: E, input: A, state: S): Promise\<[LoopAction](../README.md#loopaction)\<null, Z, E\>\>
+* **onParseError**(error: E, input: A): Promise\<[LoopAction](../README.md#loopaction)\<null, Z, E\>\>
 
 Handles error on parsing input.
 This function intercepts the `fail` case of `parse`.
@@ -107,7 +95,6 @@ Name | Type | Description |
 ------ | ------ | ------ |
 error | E | The error encountered. |
 input | A | The input that could not be parsed. |
-state | S | Custom state. |
 
 **Returns:** Promise\<[LoopAction](../README.md#loopaction)\<null, Z, E\>\>
 

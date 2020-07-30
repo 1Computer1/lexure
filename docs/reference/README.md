@@ -62,6 +62,7 @@
 * [step_](README.md#step_)
 * [finish](README.md#finish)
 * [fail](README.md#fail)
+* [fail_](README.md#fail_)
 * [loop](README.md#loop)
 * [loop1](README.md#loop1)
 * [loopAsync](README.md#loopasync)
@@ -468,9 +469,21 @@ A LoopAction.
 
 ___
 
+###  fail_
+
+* **fail_**(): [Fail](interfaces/fail.md)\<null\>
+
+Creates a Fail with null value.
+
+**Returns:** [Fail](interfaces/fail.md)\<null\>
+
+A LoopAction.
+
+___
+
 ###  loop
 
-* **loop**\<**S**, **A**, **Z**, **E**\>(intialInput: A, state: S, strat: [LoopStrategy](interfaces/loopstrategy.md)\<S, A, Z, E\>): [Result](README.md#result)\<Z, E\>
+* **loop**\<**A**, **Z**, **E**\>(intialInput: A, strat: [LoopStrategy](interfaces/loopstrategy.md)\<A, Z, E\>): [Result](README.md#result)\<Z, E\>
 
 Runs a loop which continuously gets input and attempts to parse it.
 The loop strategy used will determine how the loop continues and ends.
@@ -478,7 +491,7 @@ The loop strategy used will determine how the loop continues and ends.
 ```ts
 const getInputFromSomewhere = () => '2';
 
-const x = loop('1', null, {
+const x = loop('1', {
   getInput() {
     const i = getInputFromSomewhere();
     return i == null ? fail('no input') : step(i);
@@ -496,10 +509,6 @@ console.log(x);
 
 **Type parameters:**
 
-* **S**
-
-Custom state type.
-
 * **A**
 
 Input type.
@@ -517,8 +526,7 @@ Error type.
 Name | Type | Description |
 ------ | ------ | ------ |
 intialInput | A | The first input to parse. |
-state | S | Custom state to thread along the loop. |
-strat | [LoopStrategy](interfaces/loopstrategy.md)\<S, A, Z, E\> | The loop strategy to use. |
+strat | [LoopStrategy](interfaces/loopstrategy.md)\<A, Z, E\> | The loop strategy to use. |
 
 **Returns:** [Result](README.md#result)\<Z, E\>
 
@@ -528,7 +536,7 @@ ___
 
 ###  loop1
 
-* **loop1**\<**S**, **A**, **Z**, **E**\>(state: S, strat: [LoopStrategy](interfaces/loopstrategy.md)\<S, A, Z, E\>): [Result](README.md#result)\<Z, E\>
+* **loop1**\<**A**, **Z**, **E**\>(strat: [LoopStrategy](interfaces/loopstrategy.md)\<A, Z, E\>): [Result](README.md#result)\<Z, E\>
 
 Runs a loop which continuously gets input and attempts to parse it.
 The loop strategy used will determine how the loop continues and ends.
@@ -537,7 +545,7 @@ This variant has no initial input.
 ```ts
 const getInputFromSomewhere = () => '2';
 
-const x = loop1(null, {
+const x = loop1({
   getInput() {
     const i = getInputFromSomewhere();
     return i == null ? fail('no input') : step(i);
@@ -555,10 +563,6 @@ console.log(x);
 
 **Type parameters:**
 
-* **S**
-
-Custom state type.
-
 * **A**
 
 Input type.
@@ -575,8 +579,7 @@ Error type.
 
 Name | Type | Description |
 ------ | ------ | ------ |
-state | S | Custom state to thread along the loop. |
-strat | [LoopStrategy](interfaces/loopstrategy.md)\<S, A, Z, E\> | The loop strategy to use. |
+strat | [LoopStrategy](interfaces/loopstrategy.md)\<A, Z, E\> | The loop strategy to use. |
 
 **Returns:** [Result](README.md#result)\<Z, E\>
 
@@ -586,17 +589,13 @@ ___
 
 ###  loopAsync
 
-* **loopAsync**\<**S**, **A**, **Z**, **E**\>(intialInput: A, state: S, strat: [LoopStrategyAsync](interfaces/loopstrategyasync.md)\<S, A, Z, E\>): Promise\<[Result](README.md#result)\<Z, E\>\>
+* **loopAsync**\<**A**, **Z**, **E**\>(intialInput: A, strat: [LoopStrategyAsync](interfaces/loopstrategyasync.md)\<A, Z, E\>): Promise\<[Result](README.md#result)\<Z, E\>\>
 
 Runs a loop which continuously gets input and attempts to parse it.
 The loop strategy used will determine how the loop continues and ends.
 This variant of the function is asynchronous using `Promise`.
 
 **Type parameters:**
-
-* **S**
-
-Custom state type.
 
 * **A**
 
@@ -615,8 +614,7 @@ Error type.
 Name | Type | Description |
 ------ | ------ | ------ |
 intialInput | A | The first input to parse. |
-state | S | Custom state to thread along the loop. |
-strat | [LoopStrategyAsync](interfaces/loopstrategyasync.md)\<S, A, Z, E\> | The loop strategy to use. |
+strat | [LoopStrategyAsync](interfaces/loopstrategyasync.md)\<A, Z, E\> | The loop strategy to use. |
 
 **Returns:** Promise\<[Result](README.md#result)\<Z, E\>\>
 
@@ -626,7 +624,7 @@ ___
 
 ###  loop1Async
 
-* **loop1Async**\<**S**, **A**, **Z**, **E**\>(state: S, strat: [LoopStrategyAsync](interfaces/loopstrategyasync.md)\<S, A, Z, E\>): Promise\<[Result](README.md#result)\<Z, E\>\>
+* **loop1Async**\<**A**, **Z**, **E**\>(strat: [LoopStrategyAsync](interfaces/loopstrategyasync.md)\<A, Z, E\>): Promise\<[Result](README.md#result)\<Z, E\>\>
 
 Runs a loop which continuously gets input and attempts to parse it.
 The loop strategy used will determine how the loop continues and ends.
@@ -634,10 +632,6 @@ This variant has no initial input.
 This variant of the function is asynchronous using `Promise`.
 
 **Type parameters:**
-
-* **S**
-
-Custom state type.
 
 * **A**
 
@@ -655,8 +649,7 @@ Error type.
 
 Name | Type | Description |
 ------ | ------ | ------ |
-state | S | Custom state to thread along the loop. |
-strat | [LoopStrategyAsync](interfaces/loopstrategyasync.md)\<S, A, Z, E\> | The loop strategy to use. |
+strat | [LoopStrategyAsync](interfaces/loopstrategyasync.md)\<A, Z, E\> | The loop strategy to use. |
 
 **Returns:** Promise\<[Result](README.md#result)\<Z, E\>\>
 

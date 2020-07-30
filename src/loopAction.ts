@@ -101,3 +101,11 @@ export function finish<B>(x: B): Finish<B> {
 export function fail<E>(x: E): Fail<E> {
     return { action: LoopTag.FAIL, error: x };
 }
+
+/**
+ * Creates a Fail with null value.
+ * @returns A LoopAction.
+ */
+export function fail_(): Fail<null> {
+    return { action: LoopTag.FAIL, error: null };
+}
