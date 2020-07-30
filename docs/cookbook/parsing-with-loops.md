@@ -69,12 +69,16 @@ export function sayError(e: ParseError): Promise<void> {
     }
 }
 
+// Type synonyms, because it gets long.
+type Parser<T> = (x: string) => Result<T, ParseError>;
+type ParserAsync<T> = (x: string) => Promise<Result<T, ParseError>>;
+
 /**
  * This function wraps an existing parser with a loop, allowing us to prompt until the user inputs correctly.
  * In other words, it is a higher-order function.
  * We will also take in a string, for the expected type of value.
  */
-export async function loopParse<T>(expected: string, parse: (x: string) => Result<T, ParseError>): (x: string) => Promise<Result<T, ParseError>> {
+export async function loopParse<T>(expected: string, parse: Parser<T>): ParserAsync<T> {
     // We return a `Parser<T>`, which is a function.
     return (s: string) => {
         // We will use an integer to count how many retries have been taken.
