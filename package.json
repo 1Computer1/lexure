@@ -55,7 +55,7 @@
     "collectCoverageFrom": [
       "src/*.{ts,js}"
     ],
-    "global": {
+    "globals": {
       "ts-jest": {
         "tsConfig": "tsconfig.json"
       }
