@@ -1,5 +1,10 @@
 import * as lexure from '../src';
-import { Lexer, Parser, Args, Result, loopAsync, loop1Async, err, ok, step, finish, fail } from '../src';
+import {
+    Lexer, Parser, Args, Result,
+    prefixedStrategy,
+    loopAsync, loop1Async, 
+    err, ok, step, finish, fail
+} from '../src';
 
 describe('readme', () => {
     it('should work', () => {
@@ -92,6 +97,59 @@ describe('readme', () => {
         });
 
         expect(result).toEqual({ success: true, value: 100 });
+    });
+});
+
+describe('complete-example', () => {
+    function parseCommand(s: string): [string, Args] | null {
+        const lexer = new Lexer(s)
+            .setQuotes([
+                ['"', '"'], // Double quotes
+                ['“', '”'], // Fancy quotes (on iOS)
+                ["「", "」"]  // Corner brackets (CJK)
+            ]);             // Add more as you see fit!
+
+        const lout = lexer.lexCommand(s => s.startsWith('!') ? 1 : null);
+        if (lout == null) {
+            return null;
+        }
+
+        const [command, getTokens] = lout;
+        const tokens = getTokens();
+        const parser = new Parser(tokens)
+            .setUnorderedStrategy(prefixedStrategy(
+                ['--', '-', '—'], // Various flag prefixes including em dash.
+                ['=', ':']        // Various separators for options.
+            ));
+
+        const pout = parser.parse();
+        return [command.value, new Args(pout)];
+    }
+
+    function runCommand(s: string): string {
+        const out = parseCommand(s);
+        if (out == null) {
+            return 'Not a command.';
+        }
+    
+        const [command, args] = out;
+        if (command === 'add') {
+            // These calls to `Args#single` can give a string or null.
+            const x = args.single();
+            const y = args.single();
+            // Which means this could give NaN on bad inputs.
+            const z = Number(x) + Number(y);
+            return `The answer is ${z}.`;
+        } else {
+            return 'Not an implemented command.';
+        }
+    }
+
+    it('should work', () => {
+        expect(runCommand('!add 1 2')).toEqual('The answer is 3.');
+        expect(runCommand('!add 1 x')).toEqual('The answer is NaN.');
+        expect(runCommand('!foo')).toEqual('Not an implemented command.');
+        expect(runCommand('hello')).toEqual('Not a command.');
     });
 });
 

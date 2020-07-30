@@ -21,7 +21,7 @@ export function parseCommand(s: string): [string, Args] | null {
             ["「", "」"]  // Corner brackets (CJK)
         ]);             // Add more as you see fit!
 
-    const lout = lexer.lexCommand(s => s.startsWith('!') : 1 | null);
+    const lout = lexer.lexCommand(s => s.startsWith('!') ? 1 : null);
     if (lout == null) {
         return null;
     }
@@ -35,7 +35,7 @@ export function parseCommand(s: string): [string, Args] | null {
         ));
 
     const pout = parser.parse();
-    return new Args(pout);
+    return [command.value, new Args(pout)];
 }
 ```
 
@@ -64,7 +64,7 @@ export function runCommand(s: string): string {
         const y = args.single();
         // Which means this could give NaN on bad inputs.
         const z = Number(x) + Number(y);
-        return `The answer is ${x + y}.`;
+        return `The answer is ${z}.`;
     } else {
         return 'Not an implemented command.';
     }
@@ -83,7 +83,7 @@ import { runCommand } from './mycommand';
 console.log(runCommand('!add 1 2'));
 >>> The answer is 3.
 
-console.log(runCommand('!add 1'));
+console.log(runCommand('!add 1 x'));
 >>> The answer is NaN.
 
 console.log(runCommand('!foo'));
