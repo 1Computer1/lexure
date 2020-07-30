@@ -46,6 +46,11 @@ describe('joinTokens', () => {
 
         expect(s).toEqual('foo bar');
     });
+
+    it('should given empty string for empty list', () => {
+        const s = joinTokens([]);
+        expect(s).toEqual('');
+    });
 });
 
 describe('extractCommand', () => {

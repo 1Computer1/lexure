@@ -41,6 +41,10 @@ export interface Token {
  * @returns The joined string.
  */
 export function joinTokens(tokens: Token[], separator: string | null = null, raw = true): string {
+    if (tokens.length === 0) {
+        return '';
+    }
+
     if (separator != null && !raw) {
         return tokens.map(t => t.value).join(separator);
     }
