@@ -1,6 +1,6 @@
 export * from './args';
 export * from './lexer';
-export * from './loop';
+export * from './loops';
 export * from './loopAction';
 export * from './option';
 export * from './parser';
