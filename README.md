@@ -16,6 +16,7 @@ Parser and utilities for non-technical user input.
 
 ## Example
 
+Check out the [cookbook](./docs/cookbook) for complete examples.  
 First, import lexure:  
 
 ```ts
@@ -46,6 +47,11 @@ const lexer = new lexure.Lexer(input)
     ]);
 
 const res = lexer.lexCommand(s => s.startsWith('!') ? 1 : null);
+if (res == null) {
+    // The input might be invalid.
+    // You might do something else here.
+    return;
+}
 
 const cmd = res[0];
 >>> { value: 'hello', raw: 'hello', trailing: ' ' }
