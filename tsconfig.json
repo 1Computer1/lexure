@@ -14,6 +14,7 @@
     "outDir": "dist/lib"
   },
   "include": [
-    "src"
+    "src",
+    "test"
   ]
 }
