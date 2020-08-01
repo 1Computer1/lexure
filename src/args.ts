@@ -136,8 +136,8 @@ export class Args {
 
         const o = f(this.parserOutput.ordered[this.state.position].value);
         if (o.exists) {
-            this.state.position++;
             this.state.usedIndices.add(this.state.position);
+            this.state.position++;
             return o;
         }
 
@@ -163,8 +163,8 @@ export class Args {
 
         const o = await f(this.parserOutput.ordered[this.state.position].value);
         if (o.exists) {
-            this.state.position++;
             this.state.usedIndices.add(this.state.position);
+            this.state.position++;
             return o;
         }
 
@@ -210,8 +210,8 @@ export class Args {
 
         const o = f(this.parserOutput.ordered[this.state.position].value);
         if (o.success) {
-            this.state.position++;
             this.state.usedIndices.add(this.state.position);
+            this.state.position++;
             return o;
         }
 
@@ -240,8 +240,8 @@ export class Args {
 
         const o = await f(this.parserOutput.ordered[this.state.position].value);
         if (o.success) {
-            this.state.position++;
             this.state.usedIndices.add(this.state.position);
+            this.state.position++;
             return o;
         }
 
