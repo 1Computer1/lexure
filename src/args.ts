@@ -123,9 +123,10 @@ export class Args {
      * 
      * @typeparam T - Output type.
      * @param f - Gives an option of either the resulting value, or nothing if failed.
+     * @param useAnyways - Whether to consider the token used even if the transformation fails; defaults to false.
      * @returns The value if there are tokens left and the transformation succeeds.
      */
-    public singleMap<T>(f: (x: string) => Option<T>): Option<T> {
+    public singleMap<T>(f: (x: string) => Option<T>, useAnyways = false): Option<T> {
         if (this.finished) {
             return none();
         }
@@ -141,6 +142,11 @@ export class Args {
             return o;
         }
 
+        if (useAnyways) {
+            this.state.usedIndices.add(this.state.position);
+            this.state.position++;
+        }
+
         return none();
     }
 
@@ -150,9 +156,10 @@ export class Args {
      * That token will now be consider used if the transformation succeeds.
      * @typeparam T - Output type.
      * @param f - Gives an option of either the resulting value, or nothing if failed.
+     * @param useAnyways - Whether to consider the token used even if the transformation fails; defaults to false.
      * @returns The value if there are tokens left and the transformation succeeds.
      */
-    public async singleMapAsync<T>(f: (x: string) => Promise<Option<T>>): Promise<Option<T>> {
+    public async singleMapAsync<T>(f: (x: string) => Promise<Option<T>>, useAnyways = false): Promise<Option<T>> {
         if (this.finished) {
             return none();
         }
@@ -166,6 +173,11 @@ export class Args {
             this.state.usedIndices.add(this.state.position);
             this.state.position++;
             return o;
+        }
+
+        if (useAnyways) {
+            this.state.usedIndices.add(this.state.position);
+            this.state.position++;
         }
 
         return none();
@@ -196,10 +208,11 @@ export class Args {
      * @typeparam T - Output type.
      * @typeparam E - Error type.
      * @param f - Gives a result of either the resulting value, or an error.
+     * @param useAnyways - Whether to consider the token used even if the transformation fails; defaults to false.
      * @returns The result which succeeds if there are tokens left and the transformation succeeds.
      * If there are no tokens left, the error will not exist.
      */
-    public singleParse<T, E>(f: (x: string) => Result<T, E>): Result<T, Option<E>> {
+    public singleParse<T, E>(f: (x: string) => Result<T, E>, useAnyways = false): Result<T, Option<E>> {
         if (this.finished) {
             return err(none());
         }
@@ -215,6 +228,11 @@ export class Args {
             return o;
         }
 
+        if (useAnyways) {
+            this.state.usedIndices.add(this.state.position);
+            this.state.position++;
+        }
+
         return err(some(o.error));
     }
 
@@ -226,10 +244,14 @@ export class Args {
      * @typeparam T - Output type.
      * @typeparam E - Error type.
      * @param f - Gives a result of either the resulting value, or an error.
+     * @param useAnyways - Whether to consider the token used even if the transformation fails; defaults to false.
      * @returns The result which succeeds if there are tokens left and the transformation succeeds.
      * If there are no tokens left, the error will not exist.
      */
-    public async singleParseAsync<T, E>(f: (x: string) => Promise<Result<T, E>>): Promise<Result<T, Option<E>>> {
+    public async singleParseAsync<T, E>(
+        f: (x: string) => Promise<Result<T, E>>,
+        useAnyways = false
+    ): Promise<Result<T, Option<E>>> {
         if (this.finished) {
             return err(none());
         }
@@ -243,6 +265,11 @@ export class Args {
             this.state.usedIndices.add(this.state.position);
             this.state.position++;
             return o;
+        }
+
+        if (useAnyways) {
+            this.state.usedIndices.add(this.state.position);
+            this.state.position++;
         }
 
         return err(some(o.error));
