@@ -428,7 +428,6 @@ describe('loopAsync', () => {
     });
 });
 
-
 describe('loop1Async', () => {
     it('loops until parsing completes (simple)', async () => {
         const inputs = ['hello', 'world', '100', 'extra'];
