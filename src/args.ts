@@ -134,8 +134,14 @@ export class Args {
             this.state.position++;
         }
 
-        this.state.usedIndices.add(this.state.position);
-        return f(this.parserOutput.ordered[this.state.position++].value);
+        const o = f(this.parserOutput.ordered[this.state.position].value);
+        if (o.exists) {
+            this.state.position++;
+            this.state.usedIndices.add(this.state.position);
+            return o;
+        }
+
+        return none();
     }
 
     /**
@@ -146,17 +152,23 @@ export class Args {
      * @param f - Gives an option of either the resulting value, or nothing if failed.
      * @returns The value if there are tokens left and the transformation succeeds.
      */
-    public singleMapAsync<T>(f: (x: string) => Promise<Option<T>>): Promise<Option<T>> {
+    public async singleMapAsync<T>(f: (x: string) => Promise<Option<T>>): Promise<Option<T>> {
         if (this.finished) {
-            return Promise.resolve(none());
+            return none();
         }
 
         while (this.state.usedIndices.has(this.state.position)) {
             this.state.position++;
         }
 
-        this.state.usedIndices.add(this.state.position);
-        return f(this.parserOutput.ordered[this.state.position++].value);
+        const o = await f(this.parserOutput.ordered[this.state.position].value);
+        if (o.exists) {
+            this.state.position++;
+            this.state.usedIndices.add(this.state.position);
+            return o;
+        }
+
+        return none();
     }
 
     /**
@@ -196,9 +208,10 @@ export class Args {
             this.state.position++;
         }
 
-        this.state.usedIndices.add(this.state.position);
-        const o = f(this.parserOutput.ordered[this.state.position++].value);
+        const o = f(this.parserOutput.ordered[this.state.position].value);
         if (o.success) {
+            this.state.position++;
+            this.state.usedIndices.add(this.state.position);
             return o;
         }
 
@@ -225,9 +238,10 @@ export class Args {
             this.state.position++;
         }
 
-        this.state.usedIndices.add(this.state.position);
-        const o = await f(this.parserOutput.ordered[this.state.position++].value);
+        const o = await f(this.parserOutput.ordered[this.state.position].value);
         if (o.success) {
+            this.state.position++;
+            this.state.usedIndices.add(this.state.position);
             return o;
         }
 
