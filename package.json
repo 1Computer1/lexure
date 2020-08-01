@@ -36,7 +36,8 @@
     "build": "rimraf dist && tsc -p tsconfig.build.json",
     "docs": "rimraf docs/reference && typedoc",
     "test": "jest --coverage",
-    "prepublishOnly": "npm run test && npm run build"
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run lint && npm run test"
   },
   "jest": {
     "transform": {
