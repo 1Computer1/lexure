@@ -255,16 +255,8 @@ describe('parsing-with-loops', () => {
     }
 
     async function singleLoop<T>(args: Args, expected: string, parser: Parser<T>): Promise<Result<T, ParseError>> {
-        const r1 = await args.singleParseAsync(loopParse(expected, parser));
-        if (r1.success) {
-            return r1;
-        }
-
-        if (r1.error.exists) {
-            return err(r1.error.value);
-        }
-
-        return loop1Parse(expected, parser);
+        return await args.singleParseAsync(loopParse(expected, parser))
+            ?? await loop1Parse(expected, parser);
     }
 
     function parseNumber(x: string): Result<number, ParseError> {

@@ -124,11 +124,12 @@ export class Args {
      * @typeparam T - Output type.
      * @param f - Gives an option of either the resulting value, or nothing if failed.
      * @param useAnyways - Whether to consider the token used even if the transformation fails; defaults to false.
-     * @returns The value if there are tokens left and the transformation succeeds.
+     * @returns The value if the transformation succeeds.
+     * If there are no tokens left, null is returned.
      */
-    public singleMap<T>(f: (x: string) => Option<T>, useAnyways = false): Option<T> {
+    public singleMap<T>(f: (x: string) => Option<T>, useAnyways = false): Option<T> | null {
         if (this.finished) {
-            return none();
+            return null;
         }
 
         while (this.state.usedIndices.has(this.state.position)) {
@@ -157,11 +158,15 @@ export class Args {
      * @typeparam T - Output type.
      * @param f - Gives an option of either the resulting value, or nothing if failed.
      * @param useAnyways - Whether to consider the token used even if the transformation fails; defaults to false.
-     * @returns The value if there are tokens left and the transformation succeeds.
+     * @returns The value if the transformation succeeds.
+     * If there are no tokens left, null is returned.
      */
-    public async singleMapAsync<T>(f: (x: string) => Promise<Option<T>>, useAnyways = false): Promise<Option<T>> {
+    public async singleMapAsync<T>(
+        f: (x: string) => Promise<Option<T>>,
+        useAnyways = false
+    ): Promise<Option<T> | null> {
         if (this.finished) {
-            return none();
+            return null;
         }
 
         while (this.state.usedIndices.has(this.state.position)) {
@@ -199,22 +204,22 @@ export class Args {
      * >>> { success: true, value: 1 }
      * 
      * console.log(args.singleParse(parse));
-     * >>> { success: false, error: { exists: true, error: 'a is not a number' } }
+     * >>> { success: false, error: 'a is not a number' }
      * 
      * console.log(args.singleParse(parse));
-     * >>> { success: false, error: { exists: false } }
+     * >>> null
      * ```
      * 
      * @typeparam T - Output type.
      * @typeparam E - Error type.
      * @param f - Gives a result of either the resulting value, or an error.
      * @param useAnyways - Whether to consider the token used even if the transformation fails; defaults to false.
-     * @returns The result which succeeds if there are tokens left and the transformation succeeds.
-     * If there are no tokens left, the error will not exist.
+     * @returns The result which succeeds if the transformation succeeds.
+     * If there are no tokens left, null is returned.
      */
-    public singleParse<T, E>(f: (x: string) => Result<T, E>, useAnyways = false): Result<T, Option<E>> {
+    public singleParse<T, E>(f: (x: string) => Result<T, E>, useAnyways = false): Result<T, E> | null {
         if (this.finished) {
-            return err(none());
+            return null;
         }
 
         while (this.state.usedIndices.has(this.state.position)) {
@@ -233,7 +238,7 @@ export class Args {
             this.state.position++;
         }
 
-        return err(some(o.error));
+        return o;
     }
 
     /**
@@ -245,15 +250,15 @@ export class Args {
      * @typeparam E - Error type.
      * @param f - Gives a result of either the resulting value, or an error.
      * @param useAnyways - Whether to consider the token used even if the transformation fails; defaults to false.
-     * @returns The result which succeeds if there are tokens left and the transformation succeeds.
-     * If there are no tokens left, the error will not exist.
+     * @returns The result which succeeds if the transformation succeeds.
+     * If there are no tokens left, null is returned.
      */
     public async singleParseAsync<T, E>(
         f: (x: string) => Promise<Result<T, E>>,
         useAnyways = false
-    ): Promise<Result<T, Option<E>>> {
+    ): Promise<Result<T, E> | null> {
         if (this.finished) {
-            return err(none());
+            return null;
         }
 
         while (this.state.usedIndices.has(this.state.position)) {
@@ -272,7 +277,7 @@ export class Args {
             this.state.position++;
         }
 
-        return err(some(o.error));
+        return o;
     }
 
     /**

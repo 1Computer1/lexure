@@ -25,14 +25,14 @@ describe('Args#single', () => {
 });
 
 describe('Args#singleMap{Async}', () => {
-    it('gives none when no more arguments', () => {
+    it('gives null when no more arguments', () => {
         const s = '';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
         const a = args.singleMap(x => x === 'a' ? some(1) : none());
-        expect(a).toEqual(none());
+        expect(a).toEqual(null);
     });
 
     it('can retrieve and map arguments', () => {
@@ -69,14 +69,14 @@ describe('Args#singleMap{Async}', () => {
         expect(args.single()).toEqual('b');
     });
 
-    it('gives none when no more arguments (async)', async () => {
+    it('gives null when no more arguments (async)', async () => {
         const s = '';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
         const a = await args.singleMapAsync(async x => x === 'a' ? some(1) : none());
-        expect(a).toEqual(none());
+        expect(a).toEqual(null);
     });
 
     it('can retrieve and map arguments (async)', async () => {
@@ -115,14 +115,14 @@ describe('Args#singleMap{Async}', () => {
 });
 
 describe('Args#singleParse{Async}', () => {
-    it('gives none error when no more arguments', () => {
+    it('gives null when no more arguments', () => {
         const s = '';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
         const a = args.singleParse(x => x === 'a' ? ok(1) : err('bad'));
-        expect(a).toEqual(err(none()));
+        expect(a).toEqual(null);
     });
 
     it('can retrieve and parse arguments', () => {
@@ -142,7 +142,7 @@ describe('Args#singleParse{Async}', () => {
         const args = new Args(po);
 
         const a = args.singleParse(x => x === 'not a' ? ok(1) : err('bad'));
-        expect(a).toEqual(err(some('bad')));
+        expect(a).toEqual(err('bad'));
 
         expect(args.single()).toEqual('a');
     });
@@ -154,19 +154,19 @@ describe('Args#singleParse{Async}', () => {
         const args = new Args(po);
 
         const a = args.singleParse(x => x === 'not a' ? ok(1) : err('bad'), true);
-        expect(a).toEqual(err(some('bad')));
+        expect(a).toEqual(err('bad'));
 
         expect(args.single()).toEqual('b');
     });
 
-    it('gives none error when no more arguments (async)', async () => {
+    it('gives null when no more arguments (async)', async () => {
         const s = '';
         const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
         const a = await args.singleParseAsync(async x => x === 'a' ? ok(1) : err('bad'));
-        expect(a).toEqual(err(none()));
+        expect(a).toEqual(null);
     });
 
     it('can retrieve and parse arguments (async)', async () => {
@@ -186,7 +186,7 @@ describe('Args#singleParse{Async}', () => {
         const args = new Args(po);
 
         const a = await args.singleParseAsync(async x => x === 'not a' ? ok(1) : err('bad'));
-        expect(a).toEqual(err(some('bad')));
+        expect(a).toEqual(err('bad'));
 
         expect(args.single()).toEqual('a');
     });
@@ -198,7 +198,7 @@ describe('Args#singleParse{Async}', () => {
         const args = new Args(po);
 
         const a = await args.singleParseAsync(async x => x === 'not a' ? ok(1) : err('bad'), true);
-        expect(a).toEqual(err(some('bad')));
+        expect(a).toEqual(err('bad'));
 
         expect(args.single()).toEqual('b');
     });

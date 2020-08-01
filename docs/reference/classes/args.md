@@ -139,7 +139,7 @@ ___
 
 ###  singleMap
 
-* **singleMap**\<**T**\>(f: function, useAnyways: boolean): [Option](../README.md#option)\<T\>
+* **singleMap**\<**T**\>(f: function, useAnyways: boolean): [Option](../README.md#option)\<T\> | null
 
 Retrieves the value of the next unused ordered token, but only if it could be transformed.
 That token will now be consider used if the transformation succeeds.
@@ -179,15 +179,16 @@ x | string |
 
 Whether to consider the token used even if the transformation fails; defaults to false.
 
-**Returns:** [Option](../README.md#option)\<T\>
+**Returns:** [Option](../README.md#option)\<T\> | null
 
-The value if there are tokens left and the transformation succeeds.
+The value if the transformation succeeds.
+If there are no tokens left, null is returned.
 
 ___
 
 ###  singleMapAsync
 
-* **singleMapAsync**\<**T**\>(f: function, useAnyways: boolean): Promise\<[Option](../README.md#option)\<T\>\>
+* **singleMapAsync**\<**T**\>(f: function, useAnyways: boolean): Promise\<[Option](../README.md#option)\<T\> | null\>
 
 Retrieves the value of the next unused ordered token, but only if it could be transformed.
 This variant of the function is asynchronous using `Promise`.
@@ -217,15 +218,16 @@ x | string |
 
 Whether to consider the token used even if the transformation fails; defaults to false.
 
-**Returns:** Promise\<[Option](../README.md#option)\<T\>\>
+**Returns:** Promise\<[Option](../README.md#option)\<T\> | null\>
 
-The value if there are tokens left and the transformation succeeds.
+The value if the transformation succeeds.
+If there are no tokens left, null is returned.
 
 ___
 
 ###  singleParse
 
-* **singleParse**\<**T**, **E**\>(f: function, useAnyways: boolean): [Result](../README.md#result)\<T, [Option](../README.md#option)\<E\>\>
+* **singleParse**\<**T**, **E**\>(f: function, useAnyways: boolean): [Result](../README.md#result)\<T, E\> | null
 
 Retrieves the value of the next unused ordered token, but only if it could be transformed.
 That token will now be consider used if the transformation succeeds.
@@ -242,10 +244,10 @@ console.log(args.singleParse(parse));
 >>> { success: true, value: 1 }
 
 console.log(args.singleParse(parse));
->>> { success: false, error: { exists: true, error: 'a is not a number' } }
+>>> { success: false, error: 'a is not a number' }
 
 console.log(args.singleParse(parse));
->>> { success: false, error: { exists: false } }
+>>> null
 ```
 
 **Type parameters:**
@@ -276,16 +278,16 @@ x | string |
 
 Whether to consider the token used even if the transformation fails; defaults to false.
 
-**Returns:** [Result](../README.md#result)\<T, [Option](../README.md#option)\<E\>\>
+**Returns:** [Result](../README.md#result)\<T, E\> | null
 
-The result which succeeds if there are tokens left and the transformation succeeds.
-If there are no tokens left, the error will not exist.
+The result which succeeds if the transformation succeeds.
+If there are no tokens left, null is returned.
 
 ___
 
 ###  singleParseAsync
 
-* **singleParseAsync**\<**T**, **E**\>(f: function, useAnyways: boolean): Promise\<[Result](../README.md#result)\<T, [Option](../README.md#option)\<E\>\>\>
+* **singleParseAsync**\<**T**, **E**\>(f: function, useAnyways: boolean): Promise\<[Result](../README.md#result)\<T, E\> | null\>
 
 Retrieves the value of the next unused ordered token, but only if it could be transformed.
 That token will now be consider used if the transformation succeeds.
@@ -320,10 +322,10 @@ x | string |
 
 Whether to consider the token used even if the transformation fails; defaults to false.
 
-**Returns:** Promise\<[Result](../README.md#result)\<T, [Option](../README.md#option)\<E\>\>\>
+**Returns:** Promise\<[Result](../README.md#result)\<T, E\> | null\>
 
-The result which succeeds if there are tokens left and the transformation succeeds.
-If there are no tokens left, the error will not exist.
+The result which succeeds if the transformation succeeds.
+If there are no tokens left, null is returned.
 
 ___
 

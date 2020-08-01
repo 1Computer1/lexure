@@ -180,22 +180,12 @@ export async function singleParseWithLoop<T>(
     parser: Parser<T>
 ): Promise<Result<T, ParseError>> {
     // `Args#singleParseAsync` takes the next ordered token and passes it to a parser.
-    const r1 = await args.singleParseAsync(loopParse(expected, parser));
-    
-    // If the parser succeeds, `r1` will have the value and `args` will consume the token.
-    if (r1.success) {
-        return r1;
-    }
-
-    // If the parser fails and the error exists, it means we encountered an error in the loop.
-    // So we should return that error.
-    if (r1.error.exists) {
-        return err(r1.error.value);
-    }
-
-    // If the parser fails but the error does not exist, it means there was no input in the first place.
-    // So we should prompt for input.
-    return loop1Parse(expected, parser);
+    // If there are tokens to parse, we will return the result of the loop and parser,
+    // and `args` will consider the token to be used.
+    // If there are no tokens left, `Args#singleParseAsync` returns null, so `??` will move on to `loop1Parse`.
+    // That is, there was no input in the first place so we should prompt for it.
+    return await args.singleParseAsync(loopParse(expected, parser))
+        ?? await loop1Parse(expected, parser);
 }
 ```
 
