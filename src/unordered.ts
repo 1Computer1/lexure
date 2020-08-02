@@ -63,19 +63,19 @@ export function longShortStrategy(): UnorderedStrategy {
  * The prefix is the part the preceeds the key name, e.g. '--' in '--foo'.
  * The separator is the part that delimits the key and value e.g. '=' in '--key=value'.
  * It is expected that there are no spaces in the prefixes and separators.
- * 
+ *
  * ```ts
  * const st = prefixedStrategy(['--'], ['=']);
  * console.log(st.matchFlag('--f'));
  * >>> 'f'
- * 
+ *
  * console.log(st.matchOption('--opt='));
  * >>> 'opt'
- * 
+ *
  * console.log(st.matchCompactOption('--opt=15'));
  * >>> ['opt', '15']
  * ```
- * 
+ *
  * @param prefixes - The prefixes to use for unordered arguments.
  * They should be ordered by length in non-increasing order.
  * @param separators - The symbols to use to separate the key and value in options.
@@ -145,16 +145,16 @@ type Pairing = Record<string, string[]>;
  * Match unordered arguments according to a record of the names to the list of words in a case-sensitive manner.
  * Prefixes like '--' and separators like '=' should be a part of the word.
  * For case-insensitive matching, use {@linkcode caseInsensitiveStrategy}.
- * 
+ *
  * ```ts
  * const st = exactStrategy({ flag: ['--flag', '-f'] }, {}, {});
  * console.log(st.matchFlag('--flag'));
  * >>> 'flag'
- * 
+ *
  * console.log(st.matchOption('-f'));
  * >>> 'flag'
  * ```
- * 
+ *
  * @param flags - Words usable as flags.
  * @param options - Words usable as options.
  * @param compactOptions - Words usable as the key of compact options.
@@ -196,16 +196,16 @@ export function exactStrategy(
  * Match unordered arguments according to a record of the names to a list of words in a case-insensitive manner.
  * Prefixes like '--' and separators like '=' should be a part of the word.
  * For case-sensitive matching, use {@linkcode exactStrategy}.
- * 
+ *
  * ```ts
  * const st = caseInsensitiveStrategy({ flag: ['--flag', '-f'] }, {}, {});
  * console.log(st.matchFlag('--FlAg'));
  * >>> 'flag'
- * 
+ *
  * console.log(st.matchOption('-F'));
  * >>> 'flag'
  * ```
- * 
+ *
  * @param flags - Words usable as flags.
  * @param options - Words usable as options.
  * @param compactOptions - Words usable as the key of compact options.

@@ -39,13 +39,13 @@ export function emptyOutput(): ParserOutput {
  * @returns The merged output.
  */
 export function mergeOutputs(...ps: ParserOutput[]): ParserOutput {
-    const ordered = Array.from(function *() {
+    const ordered = Array.from(function* () {
         for (const p of ps) {
             yield* p.ordered;
         }
     }());
 
-    const flags = new Set(function *() {
+    const flags = new Set(function* () {
         for (const p of ps) {
             yield* p.flags;
         }

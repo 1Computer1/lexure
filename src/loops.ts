@@ -82,26 +82,26 @@ export interface LoopStrategyAsync<A, Z, E> {
 /**
  * Runs a loop which continuously gets input and attempts to parse it.
  * The loop strategy used will determine how the loop continues and ends.
- * 
+ *
  * ```ts
  * const getInputFromSomewhere = () => '2';
- * 
+ *
  * const x = loop('1', {
  *   getInput() {
  *     const i = getInputFromSomewhere();
  *     return i == null ? fail('no input') : step(i);
  *   },
- * 
+ *
  *   parse(x: string) {
  *     const n = Number(x);
  *     return isNaN(n) ? fail('bad input') : finish(n);
  *   }
  * });
- * 
+ *
  * console.log(x);
  * >>> 1
  * ```
- * 
+ *
  * @typeparam A - Input type.
  * @typeparam Z - Output type.
  * @typeparam E - Error type.
@@ -116,13 +116,13 @@ export function loop<A, Z, E>(intialInput: A, strat: LoopStrategy<A, Z, E>): Res
         switch (parsed.action) {
             case FINISH:
                 return ok(parsed.value);
-            
+
             case FAIL: {
                 const r = strat.onParseError?.(parsed.error, inp) ?? step_();
                 switch (r.action) {
                     case FINISH:
                         return ok(r.value);
-                    
+
                     case FAIL:
                         return err(r.error);
                 }
@@ -130,7 +130,7 @@ export function loop<A, Z, E>(intialInput: A, strat: LoopStrategy<A, Z, E>): Res
         }
 
         const got = strat.getInput();
-        switch (got.action) {            
+        switch (got.action) {
             case STEP: {
                 inp = got.value;
                 parsed = strat.parse(inp);
@@ -158,26 +158,26 @@ export function loop<A, Z, E>(intialInput: A, strat: LoopStrategy<A, Z, E>): Res
  * Runs a loop which continuously gets input and attempts to parse it.
  * The loop strategy used will determine how the loop continues and ends.
  * This variant has no initial input.
- * 
+ *
  * ```ts
  * const getInputFromSomewhere = () => '2';
- * 
+ *
  * const x = loop1({
  *   getInput() {
  *     const i = getInputFromSomewhere();
  *     return i == null ? fail('no input') : step(i);
  *   },
- * 
+ *
  *   parse(x: string) {
  *     const n = Number(x);
  *     return isNaN(n) ? fail('bad input') : finish(n);
  *   }
  * });
- * 
+ *
  * console.log(x);
  * >>> 2
  * ```
- * 
+ *
  * @typeparam A - Input type.
  * @typeparam Z - Output type.
  * @typeparam E - Error type.
@@ -245,13 +245,13 @@ export async function loopAsync<A, Z, E>(intialInput: A, strat: LoopStrategyAsyn
         switch (parsed.action) {
             case FINISH:
                 return ok(parsed.value);
-            
+
             case FAIL: {
                 const r = await strat.onParseError?.(parsed.error, inp) ?? step_();
                 switch (r.action) {
                     case FINISH:
                         return ok(r.value);
-                    
+
                     case FAIL:
                         return err(r.error);
                 }
@@ -259,7 +259,7 @@ export async function loopAsync<A, Z, E>(intialInput: A, strat: LoopStrategyAsyn
         }
 
         const got = await strat.getInput();
-        switch (got.action) {            
+        switch (got.action) {
             case STEP: {
                 inp = got.value;
                 parsed = await strat.parse(inp);

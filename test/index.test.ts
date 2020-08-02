@@ -2,7 +2,7 @@ import * as lexure from '../src';
 import {
     Lexer, Parser, Args, Result,
     prefixedStrategy,
-    loopAsync, loop1Async, 
+    loopAsync, loop1Async,
     err, ok, step, finish, fail, LoopStrategyAsync
 } from '../src';
 
@@ -131,7 +131,7 @@ describe('complete-example', () => {
         if (out == null) {
             return 'Not a command.';
         }
-    
+
         const [command, args] = out;
         if (command === 'add') {
             // These calls to `Args#single` can give a string or null.
@@ -174,10 +174,10 @@ describe('parsing-with-loops', () => {
         switch (e) {
             case ParseError.PARSE_FAILURE:
                 return say('Invalid input.');
-    
+
             case ParseError.NO_INPUT_GIVEN:
                 return say('You did not give a value in time.');
-    
+
             case ParseError.TOO_MANY_TRIES:
                 return say('You took too many tries.');
         }

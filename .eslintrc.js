@@ -12,6 +12,9 @@ module.exports = {
         'plugin:jest/recommended',
     ],
     rules: {
+        'no-multiple-empty-lines': ['error', { max: 1, maxEOF: 0, maxBOF: 0 }],
+        'no-trailing-spaces': 'error',
+        'generator-star-spacing': ['error', 'after'],
         '@typescript-eslint/semi': 'error',
         '@typescript-eslint/indent': ['error', 4, { 'SwitchCase': 1 }],
         '@typescript-eslint/explicit-function-return-type': ['warn', { allowExpressions: true, allowTypedFunctionExpressions: true }],
