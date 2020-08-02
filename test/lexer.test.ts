@@ -90,6 +90,16 @@ describe('Lexer#lex', () => {
         ]);
     });
 
+    it('with multiple quotes, parses quotes without spaces around it', () => {
+        const s = '!foo --reset="lorem ipsum"';
+        const ts = new Lexer(s).setQuotes([['"', '"'], ['“', '”']]).lex();
+        expect(ts).toEqual([
+            { value: '!foo', raw: '!foo', trailing: ' ' },
+            { value: '--reset=', raw: '--reset=', trailing: '' },
+            { value: 'lorem ipsum', raw: '"lorem ipsum"', trailing: '' },
+        ]);
+    });
+
     it('can handle leading spaces', () => {
         const s = ' simple text here';
         const ts = new Lexer(s).lex();

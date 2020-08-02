@@ -101,7 +101,7 @@ export class Lexer implements IterableIterator<Token> {
 
             this.shift(open.length);
 
-            let inner = this.matchR(/^[^]+/)?.[0] ?? '';
+            let inner = this.input.slice(this.position);
             inner = sliceTo(inner, [closeQ]);
             this.shift(inner.length);
 
@@ -199,11 +199,11 @@ export class Lexer implements IterableIterator<Token> {
 }
 
 function sliceTo(word: string, xs: string[]): string {
-    const is = xs.map(x => word.indexOf(x));
-    const i = Math.min(...is);
-    if (i !== -1) {
-        return word.slice(0, i);
+    const is = xs.map(x => word.indexOf(x)).filter(x => x !== -1);
+    if (is.length === 0) {
+        return word;
     }
 
-    return word;
+    const i = Math.min(...is);
+    return word.slice(0, i);
 }
