@@ -24,6 +24,8 @@ export const {
     option,
     some,
     none,
+    maybeOption,
+    orOption,
     // parser.js
     parser,
     Parser,
@@ -38,6 +40,10 @@ export const {
     ok,
     err,
     err_,
+    maybeResult,
+    orResultAll,
+    orResultFirst,
+    orResultLast,
     // tokens.js
     tokens,
     extractCommand,

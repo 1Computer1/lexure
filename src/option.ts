@@ -48,3 +48,42 @@ export function some<T>(x: T): Some<T> {
 export function none(): None {
     return { exists: false };
 }
+
+/**
+ * Creates an Option from a value that could be null or undefined.
+ *
+ * ```ts
+ * console.log(maybeOption(1));
+ * >>> { exists: true, value: 1 }
+ *
+ * console.log(maybeOption(null));
+ * >>> { exists: false }
+ *
+ * console.log(maybeOption(undefined));
+ * >>> { exists: false }
+ * ```
+ * @param x - A nullable value.
+ * @returns An Option.
+ */
+export function maybeOption<T>(x: T | null | undefined): Option<T> {
+    if (x == null) {
+        return none();
+    }
+
+    return some(x);
+}
+
+/**
+ * Gets the first Some from many Options.
+ * @param xs - The Options.
+ * @return The first Some, or None if there were no Some.
+ */
+export function orOption<T>(...xs: Option<T>[]): Option<T> {
+    for (const x of xs) {
+        if (x.exists) {
+            return x;
+        }
+    }
+
+    return none();
+}

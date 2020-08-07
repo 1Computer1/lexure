@@ -54,9 +54,15 @@
 * [outputFromJSON](README.md#outputfromjson)
 * [some](README.md#some)
 * [none](README.md#none)
+* [maybeOption](README.md#maybeoption)
+* [orOption](README.md#oroption)
 * [ok](README.md#ok)
 * [err](README.md#err)
 * [err_](README.md#err_)
+* [maybeResult](README.md#mayberesult)
+* [orResultAll](README.md#orresultall)
+* [orResultFirst](README.md#orresultfirst)
+* [orResultLast](README.md#orresultlast)
 * [sliceTo](README.md#sliceto)
 * [step](README.md#step)
 * [step_](README.md#step_)
@@ -317,6 +323,61 @@ An Option.
 
 ___
 
+###  maybeOption
+
+* **maybeOption**\<**T**\>(x: T | null | undefined): [Option](README.md#option)\<T\>
+
+Creates an Option from a value that could be null or undefined.
+
+```ts
+console.log(maybeOption(1));
+>>> { exists: true, value: 1 }
+
+console.log(maybeOption(null));
+>>> { exists: false }
+
+console.log(maybeOption(undefined));
+>>> { exists: false }
+```
+
+**Type parameters:**
+
+* **T**
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+x | T &#124; null &#124; undefined | A nullable value. |
+
+**Returns:** [Option](README.md#option)\<T\>
+
+An Option.
+
+___
+
+###  orOption
+
+* **orOption**\<**T**\>(...xs: [Option](README.md#option)\<T\>[]): [Option](README.md#option)\<T\>
+
+Gets the first Some from many Options.
+
+**Type parameters:**
+
+* **T**
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+...xs | [Option](README.md#option)\<T\>[] | The Options. |
+
+**Returns:** [Option](README.md#option)\<T\>
+
+The first Some, or None if there were no Some.
+
+___
+
 ###  ok
 
 * **ok**\<**T**\>(x: T): [Ok](interfaces/ok.md)\<T\>
@@ -374,6 +435,117 @@ Creates an Err with null value.
 **Returns:** [Err](interfaces/err.md)\<null\>
 
 A Result.
+
+___
+
+###  maybeResult
+
+* **maybeResult**\<**T**, **E**\>(x: T | null | undefined, e: E): [Result](README.md#result)\<T, E\>
+
+Creates a Result from a value that could be null or undefined.
+
+```ts
+console.log(maybeResult(1, 'bad'));
+>>> { success: true, value: 1 }
+
+console.log(maybeResult(null, 'bad'));
+>>> { success: false, error: 'bad' }
+
+console.log(maybeResult(undefined, 'bad'));
+>>> { success: false, error: 'bad' }
+```
+
+**Type parameters:**
+
+* **T**
+
+* **E**
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+x | T &#124; null &#124; undefined | A nullable value. |
+e | E | The error to use. |
+
+**Returns:** [Result](README.md#result)\<T, E\>
+
+A Result.
+
+___
+
+###  orResultAll
+
+* **orResultAll**\<**T**, **E**\>(x: [Result](README.md#result)\<T, E\>, ...xs: [Result](README.md#result)\<T, E\>[]): [Result](README.md#result)\<T, E[]\>
+
+Gets the first Ok from many Results.
+
+**Type parameters:**
+
+* **T**
+
+* **E**
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+x | [Result](README.md#result)\<T, E\> | The first Result. |
+...xs | [Result](README.md#result)\<T, E\>[] | The remaining Results; this encoding is to ensure there is at least one Result. |
+
+**Returns:** [Result](README.md#result)\<T, E[]\>
+
+The first Ok, or all the Errs if there were no Ok.
+
+___
+
+###  orResultFirst
+
+* **orResultFirst**\<**T**, **E**\>(x: [Result](README.md#result)\<T, E\>, ...xs: [Result](README.md#result)\<T, E\>[]): [Result](README.md#result)\<T, E\>
+
+Gets the first Ok from many Results.
+
+**Type parameters:**
+
+* **T**
+
+* **E**
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+x | [Result](README.md#result)\<T, E\> | The first Result. |
+...xs | [Result](README.md#result)\<T, E\>[] | The remaining Results; this encoding is to ensure there is at least one Result. |
+
+**Returns:** [Result](README.md#result)\<T, E\>
+
+The first Ok, or the first Err if there were no Ok.
+
+___
+
+###  orResultLast
+
+* **orResultLast**\<**T**, **E**\>(x: [Result](README.md#result)\<T, E\>, ...xs: [Result](README.md#result)\<T, E\>[]): [Result](README.md#result)\<T, E\>
+
+Gets the first Ok from many Results.
+
+**Type parameters:**
+
+* **T**
+
+* **E**
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+x | [Result](README.md#result)\<T, E\> | The first Result. |
+...xs | [Result](README.md#result)\<T, E\>[] | The remaining Results; this encoding is to ensure there is at least one Result. |
+
+**Returns:** [Result](README.md#result)\<T, E\>
+
+The first Ok, or the last Err if there were no Ok.
 
 ___
 
