@@ -26,6 +26,7 @@ Parses a list of tokens to separate out flags and options.
 
 * [setUnorderedStrategy](parser.md#setunorderedstrategy)
 * [next](parser.md#next)
+* [nextMut](parser.md#nextmut)
 * [[Symbol.iterator]](parser.md#[symbol.iterator])
 * [parse](parser.md#parse)
 
@@ -87,6 +88,22 @@ ___
 Gets the next parsed tokens.
 
 **Returns:** IteratorResult\<[ParserOutput](../interfaces/parseroutput.md)\>
+
+___
+
+###  nextMut
+
+* **nextMut**(output: [ParserOutput](../interfaces/parseroutput.md)): IteratorResult\<null\>
+
+Gets the next parsed tokens and mutates a given parser output.
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+output | [ParserOutput](../interfaces/parseroutput.md) | Output to mutate.  |
+
+**Returns:** IteratorResult\<null\>
 
 ___
 
