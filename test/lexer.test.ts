@@ -110,6 +110,18 @@ describe('Lexer#lex', () => {
         ]);
     });
 
+    it('can handle just spaces', () => {
+        const s = '  ';
+        const ts = new Lexer(s).lex();
+        expect(ts).toEqual([]);
+    });
+
+    it('can handle empty strings', () => {
+        const s = '';
+        const ts = new Lexer(s).lex();
+        expect(ts).toEqual([]);
+    });
+
     it('should never error', () => {
         fc.assert(fc.property(fc.string(), s => {
             const l = new Lexer(s);
