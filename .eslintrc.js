@@ -19,5 +19,6 @@ module.exports = {
         '@typescript-eslint/indent': ['error', 4, { 'SwitchCase': 1 }],
         '@typescript-eslint/explicit-function-return-type': ['warn', { allowExpressions: true, allowTypedFunctionExpressions: true }],
         '@typescript-eslint/no-non-null-assertion': ['off']
-    }
+    },
+    ignorePatterns: ['benchmarks/**']
 };
