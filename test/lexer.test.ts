@@ -111,10 +111,10 @@ describe('Lexer#lex', () => {
     });
 
     it('should never error', () => {
-        fc.property(fc.string(), s => {
+        fc.assert(fc.property(fc.string(), s => {
             const l = new Lexer(s);
             expect(() => l.lex()).not.toThrow();
-        });
+        }));
     });
 });
 

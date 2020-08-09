@@ -109,19 +109,19 @@ describe('Parser#parse', () => {
     });
 
     it('should never error', () => {
-        fc.property(fc.string(), s => {
+        fc.assert(fc.property(fc.string(), s => {
             const ts = new Lexer(s).lex();
             const p = new Parser(ts);
             expect(() => p.parse()).not.toThrow();
-        });
+        }));
     });
 
     it('should be that mutation and merge are equivalent', () => {
-        fc.property(fc.string(), s => {
+        fc.assert(fc.property(fc.string(), s => {
             const ts = new Lexer(s).lex();
             const p1 = new Parser(ts).parse();
             const p2 = mergeOutputs(...new Parser(ts));
             expect(p1).toEqual(p2);
-        });
+        }));
     });
 });

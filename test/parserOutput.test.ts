@@ -38,14 +38,14 @@ describe('mergeOutputs', () => {
     });
 
     it('has emptyOutput as the identity', () => {
-        fc.property(genOutput, a => {
+        fc.assert(fc.property(genOutput, a => {
             expect(mergeOutputs(a, emptyOutput())).toEqual(a);
             expect(mergeOutputs(emptyOutput(), a)).toEqual(a);
-        });
+        }));
     });
 
     it('is associative', () => {
-        fc.property(fc.tuple(genOutput, genOutput, genOutput), ([a, b, c]) => {
+        fc.assert(fc.property(fc.tuple(genOutput, genOutput, genOutput), ([a, b, c]) => {
             const r1 = mergeOutputs(a, mergeOutputs(b, c));
             const r2 = mergeOutputs(mergeOutputs(a, b), c);
             const r3 = mergeOutputs(a, b, c);
@@ -53,7 +53,7 @@ describe('mergeOutputs', () => {
             expect(r1).toEqual(r2);
             expect(r2).toEqual(r3);
             expect(r3).toEqual(r1);
-        });
+        }));
     });
 });
 
@@ -88,18 +88,18 @@ describe('output{To,From}JSON', () => {
     });
 
     it('from . to = id', () => {
-        fc.property(genOutput, a => {
+        fc.assert(fc.property(genOutput, a => {
             const r = outputFromJSON(outputToJSON(a));
             expect(r).toEqual(a);
-        });
+        }));
     });
 
     it('to . from = id, except for duplicates', () => {
-        fc.property(genOutput, a => {
+        fc.assert(fc.property(genOutput, a => {
             const b = outputToJSON(a);
             const r = outputToJSON(outputFromJSON(b));
             expect(r).toEqual(b);
-        });
+        }));
     });
 });
 
