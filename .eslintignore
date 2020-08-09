@@ -1,0 +1,11 @@
+# JavaScript
+.eslintrc.js
+benchmarks
+
+# Node
+node_modules
+
+# Output
+coverage
+dist
+docs
