@@ -63,12 +63,12 @@ describe('Parser#parse', () => {
     });
 
     it('should parse multiple same options', () => {
-        const ts = new Lexer('--foo=x --foo= y --foo=z').lex();
+        const ts = new Lexer('--foo=w --foo=x --foo= y --foo=z').lex();
         const out = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         expect(out).toEqual({
             ordered: [],
             flags: new Set(),
-            options: new Map([['foo', ['x', 'y', 'z']]])
+            options: new Map([['foo', ['w', 'x', 'y', 'z']]])
         });
     });
 
@@ -113,6 +113,15 @@ describe('Parser#parse', () => {
             const ts = new Lexer(s).lex();
             const p = new Parser(ts);
             expect(() => p.parse()).not.toThrow();
+        });
+    });
+
+    it('should be that mutation and merge are equivalent', () => {
+        fc.property(fc.string(), s => {
+            const ts = new Lexer(s).lex();
+            const p1 = new Parser(ts).parse();
+            const p2 = [...new Parser(ts)];
+            expect(p1).toEqual(p2);
         });
     });
 });

@@ -1,6 +1,6 @@
 import { UnorderedStrategy, noStrategy } from './unordered';
 import { Token } from './tokens';
-import { ParserOutput, emptyOutput, mergeOutputs } from './parserOutput';
+import { ParserOutput, emptyOutput } from './parserOutput';
 
 /**
  * Parses a list of tokens to separate out flags and options.
@@ -62,11 +62,31 @@ export class Parser implements IterableIterator<ParserOutput> {
         return { done: false, value: ts };
     }
 
-    private processToken(): ParserOutput {
-        return this.pFlag() || this.pOption() || this.pCompactOption() || this.pOrdered();
+    /**
+     * Gets the next parsed tokens and mutates a given parser output.
+     * @param output - Output to mutate.
+     */
+    public nextMut(output: ParserOutput): IteratorResult<null> {
+        if (this.finished) {
+            return { done: true, value: null };
+        }
+
+        const ts = this.processToken(output);
+        if (ts == null) {
+            throw new Error('Unexpected end of input (this should never happen).');
+        }
+
+        return { done: false, value: null };
     }
 
-    private pFlag(): ParserOutput | null {
+    private processToken(output?: ParserOutput): ParserOutput {
+        return this.pFlag(output)
+            || this.pOption(output)
+            || this.pCompactOption(output)
+            || this.pOrdered(output);
+    }
+
+    private pFlag(output = emptyOutput()): ParserOutput | null {
         const t = this.input[this.position];
         const f = this.unorderedStrategy.matchFlag(t.value);
         if (f == null) {
@@ -75,12 +95,11 @@ export class Parser implements IterableIterator<ParserOutput> {
 
         this.shift(1);
 
-        const output = emptyOutput();
         output.flags.add(f);
         return output;
     }
 
-    private pOption(): ParserOutput | null {
+    private pOption(output = emptyOutput()): ParserOutput | null {
         const t = this.input[this.position];
         const o = this.unorderedStrategy.matchOption(t.value);
         if (o == null) {
@@ -89,8 +108,9 @@ export class Parser implements IterableIterator<ParserOutput> {
 
         this.shift(1);
 
-        const output = emptyOutput();
-        output.options.set(o, []);
+        if (!output.options.has(o)) {
+            output.options.set(o, []);
+        }
 
         const n = this.input[this.position];
         if (n == null) {
@@ -112,7 +132,7 @@ export class Parser implements IterableIterator<ParserOutput> {
         return output;
     }
 
-    private pCompactOption(): ParserOutput | null {
+    private pCompactOption(output = emptyOutput()): ParserOutput | null {
         const t = this.input[this.position];
         const o = this.unorderedStrategy.matchCompactOption(t.value);
         if (o == null) {
@@ -121,16 +141,20 @@ export class Parser implements IterableIterator<ParserOutput> {
 
         this.shift(1);
 
-        const output = emptyOutput();
-        output.options.set(o[0], [o[1]]);
+        if (!output.options.has(o[0])) {
+            output.options.set(o[0], [o[1]]);
+        } else {
+            const a = output.options.get(o[0])!;
+            a.push(o[1]);
+        }
+
         return output;
     }
 
-    private pOrdered(): ParserOutput {
+    private pOrdered(output = emptyOutput()): ParserOutput {
         const t = this.input[this.position];
         this.shift(1);
 
-        const output = emptyOutput();
         output.ordered.push(t);
         return output;
     }
@@ -152,6 +176,12 @@ export class Parser implements IterableIterator<ParserOutput> {
      * @returns The parser output.
      */
     public parse(): ParserOutput {
-        return mergeOutputs(...this);
+        const output = emptyOutput();
+        let r = this.nextMut(output);
+        while (!r.done) {
+            r = this.nextMut(output);
+        }
+
+        return output;
     }
 }
