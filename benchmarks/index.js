@@ -1,4 +1,4 @@
-const { Parser, mergeOutputs, Lexer } = require('..');
+const { Parser, mergeOutputs, Lexer, longShortStrategy, longStrategy } = require('..');
 const { suite } = require('./wrapper');
 
 console.log('> Running benchmarks');
@@ -13,6 +13,20 @@ suite('lexing', add => {
     add('lexer.lex()', () => {
         const lexer = new Lexer(string).setQuotes(['"', '"']);
         lexer.lex();
+    });
+});
+
+suite('parsing', add => {
+    const tokens = Array.from({ length: 1000 }, i => {
+        const flag = i % 11 == 0;
+        const option = !flag && i % 13 == 0;
+        const s = flag ? '--hey' : option ? '--hey=there' : 'hey';
+        return { value: s, raw: s, trailing: ' ' };
+    });
+
+    add('parser.parse()', () => {
+        const parser = new Parser(tokens).setUnorderedStrategy(longStrategy());
+        parser.parse();
     });
 });
 
