@@ -1,5 +1,5 @@
 import * as fc from 'fast-check';
-import { Lexer, Parser, longStrategy } from '../src';
+import { Lexer, Parser, longStrategy, mergeOutputs } from '../src';
 
 describe('Parser#parse', () => {
     it('should parse normal words', () => {
@@ -120,7 +120,7 @@ describe('Parser#parse', () => {
         fc.property(fc.string(), s => {
             const ts = new Lexer(s).lex();
             const p1 = new Parser(ts).parse();
-            const p2 = [...new Parser(ts)];
+            const p2 = mergeOutputs(...new Parser(ts));
             expect(p1).toEqual(p2);
         });
     });
