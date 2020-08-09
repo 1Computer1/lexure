@@ -11,6 +11,7 @@ Parses a list of tokens to separate out flags and options.
 ## Implements
 
 * IterableIterator\<[ParserOutput](../interfaces/parseroutput.md)\>
+* Iterator\<[ParserOutput](../interfaces/parseroutput.md), null, [ParserOutput](../interfaces/parseroutput.md) | undefined\>
 
 ## Index
 
@@ -26,7 +27,6 @@ Parses a list of tokens to separate out flags and options.
 
 * [setUnorderedStrategy](parser.md#setunorderedstrategy)
 * [next](parser.md#next)
-* [nextMut](parser.md#nextmut)
 * [[Symbol.iterator]](parser.md#[symbol.iterator])
 * [parse](parser.md#parse)
 
@@ -83,27 +83,20 @@ ___
 
 ###  next
 
-* **next**(): IteratorResult\<[ParserOutput](../interfaces/parseroutput.md)\>
+* **next**(output?: [ParserOutput](../interfaces/parseroutput.md)): IteratorResult\<[ParserOutput](../interfaces/parseroutput.md)\>
 
 Gets the next parsed tokens.
-
-**Returns:** IteratorResult\<[ParserOutput](../interfaces/parseroutput.md)\>
-
-___
-
-###  nextMut
-
-* **nextMut**(output: [ParserOutput](../interfaces/parseroutput.md)): IteratorResult\<null\>
-
-Gets the next parsed tokens and mutates a given parser output.
+If a parser output is passed in, that output will be mutated, otherwise a new one is made.
 
 **Parameters:**
 
 Name | Type | Description |
 ------ | ------ | ------ |
-output | [ParserOutput](../interfaces/parseroutput.md) | Output to mutate.  |
+output? | [ParserOutput](../interfaces/parseroutput.md) | Parser output to mutate. |
 
-**Returns:** IteratorResult\<null\>
+**Returns:** IteratorResult\<[ParserOutput](../interfaces/parseroutput.md)\>
+
+An iterator result containing parser output.
 
 ___
 

@@ -5,7 +5,7 @@ import { ParserOutput, emptyOutput } from './parserOutput';
 /**
  * Parses a list of tokens to separate out flags and options.
  */
-export class Parser implements IterableIterator<ParserOutput> {
+export class Parser implements IterableIterator<ParserOutput>, Iterator<ParserOutput, null, ParserOutput | undefined> {
     private readonly input: Token[];
 
     private unorderedStrategy: UnorderedStrategy = noStrategy();
@@ -48,25 +48,11 @@ export class Parser implements IterableIterator<ParserOutput> {
 
     /**
      * Gets the next parsed tokens.
+     * If a parser output is passed in, that output will be mutated, otherwise a new one is made.
+     * @param output - Parser output to mutate.
+     * @returns An iterator result containing parser output.
      */
-    public next(): IteratorResult<ParserOutput> {
-        if (this.finished) {
-            return { done: true, value: null };
-        }
-
-        const ts = this.processToken();
-        if (ts == null) {
-            throw new Error('Unexpected end of input (this should never happen).');
-        }
-
-        return { done: false, value: ts };
-    }
-
-    /**
-     * Gets the next parsed tokens and mutates a given parser output.
-     * @param output - Output to mutate.
-     */
-    public nextMut(output: ParserOutput): IteratorResult<null> {
+    public next(output?: ParserOutput): IteratorResult<ParserOutput> {
         if (this.finished) {
             return { done: true, value: null };
         }
@@ -76,7 +62,7 @@ export class Parser implements IterableIterator<ParserOutput> {
             throw new Error('Unexpected end of input (this should never happen).');
         }
 
-        return { done: false, value: null };
+        return { done: false, value: ts };
     }
 
     private processToken(output?: ParserOutput): ParserOutput {
@@ -177,9 +163,9 @@ export class Parser implements IterableIterator<ParserOutput> {
      */
     public parse(): ParserOutput {
         const output = emptyOutput();
-        let r = this.nextMut(output);
+        let r = this.next(output);
         while (!r.done) {
-            r = this.nextMut(output);
+            r = this.next(output);
         }
 
         return output;
