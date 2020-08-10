@@ -77,7 +77,7 @@
     "jest-config": "^26.0.1",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.1.0",
-    "typedoc": "^0.17.8",
+    "typedoc": "^0.18.0",
     "typedoc-plugin-markdown": "github:1Computer1/typedoc-plugin-markdown#custom",
     "typescript": "^3.9.5"
   }

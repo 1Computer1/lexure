@@ -20,8 +20,6 @@ Type of step results.
 
 * [action](step.md#readonly-action)
 * [item](step.md#readonly-item)
-* [value](step.md#optional-readonly-value)
-* [error](step.md#optional-readonly-error)
 
 ## Properties
 
@@ -38,15 +36,3 @@ ___
 * **item**: A
 
 The item to step with.
-
-___
-
-### optional readonly value
-
-* **value**? : undefined
-
-___
-
-### optional readonly error
-
-* **error**? : undefined

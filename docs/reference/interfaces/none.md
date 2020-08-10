@@ -13,7 +13,6 @@ The value does not exist.
 ### Properties
 
 * [exists](none.md#readonly-exists)
-* [value](none.md#optional-readonly-value)
 
 ## Properties
 
@@ -22,9 +21,3 @@ The value does not exist.
 * **exists**: false
 
 If this is a None, this is false.
-
-___
-
-### optional readonly value
-
-* **value**? : undefined

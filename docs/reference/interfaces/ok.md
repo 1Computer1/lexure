@@ -20,7 +20,6 @@ Type of results.
 
 * [success](ok.md#readonly-success)
 * [value](ok.md#readonly-value)
-* [error](ok.md#optional-readonly-error)
 
 ## Properties
 
@@ -37,9 +36,3 @@ ___
 * **value**: T
 
 The resulting value, which only exists on an Ok.
-
-___
-
-### optional readonly error
-
-* **error**? : undefined

@@ -19,8 +19,6 @@ Type of errors.
 ### Properties
 
 * [action](fail.md#readonly-action)
-* [item](fail.md#optional-readonly-item)
-* [value](fail.md#optional-readonly-value)
 * [error](fail.md#readonly-error)
 
 ## Properties
@@ -30,18 +28,6 @@ Type of errors.
 * **action**: [FAIL](../enums/looptag.md#fail)
 
 If this is a Fail, this is 'fail'.
-
-___
-
-### optional readonly item
-
-* **item**? : undefined
-
-___
-
-### optional readonly value
-
-* **value**? : undefined
 
 ___
 

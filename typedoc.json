@@ -6,6 +6,7 @@
     "exclude": ["src/index.ts", "test/**"],
     "excludeNotExported": true,
     "excludePrivate": true,
+    "excludeNotDocumented": true,
     "disableSources": true,
     "out": "docs/reference"
 }

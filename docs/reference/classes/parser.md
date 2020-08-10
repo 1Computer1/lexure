@@ -27,7 +27,6 @@ Parses a list of tokens to separate out flags and options.
 
 * [setUnorderedStrategy](parser.md#setunorderedstrategy)
 * [next](parser.md#next)
-* [[Symbol.iterator]](parser.md#[symbol.iterator])
 * [parse](parser.md#parse)
 
 ## Constructors
@@ -97,14 +96,6 @@ output? | [ParserOutput](../interfaces/parseroutput.md) | Parser output to mutat
 **Returns:** IteratorResult\<[ParserOutput](../interfaces/parseroutput.md)\>
 
 An iterator result containing parser output.
-
-___
-
-###  [Symbol.iterator]
-
-* **[Symbol.iterator]**(): this
-
-**Returns:** this
 
 ___
 

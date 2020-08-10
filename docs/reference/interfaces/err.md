@@ -19,7 +19,6 @@ Type of errors.
 ### Properties
 
 * [success](err.md#readonly-success)
-* [value](err.md#optional-readonly-value)
 * [error](err.md#readonly-error)
 
 ## Properties
@@ -29,12 +28,6 @@ Type of errors.
 * **success**: false
 
 If this an Err, this is false.
-
-___
-
-### optional readonly value
-
-* **value**? : undefined
 
 ___
 

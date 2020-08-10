@@ -26,7 +26,6 @@ The lexer turns input into a list of tokens.
 
 * [setQuotes](lexer.md#setquotes)
 * [next](lexer.md#next)
-* [[Symbol.iterator]](lexer.md#[symbol.iterator])
 * [lex](lexer.md#lex)
 * [lexCommand](lexer.md#lexcommand)
 
@@ -92,14 +91,6 @@ Gets the next token.
 **Returns:** IteratorResult\<[Token](../interfaces/token.md)\>
 
 An iterator result containing the next token.
-
-___
-
-###  [Symbol.iterator]
-
-* **[Symbol.iterator]**(): this
-
-**Returns:** this
 
 ___
 

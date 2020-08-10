@@ -38,12 +38,6 @@
 * [LoopAction](README.md#loopaction)
 * [Pairing](README.md#pairing)
 
-### Variables
-
-* [STEP](README.md#step)
-* [FINISH](README.md#finish)
-* [FAIL](README.md#fail)
-
 ### Functions
 
 * [joinTokens](README.md#jointokens)
@@ -63,7 +57,6 @@
 * [orResultAll](README.md#orresultall)
 * [orResultFirst](README.md#orresultfirst)
 * [orResultLast](README.md#orresultlast)
-* [sliceTo](README.md#sliceto)
 * [step](README.md#step)
 * [step_](README.md#step_)
 * [finish](README.md#finish)
@@ -142,24 +135,6 @@ ___
 * **Pairing**: Record\<string, string[]\>
 
 Pairing of flag/option names to the words usable for them.
-
-## Variables
-
-###  STEP
-
-* **STEP**: [STEP](enums/looptag.md#step)
-
-___
-
-###  FINISH
-
-* **FINISH**: [FINISH](enums/looptag.md#finish)
-
-___
-
-###  FAIL
-
-* **FAIL**: [FAIL](enums/looptag.md#fail)
 
 ## Functions
 
@@ -546,21 +521,6 @@ x | [Result](README.md#result)\<T, E\> | The first Result. |
 **Returns:** [Result](README.md#result)\<T, E\>
 
 The first Ok, or the last Err if there were no Ok.
-
-___
-
-###  sliceTo
-
-* **sliceTo**(word: string, xs: string[]): string
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-word | string |
-xs | string[] |
-
-**Returns:** string
 
 ___
 
