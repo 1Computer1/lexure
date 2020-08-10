@@ -2,10 +2,11 @@
 node_modules
 
 # Source
-benchmarks
-src
 .eslintignore
 .eslintrc.js
+benchmarks
+src
+test
 tsconfig.json
 
 # Output
