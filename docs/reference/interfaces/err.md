@@ -18,21 +18,28 @@ Type of errors.
 
 ### Properties
 
-* [success](err.md#success)
-* [error](err.md#error)
+* [success](err.md#readonly-success)
+* [value](err.md#optional-readonly-value)
+* [error](err.md#readonly-error)
 
 ## Properties
 
-###  success
+### readonly success
 
 * **success**: false
 
-Whether the computation is successful.
+If this an Err, this is false.
 
 ___
 
-###  error
+### optional readonly value
+
+* **value**? : undefined
+
+___
+
+### readonly error
 
 * **error**: E
 
-The resulting error.
+The resulting error, which only exists on an Err.

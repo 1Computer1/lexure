@@ -12,12 +12,19 @@ The value does not exist.
 
 ### Properties
 
-* [exists](none.md#exists)
+* [exists](none.md#readonly-exists)
+* [value](none.md#optional-readonly-value)
 
 ## Properties
 
-###  exists
+### readonly exists
 
 * **exists**: false
 
-Whether the value exists.
+If this is a None, this is false.
+
+___
+
+### optional readonly value
+
+* **value**? : undefined

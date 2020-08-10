@@ -132,7 +132,7 @@ export function loop<A, Z, E>(intialInput: A, strat: LoopStrategy<A, Z, E>): Res
         const got = strat.getInput();
         switch (got.action) {
             case STEP: {
-                inp = got.value;
+                inp = got.item;
                 parsed = strat.parse(inp);
                 break;
             }
@@ -189,7 +189,7 @@ export function loop1<A, Z, E>(strat: LoopStrategy<A, Z, E>): Result<Z, E> {
         const got = strat.getInput();
         switch (got.action) {
             case STEP: {
-                const inp = got.value;
+                const inp = got.item;
                 const parsed = strat.parse(inp);
                 switch (parsed.action) {
                     case FINISH:
@@ -261,7 +261,7 @@ export async function loopAsync<A, Z, E>(intialInput: A, strat: LoopStrategyAsyn
         const got = await strat.getInput();
         switch (got.action) {
             case STEP: {
-                inp = got.value;
+                inp = got.item;
                 parsed = await strat.parse(inp);
                 break;
             }
@@ -299,7 +299,7 @@ export async function loop1Async<A, Z, E>(strat: LoopStrategyAsync<A, Z, E>): Pr
         const got = await strat.getInput();
         switch (got.action) {
             case STEP: {
-                const inp = got.value;
+                const inp = got.item;
                 const parsed = await strat.parse(inp);
                 switch (parsed.action) {
                     case FINISH:

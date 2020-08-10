@@ -18,21 +18,28 @@ Type of results.
 
 ### Properties
 
-* [success](ok.md#success)
-* [value](ok.md#value)
+* [success](ok.md#readonly-success)
+* [value](ok.md#readonly-value)
+* [error](ok.md#optional-readonly-error)
 
 ## Properties
 
-###  success
+### readonly success
 
 * **success**: true
 
-Whether the computation is successful.
+If this is an Ok, this is true.
 
 ___
 
-###  value
+### readonly value
 
 * **value**: T
 
-The resulting value.
+The resulting value, which only exists on an Ok.
+
+___
+
+### optional readonly error
+
+* **error**? : undefined

@@ -2,8 +2,8 @@ import * as lexure from '../src';
 import {
     Lexer, Parser, Args, Result,
     prefixedStrategy,
-    loopAsync, loop1Async,
-    err, ok, step, finish, fail, LoopStrategyAsync
+    LoopStrategyAsync, loopAsync, loop1Async,
+    some, err, ok, step, finish, fail
 } from '../src';
 
 describe('readme', () => {
@@ -58,7 +58,7 @@ describe('readme', () => {
         expect(a2).toEqual('cool stuff');
 
         const a3 = args.findMap(x => x === 'c' ? lexure.some('it was a C') : lexure.none());
-        expect(a3).toEqual({ exists: true, value: 'it was a C' });
+        expect(a3).toEqual(some('it was a C'));
 
         const a4 = args.many();
         expect(a4).toEqual([
@@ -96,7 +96,7 @@ describe('readme', () => {
             }
         });
 
-        expect(result).toEqual({ success: true, value: 100 });
+        expect(result).toEqual(ok(100));
     });
 });
 

@@ -18,21 +18,35 @@ Type of finish results.
 
 ### Properties
 
-* [action](finish.md#action)
-* [value](finish.md#value)
+* [action](finish.md#readonly-action)
+* [item](finish.md#optional-readonly-item)
+* [value](finish.md#readonly-value)
+* [error](finish.md#optional-readonly-error)
 
 ## Properties
 
-###  action
+### readonly action
 
 * **action**: [FINISH](../enums/looptag.md#finish)
 
-Whether the loop should continue.
+If this is a Finish, this is 'finish'.
 
 ___
 
-###  value
+### optional readonly item
+
+* **item**? : undefined
+
+___
+
+### readonly value
 
 * **value**: B
 
 The resulting value.
+
+___
+
+### optional readonly error
+
+* **error**? : undefined

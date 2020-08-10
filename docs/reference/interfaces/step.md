@@ -18,21 +18,35 @@ Type of step results.
 
 ### Properties
 
-* [action](step.md#action)
-* [value](step.md#value)
+* [action](step.md#readonly-action)
+* [item](step.md#readonly-item)
+* [value](step.md#optional-readonly-value)
+* [error](step.md#optional-readonly-error)
 
 ## Properties
 
-###  action
+### readonly action
 
 * **action**: [STEP](../enums/looptag.md#step)
 
-Whether the loop should continue.
+If this is a Step, this is 'step'.
 
 ___
 
-###  value
+### readonly item
 
-* **value**: A
+* **item**: A
 
-The resulting value.
+The item to step with.
+
+___
+
+### optional readonly value
+
+* **value**? : undefined
+
+___
+
+### optional readonly error
+
+* **error**? : undefined

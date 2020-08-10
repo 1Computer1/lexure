@@ -18,21 +18,21 @@ Type of results.
 
 ### Properties
 
-* [exists](some.md#exists)
-* [value](some.md#value)
+* [exists](some.md#readonly-exists)
+* [value](some.md#readonly-value)
 
 ## Properties
 
-###  exists
+### readonly exists
 
 * **exists**: true
 
-Whether the value exists.
+If this is a Some, this is true.
 
 ___
 
-###  value
+### readonly value
 
 * **value**: T
 
-The value.
+The value, which only exists on a Some.

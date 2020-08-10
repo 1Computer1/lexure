@@ -22,14 +22,18 @@ export enum LoopTag {
  */
 export interface Step<A> {
     /**
-     * Whether the loop should continue.
+     * If this is a Step, this is 'step'.
      */
-    action: LoopTag.STEP;
+    readonly action: LoopTag.STEP;
 
     /**
-     * The resulting value.
+     * The item to step with.
      */
-    value: A;
+    readonly item: A;
+
+    readonly value?: undefined;
+
+    readonly error?: undefined;
 }
 
 /**
@@ -38,14 +42,18 @@ export interface Step<A> {
  */
 export interface Finish<B> {
     /**
-     * Whether the loop should continue.
+     * If this is a Finish, this is 'finish'.
      */
-    action: LoopTag.FINISH;
+    readonly action: LoopTag.FINISH;
+
+    readonly item?: undefined;
 
     /**
      * The resulting value.
      */
-    value: B;
+    readonly value: B;
+
+    readonly error?: undefined;
 }
 
 /**
@@ -54,14 +62,18 @@ export interface Finish<B> {
  */
 export interface Fail<E> {
     /**
-     * Whether the loop should continue.
+     * If this is a Fail, this is 'fail'.
      */
-    action: LoopTag.FAIL;
+    readonly action: LoopTag.FAIL;
+
+    readonly item?: undefined;
+
+    readonly value?: undefined;
 
     /**
      * The resulting error.
      */
-    error: E;
+    readonly error: E;
 }
 
 /**
@@ -71,7 +83,7 @@ export interface Fail<E> {
  * @returns A LoopAction.
  */
 export function step<A>(x: A): Step<A> {
-    return { action: LoopTag.STEP, value: x };
+    return { action: LoopTag.STEP, item: x };
 }
 
 /**
@@ -79,7 +91,7 @@ export function step<A>(x: A): Step<A> {
  * @returns A LoopAction.
  */
 export function step_(): Step<null> {
-    return { action: LoopTag.STEP, value: null };
+    return { action: LoopTag.STEP, item: null };
 }
 
 /**

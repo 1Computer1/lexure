@@ -11,14 +11,16 @@ export type Result<T, E> = Ok<T> | Err<E>;
  */
 export interface Ok<T> {
     /**
-     * Whether the computation is successful.
+     * If this is an Ok, this is true.
      */
-    success: true;
+    readonly success: true;
 
     /**
-     * The resulting value.
+     * The resulting value, which only exists on an Ok.
      */
-    value: T;
+    readonly value: T;
+
+    readonly error?: undefined
 }
 
 /**
@@ -27,14 +29,16 @@ export interface Ok<T> {
  */
 export interface Err<E> {
     /**
-     * Whether the computation is successful.
+     * If this an Err, this is false.
      */
-    success: false;
+    readonly success: false;
+
+    readonly value?: undefined
 
     /**
-     * The resulting error.
+     * The resulting error, which only exists on an Err.
      */
-    error: E;
+    readonly error: E;
 }
 
 /**

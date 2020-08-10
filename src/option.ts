@@ -11,14 +11,14 @@ export type Option<T> = Some<T> | None;
  */
 export interface Some<T> {
     /**
-     * Whether the value exists.
+     * If this is a Some, this is true.
      */
-    exists: true;
+    readonly exists: true;
 
     /**
-     * The value.
+     * The value, which only exists on a Some.
      */
-    value: T;
+    readonly value: T;
 }
 
 /**
@@ -26,9 +26,11 @@ export interface Some<T> {
  */
 export interface None {
     /**
-     * Whether the value exists.
+     * If this is a None, this is false.
      */
-    exists: false;
+    readonly exists: false;
+
+    readonly value?: undefined;
 }
 
 /**
