@@ -31,6 +31,7 @@ export class Lexer implements IterableIterator<Token> {
      *
      * @param quotes - List of pairs of open and close quotes.
      * It is required that these strings do not contain any whitespace characters.
+     * The matching of these quotes will be case-sensitive.
      * @returns The lexer.
      */
     public setQuotes(quotes: [string, string][]): this {

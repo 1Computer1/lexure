@@ -75,7 +75,7 @@ console.log(xs);
 
 Name | Type | Description |
 ------ | ------ | ------ |
-quotes | [string, string][] | List of pairs of open and close quotes. It is required that these strings do not contain any whitespace characters. |
+quotes | [string, string][] | List of pairs of open and close quotes. It is required that these strings do not contain any whitespace characters. The matching of these quotes will be case-sensitive. |
 
 **Returns:** this
 
