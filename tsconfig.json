@@ -1,20 +1,22 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
-    "moduleResolution": "node",
-    "target": "ES2017",
-    "lib": ["ES2019", "ESNext"],
-    "strict": true,
-    "sourceMap": true,
+    "module": "esnext",
+    "lib": ["esnext"],
+    "importHelpers": true,
     "declaration": true,
+    "sourceMap": true,
+    "downlevelIteration": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "declarationDir": "dist/types",
-    "outDir": "dist/lib"
+    "rootDir": "./src",
+    "strict": true,
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "paths": {
+      "*": ["src/*", "node_modules/*"]
+    },
+    "esModuleInterop": true
   },
-  "include": [
-    "src",
-    "test"
-  ]
+  "include": ["src", "types"]
 }
