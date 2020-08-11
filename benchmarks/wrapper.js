@@ -1,9 +1,5 @@
 const Benchmark = require('benchmark');
 
-function green(s) {
-    return `\x1B[90;42;1m${s}\x1B[0m`;
-}
-
 function bold(s) {
     return `\x1B[1m${s}\x1B[0m`;
 }
@@ -24,16 +20,23 @@ function benchmarks(fn) {
 }
 
 function makeSuite(fn) {
+    let n = 0;
     const suite = new Benchmark.Suite()
         .on('cycle', (event) => {
             console.log(`  ${String(event.target)}`);
         })
         .on('complete', function () {
-            const name = this.filter('fastest').map('name');
-            console.log(`${green(' OK ')} Fastest is ${bold(name)}`);
+            if (n > 1) {
+                const name = this.filter('fastest').map('name');
+                console.log(`  Fastest is ${bold(name)}`);
+            }
         });
 
-    fn(suite.add.bind(suite));
+    fn((name, fn) => {
+        n++;
+        suite.add(name, fn);
+    });
+
     return suite;
 }
 
