@@ -136,16 +136,26 @@ describe('prefixedStrategy', () => {
 });
 
 describe('exactStrategy', () => {
-    it('should work when exact', () => {
-        const s = exactStrategy({ flag: ['flag'] }, { option: ['option'] }, { compactOption: ['compactOption'] });
+    it('should parse a flag', () => {
+        const s = exactStrategy({ flag: ['flag'] }, { option: ['option'] });
         const x = 'flag';
         expect(s.matchFlag(x)).toEqual('flag');
-        expect(s.matchOption(x)).toEqual(null);
-        expect(s.matchCompactOption(x)).toEqual(null);
+    });
+
+    it('should parse an option', () => {
+        const s = exactStrategy({ flag: ['flag'] }, { option: ['option'] });
+        const x = 'option';
+        expect(s.matchOption(x)).toEqual('option');
+    });
+
+    it('should parse a compact option', () => {
+        const s = exactStrategy({ flag: ['flag'] }, { option: ['option'] });
+        const x = 'optionHello';
+        expect(s.matchCompactOption(x)).toEqual(['option', 'Hello']);
     });
 
     it('should not work when not exact', () => {
-        const s = exactStrategy({ flag: ['flag'] }, { option: ['option'] }, { compactOption: ['compactOption'] });
+        const s = exactStrategy({ flag: ['flag'] }, { option: ['option'] });
         const x = 'flaG';
         expect(s.matchFlag(x)).toEqual(null);
         expect(s.matchOption(x)).toEqual(null);
@@ -153,7 +163,7 @@ describe('exactStrategy', () => {
     });
 
     it('should have a different name than the actual text', () => {
-        const s = exactStrategy({ flag: ['--flag'] }, { option: ['option'] }, { compactOption: ['compactOption'] });
+        const s = exactStrategy({ flag: ['--flag'] }, { option: ['option'] });
         const x = '--flag';
         expect(s.matchFlag(x)).toEqual('flag');
     });
@@ -161,37 +171,37 @@ describe('exactStrategy', () => {
 
 describe('caseInsensitiveStrategy', () => {
     it('should parse a flag', () => {
-        const s = caseInsensitiveStrategy({ flag: ['flag'] }, { option: ['option'] }, { compactOption: ['compactOption'] });
+        const s = caseInsensitiveStrategy({ flag: ['flag'] }, { option: ['option'] });
         const x = 'FLAG';
         expect(s.matchFlag(x)).toEqual('flag');
     });
 
     it('should parse an option', () => {
-        const s = caseInsensitiveStrategy({ flag: ['flag'] }, { option: ['option'] }, { compactOption: ['compactOption'] });
+        const s = caseInsensitiveStrategy({ flag: ['flag'] }, { option: ['option'] });
         const x = 'OPTION';
         expect(s.matchOption(x)).toEqual('option');
     });
 
     it('should parse a compact option', () => {
-        const s = caseInsensitiveStrategy({ flag: ['flag'] }, { option: ['option'] }, { compactOption: ['compactOption'] });
-        const x = 'COMPACTOptionHello';
-        expect(s.matchCompactOption(x)).toEqual(['compactOption', 'Hello']);
+        const s = caseInsensitiveStrategy({ flag: ['flag'] }, { option: ['option'] });
+        const x = 'OPTIONHello';
+        expect(s.matchCompactOption(x)).toEqual(['option', 'Hello']);
     });
 
     it('should parse a flag in different locale', () => {
-        const s = caseInsensitiveStrategy({ i: ['i'] }, {}, {}, 'tr');
+        const s = caseInsensitiveStrategy({ i: ['i'] }, {}, 'tr');
         const x = '\u0130';
         expect(s.matchFlag(x)).toEqual('i');
     });
 
     it('should not parse a flag in different locale', () => {
-        const s = caseInsensitiveStrategy({ i: ['i'] }, {}, {}, 'en-US');
+        const s = caseInsensitiveStrategy({ i: ['i'] }, {}, 'en-US');
         const x = '\u0130';
         expect(s.matchFlag(x)).toEqual(null);
     });
 
     it('should have a different name than the actual text', () => {
-        const s = caseInsensitiveStrategy({ flag: ['--flag'] }, { option: ['option'] }, { compactOption: ['compactOption'] });
+        const s = caseInsensitiveStrategy({ flag: ['--flag'] }, { option: ['option'] });
         const x = '--flag';
         expect(s.matchFlag(x)).toEqual('flag');
     });

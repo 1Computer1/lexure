@@ -149,7 +149,7 @@ type Pairing = Record<string, string[]>;
  * For case-insensitive matching, use {@linkcode caseInsensitiveStrategy}.
  *
  * ```ts
- * const st = exactStrategy({ flag: ['--flag', '-f'] }, {}, {});
+ * const st = exactStrategy({ flag: ['--flag', '-f'] }, {});
  * console.log(st.matchFlag('--flag'));
  * >>> 'flag'
  *
@@ -159,32 +159,24 @@ type Pairing = Record<string, string[]>;
  *
  * @param flags - Words usable as flags.
  * @param options - Words usable as options.
- * @param compactOptions - Words usable as the key of compact options.
  * They should be ordered by length in non-increasing order.
  * @returns The strategy.
  */
-export function exactStrategy(
-    flags: Pairing,
-    options: Pairing,
-    compactOptions: Pairing
-): UnorderedStrategy {
+export function exactStrategy(flags: Pairing, options: Pairing): UnorderedStrategy {
     return {
         matchFlag(s: string) {
             return Object.entries(flags)
-                .find(xs =>
-                    xs[1].some(x => s === x))?.[0] ?? null;
+                .find(xs => xs[1].some(x => s === x))?.[0] ?? null;
         },
 
         matchOption(s: string) {
             return Object.entries(options)
-                .find(xs =>
-                    xs[1].some(x => s === x))?.[0] ?? null;
+                .find(xs => xs[1].some(x => s === x))?.[0] ?? null;
         },
 
         matchCompactOption(s: string) {
-            const k = Object.entries(compactOptions)
-                .find(xs =>
-                    xs[1].some(x => s.startsWith(x)))?.[0] ?? null;
+            const k = Object.entries(options)
+                .find(xs => xs[1].some(x => s.startsWith(x)))?.[0] ?? null;
 
             if (k == null) {
                 return null;
@@ -202,7 +194,7 @@ export function exactStrategy(
  * For case-sensitive matching, use {@linkcode exactStrategy}.
  *
  * ```ts
- * const st = caseInsensitiveStrategy({ flag: ['--flag', '-f'] }, {}, {});
+ * const st = caseInsensitiveStrategy({ flag: ['--flag', '-f'] }, {});
  * console.log(st.matchFlag('--FlAg'));
  * >>> 'flag'
  *
@@ -212,7 +204,6 @@ export function exactStrategy(
  *
  * @param flags - Words usable as flags.
  * @param options - Words usable as options.
- * @param compactOptions - Words usable as the key of compact options.
  * They should be ordered by length in non-increasing order.
  * @param locale - The locale(s) to use to compare case.
  * @returns The strategy.
@@ -220,29 +211,25 @@ export function exactStrategy(
 export function caseInsensitiveStrategy(
     flags: Pairing,
     options: Pairing,
-    compactOptions: Pairing,
     locale?: string | string[]
 ): UnorderedStrategy {
     return {
         matchFlag(s: string) {
             s = s.toLocaleLowerCase(locale);
             return Object.entries(flags)
-                .find(xs =>
-                    xs[1].some(x => s === x.toLocaleLowerCase(locale)))?.[0] ?? null;
+                .find(xs => xs[1].some(x => s === x.toLocaleLowerCase(locale)))?.[0] ?? null;
         },
 
         matchOption(s: string) {
             s = s.toLocaleLowerCase(locale);
             return Object.entries(options)
-                .find(xs =>
-                    xs[1].some(x => s === x.toLocaleLowerCase(locale)))?.[0] ?? null;
+                .find(xs => xs[1].some(x => s === x.toLocaleLowerCase(locale)))?.[0] ?? null;
         },
 
         matchCompactOption(s: string) {
             const s1 = s.toLocaleLowerCase(locale);
-            const k = Object.entries(compactOptions)
-                .find(xs =>
-                    xs[1].some(x => s1.startsWith(x.toLocaleLowerCase(locale))))?.[0] ?? null;
+            const k = Object.entries(options)
+                .find(xs => xs[1].some(x => s1.startsWith(x.toLocaleLowerCase(locale))))?.[0] ?? null;
 
             if (k == null) {
                 return null;

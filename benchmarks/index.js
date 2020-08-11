@@ -63,7 +63,6 @@ benchmarks(suite => {
             const parser = new Parser(tokens)
                 .setUnorderedStrategy(exactStrategy(
                     { flag: ['flag!'] },
-                    { opti: ['opti:'] },
                     { opti: ['opti:'] }
                 ));
 
@@ -84,7 +83,6 @@ benchmarks(suite => {
             const parser = new Parser(tokens)
                 .setUnorderedStrategy(caseInsensitiveStrategy(
                     { flag: ['flag!'] },
-                    { opti: ['opti:'] },
                     { opti: ['opti:'] }
                 ));
 

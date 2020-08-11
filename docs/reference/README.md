@@ -874,14 +874,14 @@ ___
 
 ###  exactStrategy
 
-* **exactStrategy**(flags: [Pairing](README.md#pairing), options: [Pairing](README.md#pairing), compactOptions: [Pairing](README.md#pairing)): [UnorderedStrategy](interfaces/unorderedstrategy.md)
+* **exactStrategy**(flags: [Pairing](README.md#pairing), options: [Pairing](README.md#pairing)): [UnorderedStrategy](interfaces/unorderedstrategy.md)
 
 Match unordered arguments according to a record of the names to the list of words in a case-sensitive manner.
 Prefixes like '--' and separators like '=' should be a part of the word.
 For case-insensitive matching, use [`caseInsensitiveStrategy`](README.md#caseinsensitivestrategy).
 
 ```ts
-const st = exactStrategy({ flag: ['--flag', '-f'] }, {}, {});
+const st = exactStrategy({ flag: ['--flag', '-f'] }, {});
 console.log(st.matchFlag('--flag'));
 >>> 'flag'
 
@@ -894,8 +894,7 @@ console.log(st.matchOption('-f'));
 Name | Type | Description |
 ------ | ------ | ------ |
 flags | [Pairing](README.md#pairing) | Words usable as flags. |
-options | [Pairing](README.md#pairing) | Words usable as options. |
-compactOptions | [Pairing](README.md#pairing) | Words usable as the key of compact options. They should be ordered by length in non-increasing order. |
+options | [Pairing](README.md#pairing) | Words usable as options. They should be ordered by length in non-increasing order. |
 
 **Returns:** [UnorderedStrategy](interfaces/unorderedstrategy.md)
 
@@ -905,14 +904,14 @@ ___
 
 ###  caseInsensitiveStrategy
 
-* **caseInsensitiveStrategy**(flags: [Pairing](README.md#pairing), options: [Pairing](README.md#pairing), compactOptions: [Pairing](README.md#pairing), locale?: string | string[]): [UnorderedStrategy](interfaces/unorderedstrategy.md)
+* **caseInsensitiveStrategy**(flags: [Pairing](README.md#pairing), options: [Pairing](README.md#pairing), locale?: string | string[]): [UnorderedStrategy](interfaces/unorderedstrategy.md)
 
 Match unordered arguments according to a record of the names to a list of words in a case-insensitive manner.
 Prefixes like '--' and separators like '=' should be a part of the word.
 For case-sensitive matching, use [`exactStrategy`](README.md#exactstrategy).
 
 ```ts
-const st = caseInsensitiveStrategy({ flag: ['--flag', '-f'] }, {}, {});
+const st = caseInsensitiveStrategy({ flag: ['--flag', '-f'] }, {});
 console.log(st.matchFlag('--FlAg'));
 >>> 'flag'
 
@@ -925,8 +924,7 @@ console.log(st.matchOption('-F'));
 Name | Type | Description |
 ------ | ------ | ------ |
 flags | [Pairing](README.md#pairing) | Words usable as flags. |
-options | [Pairing](README.md#pairing) | Words usable as options. |
-compactOptions | [Pairing](README.md#pairing) | Words usable as the key of compact options. They should be ordered by length in non-increasing order. |
+options | [Pairing](README.md#pairing) | Words usable as options. They should be ordered by length in non-increasing order. |
 locale? | string &#124; string[] | The locale(s) to use to compare case. |
 
 **Returns:** [UnorderedStrategy](interfaces/unorderedstrategy.md)
