@@ -846,6 +846,8 @@ Match unordered arguments with custom prefix and separator.
 The prefix is the part the preceeds the key name, e.g. '--' in '--foo'.
 The separator is the part that delimits the key and value e.g. '=' in '--key=value'.
 It is expected that there are no spaces in the prefixes and separators.
+The matching is done in a case-sensitive manner.
+Also note that if the input contains multiple of the separators, the matching may be ambiguous.
 
 ```ts
 const st = prefixedStrategy(['--'], ['=']);
