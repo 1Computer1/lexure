@@ -84,7 +84,7 @@ export function longShortStrategy(): UnorderedStrategy {
  */
 export function prefixedStrategy(prefixes: string[], separators: string[]): UnorderedStrategy {
     return {
-        matchFlag: (s: string) => {
+        matchFlag(s: string) {
             const pre = prefixes.find(x => s.startsWith(x));
             if (pre == null) {
                 return null;
@@ -98,7 +98,8 @@ export function prefixedStrategy(prefixes: string[], separators: string[]): Unor
 
             return s;
         },
-        matchOption: (s: string) => {
+
+        matchOption(s: string) {
             const pre = prefixes.find(x => s.startsWith(x));
             if (pre == null) {
                 return null;
@@ -112,7 +113,8 @@ export function prefixedStrategy(prefixes: string[], separators: string[]): Unor
 
             return s.slice(0, -sep.length);
         },
-        matchCompactOption: (s: string) => {
+
+        matchCompactOption(s: string) {
             const pre = prefixes.find(x => s.startsWith(x));
             if (pre == null) {
                 return null;
@@ -167,17 +169,19 @@ export function exactStrategy(
     compactOptions: Pairing
 ): UnorderedStrategy {
     return {
-        matchFlag: (s: string) => {
+        matchFlag(s: string) {
             return Object.entries(flags)
                 .find(xs =>
                     xs[1].some(x => s === x))?.[0] ?? null;
         },
-        matchOption: (s: string) => {
+
+        matchOption(s: string) {
             return Object.entries(options)
                 .find(xs =>
                     xs[1].some(x => s === x))?.[0] ?? null;
         },
-        matchCompactOption: (s: string) => {
+
+        matchCompactOption(s: string) {
             const k = Object.entries(compactOptions)
                 .find(xs =>
                     xs[1].some(x => s.startsWith(x)))?.[0] ?? null;
@@ -220,19 +224,21 @@ export function caseInsensitiveStrategy(
     locale?: string | string[]
 ): UnorderedStrategy {
     return {
-        matchFlag: (s: string) => {
+        matchFlag(s: string) {
             s = s.toLocaleLowerCase(locale);
             return Object.entries(flags)
                 .find(xs =>
                     xs[1].some(x => s === x.toLocaleLowerCase(locale)))?.[0] ?? null;
         },
-        matchOption: (s: string) => {
+
+        matchOption(s: string) {
             s = s.toLocaleLowerCase(locale);
             return Object.entries(options)
                 .find(xs =>
                     xs[1].some(x => s === x.toLocaleLowerCase(locale)))?.[0] ?? null;
         },
-        matchCompactOption: (s: string) => {
+
+        matchCompactOption(s: string) {
             const s1 = s.toLocaleLowerCase(locale);
             const k = Object.entries(compactOptions)
                 .find(xs =>
