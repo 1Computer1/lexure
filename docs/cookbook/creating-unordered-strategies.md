@@ -6,11 +6,12 @@ The first one we make will be one where flags and options are specified by an ex
 ```ts
 // An unordered strategy is made of three functions.
 // They match either flags, options, or 'compact' options.
+// For best results, if one matcher accepts a string, none of the other matchers should.
 const screamingStrategy: UnorderedStrategy = {
     // This one returns the name of the flag.
     // e.g. !flag
     matchFlag(s: string): string | null {
-        return s.startsWith('!') ? s.slice(1) : null;
+        return s.startsWith('!') && !s.includes('=') ? s.slice(1) : null;
     },
 
     // This one returns the name of the option.
