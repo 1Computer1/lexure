@@ -882,7 +882,7 @@ ___
 Match unordered arguments according to a record of the names to the list of words.
 Prefixes like '--' and separators like '=' should be a part of the word.
 This function uses
-[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare)
+[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator)
 which can compare in different locales and different sensitivities.
 Note that this only works for en-US if you are below Node 13.0.0.
 
@@ -965,7 +965,7 @@ ___
 Creates a new strategy that renames the names of flags and options of another strategy.
 This is done according to a record of the names to a list of words.
 This function uses
-[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare)
+[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator)
 which can compare in different locales and different sensitivities.
 Note that this only works for en-US if you are below Node 13.0.0.
 

@@ -44,8 +44,7 @@ console.log(st.matchCompactOption('bar:baz'));
 >>> ['bar', 'baz']
 ```
 
-This strategy uses `String.prototype.localeCompare`, which means it supports [locales and collator options](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator/Collator).  
-You can use this to do case-insensitive matching, among other kinds of matching.  
+This strategy supports [locales and collator options](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator/Collator); you can use this to do case-insensitive matching, among other kinds of matching.  
 
 ```ts
 const st = matchingStrategy({ foo: ['foo', 'fooooo'] }, { bar: ['bar:'] }, 'en-US', { sensitivity: 'base' });
