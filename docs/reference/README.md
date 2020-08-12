@@ -928,7 +928,7 @@ const st1 = longStrategy();
 console.log(st1.matchFlag('--foo'), st1.matchFlag('--FOO'));
 >>> 'foo' 'FOO'
 
-const st2 = mapStrategy(longStrategy(), k => k.toLowerCase());
+const st2 = mapKeys(longStrategy(), k => k.toLowerCase());
 
 console.log(st2.matchFlag('--foo'), st1.matchFlag('--FOO'));
 >>> 'foo' 'foo'
@@ -970,7 +970,7 @@ which can compare in different locales and different sensitivities.
 Note that this only works for en-US if you are below Node 13.0.0.
 
 ```ts
-const st = renameStrategy(longStrategy(), { foo: ['bar'] });
+const st = renameKeys(longStrategy(), { foo: ['bar'] });
 
 console.log(st.matchFlag('--bar'));
 >>> 'foo'
