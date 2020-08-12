@@ -70,8 +70,7 @@
 * [longStrategy](README.md#longstrategy)
 * [longShortStrategy](README.md#longshortstrategy)
 * [prefixedStrategy](README.md#prefixedstrategy)
-* [exactStrategy](README.md#exactstrategy)
-* [caseInsensitiveStrategy](README.md#caseinsensitivestrategy)
+* [matchingStrategy](README.md#matchingstrategy)
 * [someToOk](README.md#sometook)
 * [okToSome](README.md#oktosome)
 * [errToSome](README.md#errtosome)
@@ -874,50 +873,30 @@ The strategy.
 
 ___
 
-###  exactStrategy
+###  matchingStrategy
 
-* **exactStrategy**(flags: [Pairing](README.md#pairing), options: [Pairing](README.md#pairing)): [UnorderedStrategy](interfaces/unorderedstrategy.md)
+* **matchingStrategy**(flags: [Pairing](README.md#pairing), options: [Pairing](README.md#pairing), locales?: string | string[] | undefined, collatorOptions?: Intl.CollatorOptions): [UnorderedStrategy](interfaces/unorderedstrategy.md)
 
-Match unordered arguments according to a record of the names to the list of words in a case-sensitive manner.
+Match unordered arguments according to a record of the names to the list of words.
 Prefixes like '--' and separators like '=' should be a part of the word.
-For case-insensitive matching, use [`caseInsensitiveStrategy`](README.md#caseinsensitivestrategy).
+This function uses
+[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare)
+which can compare in different locales and different sensitivities.
+Note that this only works for en-US if you are below Node 13.0.0.
 
 ```ts
-const st = exactStrategy({ flag: ['--flag', '-f'] }, {});
+const st = pairingStrategy({ flag: ['--flag', '-f'] }, {});
 console.log(st.matchFlag('--flag'));
 >>> 'flag'
 
 console.log(st.matchOption('-f'));
 >>> 'flag'
-```
 
-**Parameters:**
-
-Name | Type | Description |
------- | ------ | ------ |
-flags | [Pairing](README.md#pairing) | Words usable as flags. |
-options | [Pairing](README.md#pairing) | Words usable as options. They should be ordered by length in non-increasing order. |
-
-**Returns:** [UnorderedStrategy](interfaces/unorderedstrategy.md)
-
-The strategy.
-
-___
-
-###  caseInsensitiveStrategy
-
-* **caseInsensitiveStrategy**(flags: [Pairing](README.md#pairing), options: [Pairing](README.md#pairing), locale?: string | string[]): [UnorderedStrategy](interfaces/unorderedstrategy.md)
-
-Match unordered arguments according to a record of the names to a list of words in a case-insensitive manner.
-Prefixes like '--' and separators like '=' should be a part of the word.
-For case-sensitive matching, use [`exactStrategy`](README.md#exactstrategy).
-
-```ts
-const st = caseInsensitiveStrategy({ flag: ['--flag', '-f'] }, {});
-console.log(st.matchFlag('--FlAg'));
+const stbase = pairingStrategy({ flag: ['--flag'] }, {}, 'en-US', { sensitivity: 'base' });
+console.log(stbase.matchFlag('--FLAG'));
 >>> 'flag'
 
-console.log(st.matchOption('-F'));
+console.log(stbase.matchFlag('--flág'));
 >>> 'flag'
 ```
 
@@ -927,7 +906,8 @@ Name | Type | Description |
 ------ | ------ | ------ |
 flags | [Pairing](README.md#pairing) | Words usable as flags. |
 options | [Pairing](README.md#pairing) | Words usable as options. They should be ordered by length in non-increasing order. |
-locale? | string &#124; string[] | The locale(s) to use to compare case. |
+locales? | string &#124; string[] &#124; undefined | Locale(s) to use. |
+collatorOptions? | Intl.CollatorOptions | Options for comparing strings. See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator/Collator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator/Collator) for more information. |
 
 **Returns:** [UnorderedStrategy](interfaces/unorderedstrategy.md)
 

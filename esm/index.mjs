@@ -54,8 +54,7 @@ export const {
     longStrategy,
     longShortStrategy,
     prefixedStrategy,
-    exactStrategy,
-    caseInsensitiveStrategy,
+    matchingStrategy,
     // util.js
     util,
     someToOk,

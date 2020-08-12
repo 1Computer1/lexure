@@ -38,7 +38,7 @@ Note that in the example above, we were passing `Token[]` around instead of `Arg
 This is for two reasons:
 
 1. Each subcommand may have their own flag parsing strategy.  
-This is especially relevant for `exactStrategy` and `caseInsensitiveStrategy`, which may not have delimiters.
+This is especially relevant for `matchingStrategy`, which may not have delimiters.
 
 2. `Args` is not sensitive to the possibility of flags in between ordered tokens.  
 Consider the input `!root --flag sub1`, which `args.single()` will retrieve `sub1`.  

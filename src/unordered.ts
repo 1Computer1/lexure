@@ -145,99 +145,79 @@ export function prefixedStrategy(prefixes: string[], separators: string[]): Unor
  */
 type Pairing = Record<string, string[]>;
 
+function findPairing(ps: Pairing, p: (w: string) => boolean): [string, string] | null {
+    for (const [k, ws] of Object.entries(ps)) {
+        for (const w of ws) {
+            if (p(w)) {
+                return [k, w];
+            }
+        }
+    }
+
+    return null;
+}
+
 /**
- * Match unordered arguments according to a record of the names to the list of words in a case-sensitive manner.
+ * Match unordered arguments according to a record of the names to the list of words.
  * Prefixes like '--' and separators like '=' should be a part of the word.
- * For case-insensitive matching, use {@linkcode caseInsensitiveStrategy}.
+ * This function uses
+ * {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare}
+ * which can compare in different locales and different sensitivities.
+ * Note that this only works for en-US if you are below Node 13.0.0.
  *
  * ```ts
- * const st = exactStrategy({ flag: ['--flag', '-f'] }, {});
+ * const st = pairingStrategy({ flag: ['--flag', '-f'] }, {});
  * console.log(st.matchFlag('--flag'));
  * >>> 'flag'
  *
  * console.log(st.matchOption('-f'));
  * >>> 'flag'
- * ```
  *
- * @param flags - Words usable as flags.
- * @param options - Words usable as options.
- * They should be ordered by length in non-increasing order.
- * @returns The strategy.
- */
-export function exactStrategy(flags: Pairing, options: Pairing): UnorderedStrategy {
-    return {
-        matchFlag(s: string) {
-            return Object.entries(flags)
-                .find(xs => xs[1].some(x => s === x))?.[0] ?? null;
-        },
-
-        matchOption(s: string) {
-            return Object.entries(options)
-                .find(xs => xs[1].some(x => s === x))?.[0] ?? null;
-        },
-
-        matchCompactOption(s: string) {
-            const k = Object.entries(options)
-                .find(xs => xs[1].some(x => s.startsWith(x)))?.[0] ?? null;
-
-            if (k == null) {
-                return null;
-            }
-
-            const v = s.slice(k.length);
-            return [k, v];
-        }
-    };
-}
-
-/**
- * Match unordered arguments according to a record of the names to a list of words in a case-insensitive manner.
- * Prefixes like '--' and separators like '=' should be a part of the word.
- * For case-sensitive matching, use {@linkcode exactStrategy}.
- *
- * ```ts
- * const st = caseInsensitiveStrategy({ flag: ['--flag', '-f'] }, {});
- * console.log(st.matchFlag('--FlAg'));
+ * const stbase = pairingStrategy({ flag: ['--flag'] }, {}, 'en-US', { sensitivity: 'base' });
+ * console.log(stbase.matchFlag('--FLAG'));
  * >>> 'flag'
  *
- * console.log(st.matchOption('-F'));
+ * console.log(stbase.matchFlag('--flág'));
  * >>> 'flag'
  * ```
  *
  * @param flags - Words usable as flags.
  * @param options - Words usable as options.
  * They should be ordered by length in non-increasing order.
- * @param locale - The locale(s) to use to compare case.
+ * @param locales - Locale(s) to use.
+ * @param collatorOptions - Options for comparing strings.
+ * See {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator/Collator}
+ * for more information.
  * @returns The strategy.
  */
-export function caseInsensitiveStrategy(
+export function matchingStrategy(
     flags: Pairing,
     options: Pairing,
-    locale?: string | string[]
+    locales?: string | string[] | undefined,
+    collatorOptions?: Intl.CollatorOptions
 ): UnorderedStrategy {
+    const eq = (w: string, s: string): boolean =>
+        w.localeCompare(s, locales, collatorOptions) === 0;
+
     return {
         matchFlag(s: string) {
-            s = s.toLocaleLowerCase(locale);
-            return Object.entries(flags)
-                .find(xs => xs[1].some(x => s === x.toLocaleLowerCase(locale)))?.[0] ?? null;
+            const res = findPairing(flags, w => eq(w, s));
+            return res?.[0] ?? null;
         },
 
         matchOption(s: string) {
-            s = s.toLocaleLowerCase(locale);
-            return Object.entries(options)
-                .find(xs => xs[1].some(x => s === x.toLocaleLowerCase(locale)))?.[0] ?? null;
+            const res = findPairing(options, w => eq(w, s));
+            return res?.[0] ?? null;
         },
 
         matchCompactOption(s: string) {
-            const s1 = s.toLocaleLowerCase(locale);
-            const k = Object.entries(options)
-                .find(xs => xs[1].some(x => s1.startsWith(x.toLocaleLowerCase(locale))))?.[0] ?? null;
-
-            if (k == null) {
+            const res = findPairing(options, w => eq(w, s.slice(0, w.length)));
+            if (res == null) {
                 return null;
             }
 
-            const v = s.slice(k.length);
+            const [k, w] = res;
+            const v = s.slice(w.length);
             return [k, v];
         }
     };

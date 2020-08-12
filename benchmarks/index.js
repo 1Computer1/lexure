@@ -2,7 +2,7 @@ const { benchmarks } = require('./wrapper');
 const {
     Lexer, Parser,
     mergeOutputs,
-    longStrategy, longShortStrategy, exactStrategy, caseInsensitiveStrategy
+    longStrategy, longShortStrategy, pairingStrategy
 } = require('..');
 
 benchmarks(suite => {
@@ -50,7 +50,7 @@ benchmarks(suite => {
         });
     });
 
-    suite('parsing: parse with exactStrategy', add => {
+    suite('parsing: parse with pairingStrategy', add => {
         const tokens = Array.from({ length: 1000 }, i => {
             const flag = i % 11 == 0;
             const option = !flag && i % 13 == 0;
@@ -61,27 +61,7 @@ benchmarks(suite => {
 
         add('parser.parse()', () => {
             const parser = new Parser(tokens)
-                .setUnorderedStrategy(exactStrategy(
-                    { flag: ['flag!'] },
-                    { opti: ['opti:'] }
-                ));
-
-            parser.parse();
-        });
-    });
-
-    suite('parsing: parse with caseInsensitiveStrategy', add => {
-        const tokens = Array.from({ length: 1000 }, i => {
-            const flag = i % 11 == 0;
-            const option = !flag && i % 13 == 0;
-            const v = i % 26 == 0;
-            const s = flag ? 'flag!' : option ? 'opti:' + (v ? 'x' : '') : 'hey';
-            return { value: s, raw: s, trailing: ' ' };
-        });
-
-        add('parser.parse()', () => {
-            const parser = new Parser(tokens)
-                .setUnorderedStrategy(caseInsensitiveStrategy(
+                .setUnorderedStrategy(pairingStrategy(
                     { flag: ['flag!'] },
                     { opti: ['opti:'] }
                 ));
