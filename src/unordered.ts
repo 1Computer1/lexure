@@ -166,14 +166,14 @@ function findPairing(ps: Pairing, p: (w: string) => boolean): [string, string] |
  * Note that this only works for en-US if you are below Node 13.0.0.
  *
  * ```ts
- * const st = pairingStrategy({ flag: ['--flag', '-f'] }, {});
+ * const st = matchingStrategy({ flag: ['--flag', '-f'] }, {});
  * console.log(st.matchFlag('--flag'));
  * >>> 'flag'
  *
  * console.log(st.matchOption('-f'));
  * >>> 'flag'
  *
- * const stbase = pairingStrategy({ flag: ['--flag'] }, {}, 'en-US', { sensitivity: 'base' });
+ * const stbase = matchingStrategy({ flag: ['--flag'] }, {}, 'en-US', { sensitivity: 'base' });
  * console.log(stbase.matchFlag('--FLAG'));
  * >>> 'flag'
  *
@@ -221,4 +221,85 @@ export function matchingStrategy(
             return [k, v];
         }
     };
+}
+
+/**
+ * Creates a new strategy that maps the names of flags and options in an unordered strategy.
+ * ```ts
+ * const st1 = longStrategy();
+ *
+ * console.log(st1.matchFlag('--foo'), st1.matchFlag('--FOO'));
+ * >>> 'foo' 'FOO'
+ *
+ * const st2 = mapStrategy(longStrategy(), k => k.toLowerCase());
+ *
+ * console.log(st2.matchFlag('--foo'), st1.matchFlag('--FOO'));
+ * >>> 'foo' 'foo'
+ * ```
+ * @param strat - A strategy.
+ * @param f - Creates a new name from the old name, or return null to not include it.
+ * @returns A new strategy.
+ */
+export function mapKeys(strat: UnorderedStrategy, f: (s: string) => string | null): UnorderedStrategy {
+    return {
+        matchFlag(s: string) {
+            const m = strat.matchFlag(s);
+            return m == null ? null : f(m);
+        },
+
+        matchOption(s: string) {
+            const m = strat.matchOption(s);
+            return m == null ? null : f(m);
+        },
+
+        matchCompactOption(s: string) {
+            const m = strat.matchCompactOption(s);
+            if (m == null) {
+                return null;
+            }
+
+            const k = f(m[0]);
+            return k == null ? null : [k, m[1]];
+        }
+    };
+}
+
+/**
+ * Creates a new strategy that renames the names of flags and options of another strategy.
+ * This is done according to a record of the names to a list of words.
+ * This function uses
+ * {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare}
+ * which can compare in different locales and different sensitivities.
+ * Note that this only works for en-US if you are below Node 13.0.0.
+ *
+ * ```ts
+ * const st = renameStrategy(longStrategy(), { foo: ['bar'] });
+ *
+ * console.log(st.matchFlag('--bar'));
+ * >>> 'foo'
+ * ```
+ *
+ * @param strat - A strategy.
+ * @param keys - The pairing of keys.
+ * @param keepNotFound - Whether to keep keys that are not found in `keys`; defaults to true.
+ * @param locales - Locale(s) to use.
+ * @param collatorOptions - Options for comparing strings.
+ * See {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator/Collator}
+ * for more information.
+ * @returns A new strategy.
+ */
+export function renameKeys(
+    strat: UnorderedStrategy,
+    keys: Pairing,
+    keepNotFound = true,
+    locales?: string | string[] | undefined,
+    collatorOptions?: Intl.CollatorOptions
+): UnorderedStrategy {
+    const eq = (w: string, s: string): boolean =>
+        w.localeCompare(s, locales, collatorOptions) === 0;
+
+    return mapKeys(strat, k => {
+        const res = findPairing(keys, w => eq(w, k))?.[0] ?? null;
+        return keepNotFound && res == null ? k : res;
+    });
 }

@@ -71,6 +71,8 @@
 * [longShortStrategy](README.md#longshortstrategy)
 * [prefixedStrategy](README.md#prefixedstrategy)
 * [matchingStrategy](README.md#matchingstrategy)
+* [mapKeys](README.md#mapkeys)
+* [renameKeys](README.md#renamekeys)
 * [someToOk](README.md#sometook)
 * [okToSome](README.md#oktosome)
 * [errToSome](README.md#errtosome)
@@ -885,14 +887,14 @@ which can compare in different locales and different sensitivities.
 Note that this only works for en-US if you are below Node 13.0.0.
 
 ```ts
-const st = pairingStrategy({ flag: ['--flag', '-f'] }, {});
+const st = matchingStrategy({ flag: ['--flag', '-f'] }, {});
 console.log(st.matchFlag('--flag'));
 >>> 'flag'
 
 console.log(st.matchOption('-f'));
 >>> 'flag'
 
-const stbase = pairingStrategy({ flag: ['--flag'] }, {}, 'en-US', { sensitivity: 'base' });
+const stbase = matchingStrategy({ flag: ['--flag'] }, {}, 'en-US', { sensitivity: 'base' });
 console.log(stbase.matchFlag('--FLAG'));
 >>> 'flag'
 
@@ -912,6 +914,81 @@ collatorOptions? | Intl.CollatorOptions | Options for comparing strings. See [ht
 **Returns:** [UnorderedStrategy](interfaces/unorderedstrategy.md)
 
 The strategy.
+
+___
+
+###  mapKeys
+
+* **mapKeys**(strat: [UnorderedStrategy](interfaces/unorderedstrategy.md), f: function): [UnorderedStrategy](interfaces/unorderedstrategy.md)
+
+Creates a new strategy that maps the names of flags and options in an unordered strategy.
+```ts
+const st1 = longStrategy();
+
+console.log(st1.matchFlag('--foo'), st1.matchFlag('--FOO'));
+>>> 'foo' 'FOO'
+
+const st2 = mapStrategy(longStrategy(), k => k.toLowerCase());
+
+console.log(st2.matchFlag('--foo'), st1.matchFlag('--FOO'));
+>>> 'foo' 'foo'
+```
+
+**Parameters:**
+
+* **strat**: [UnorderedStrategy](interfaces/unorderedstrategy.md)
+
+A strategy.
+
+* **f**: function
+
+Creates a new name from the old name, or return null to not include it.
+
+* (s: string): string | null
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+s | string |
+
+**Returns:** [UnorderedStrategy](interfaces/unorderedstrategy.md)
+
+A new strategy.
+
+___
+
+###  renameKeys
+
+* **renameKeys**(strat: [UnorderedStrategy](interfaces/unorderedstrategy.md), keys: [Pairing](README.md#pairing), keepNotFound: boolean, locales?: string | string[] | undefined, collatorOptions?: Intl.CollatorOptions): [UnorderedStrategy](interfaces/unorderedstrategy.md)
+
+Creates a new strategy that renames the names of flags and options of another strategy.
+This is done according to a record of the names to a list of words.
+This function uses
+[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare)
+which can compare in different locales and different sensitivities.
+Note that this only works for en-US if you are below Node 13.0.0.
+
+```ts
+const st = renameStrategy(longStrategy(), { foo: ['bar'] });
+
+console.log(st.matchFlag('--bar'));
+>>> 'foo'
+```
+
+**Parameters:**
+
+Name | Type | Default | Description |
+------ | ------ | ------ | ------ |
+strat | [UnorderedStrategy](interfaces/unorderedstrategy.md) | - | A strategy. |
+keys | [Pairing](README.md#pairing) | - | The pairing of keys. |
+keepNotFound | boolean | true | Whether to keep keys that are not found in `keys`; defaults to true. |
+locales? | string &#124; string[] &#124; undefined | - | Locale(s) to use. |
+collatorOptions? | Intl.CollatorOptions | - | Options for comparing strings. See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator/Collator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator/Collator) for more information. |
+
+**Returns:** [UnorderedStrategy](interfaces/unorderedstrategy.md)
+
+A new strategy.
 
 ___
 
