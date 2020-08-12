@@ -124,4 +124,22 @@ describe('Parser#parse', () => {
             expect(p1).toEqual(p2);
         }));
     });
+
+    it('can parse multiple inputs', () => {
+        const ts1 = new Lexer('foo bar baz').lex();
+        const ts2 = new Lexer('foo foo foo').lex();
+        const parser = new Parser();
+
+        expect(parser.setInput(ts1).parse()).toEqual({
+            ordered: ts1,
+            flags: new Set(),
+            options: new Map()
+        });
+
+        expect(parser.setInput(ts2).parse()).toEqual({
+            ordered: ts2,
+            flags: new Set(),
+            options: new Map()
+        });
+    });
 });

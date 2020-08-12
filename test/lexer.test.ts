@@ -192,4 +192,11 @@ describe('Lexer#lexCommand', () => {
         const ts = new Lexer(s).lexCommand(s => s.startsWith('!') ? 1 : null);
         expect(ts).toBeNull();
     });
+
+    it('can lex multiple inputs', () => {
+        const lexer = new Lexer().setQuotes([['"', '"']]);
+
+        expect(lexer.setInput('"hey"').lex()).toEqual([{ value: 'hey', raw: '"hey"', trailing: '' }]);
+        expect(lexer.setInput('"foo"').lex()).toEqual([{ value: 'foo', raw: '"foo"', trailing: '' }]);
+    });
 });

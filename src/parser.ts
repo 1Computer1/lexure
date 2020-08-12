@@ -6,16 +6,27 @@ import { ParserOutput, emptyOutput } from './parserOutput';
  * Parses a list of tokens to separate out flags and options.
  */
 export class Parser implements IterableIterator<ParserOutput>, Iterator<ParserOutput, null, ParserOutput | undefined> {
-    private readonly input: Token[];
-
+    private input: Token[];
     private unorderedStrategy: UnorderedStrategy = noStrategy();
     private position = 0;
 
     /**
      * @param input - The input tokens.
      */
-    public constructor(input: Token[]) {
+    public constructor(input?: Token[]) {
+        this.input = input ?? [];
+    }
+
+    /**
+     * Sets the input to use.
+     * This will reset the parser.
+     * @param input - Input to use.
+     * @returns The parser.
+     */
+    public setInput(input: Token[]): this {
         this.input = input;
+        this.reset();
+        return this;
     }
 
     /**
@@ -32,6 +43,15 @@ export class Parser implements IterableIterator<ParserOutput>, Iterator<ParserOu
      */
     public setUnorderedStrategy(s: UnorderedStrategy): this {
         this.unorderedStrategy = s;
+        return this;
+    }
+
+    /**
+     * Resets the state of the parser.
+     * @return The parser.
+     */
+    public reset(): this {
+        this.position = 0;
         return this;
     }
 

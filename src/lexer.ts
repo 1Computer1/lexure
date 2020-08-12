@@ -4,17 +4,31 @@ import { Token, extractCommand, MatchPrefix } from './tokens';
  * The lexer turns input into a list of tokens.
  */
 export class Lexer implements IterableIterator<Token> {
-    private readonly input: string;
-
+    private input: string;
     private quotes: [string, string][] = [];
     private position = 0;
 
     /**
      * @param input - Input string.
      */
-    public constructor(input: string) {
+    public constructor(input?: string) {
+        this.input = input ?? '';
+        if (input != null) {
+            this.pWs();
+        }
+    }
+
+    /**
+     * Sets the input to use.
+     * This will reset the lexer.
+     * @param input - Input to use.
+     * @returns The lexer.
+     */
+    public setInput(input: string): this {
         this.input = input;
+        this.reset();
         this.pWs();
+        return this;
     }
 
     /**
@@ -36,6 +50,15 @@ export class Lexer implements IterableIterator<Token> {
      */
     public setQuotes(quotes: [string, string][]): this {
         this.quotes = quotes;
+        return this;
+    }
+
+    /**
+     * Resets the position of the lexer.
+     * @return The lexer.
+     */
+    public reset(): this {
+        this.position = 0;
         return this;
     }
 
