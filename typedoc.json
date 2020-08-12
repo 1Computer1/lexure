@@ -1,12 +1,15 @@
 {
-    "mode": "file",
-    "tsconfig": "tsconfig.json",
-    "inputFiles": "src",
-    "readme": "none",
-    "exclude": ["src/index.ts", "test/**"],
-    "excludeNotExported": true,
-    "excludePrivate": true,
-    "excludeNotDocumented": true,
-    "disableSources": true,
-    "out": "docs/reference"
+  "mode": "file",
+  "tsconfig": "tsconfig.json",
+  "inputFiles": "src",
+  "readme": "none",
+  "exclude": [
+    "src/index.ts",
+    "test/**"
+  ],
+  "excludeNotExported": true,
+  "excludePrivate": true,
+  "excludeNotDocumented": true,
+  "disableSources": true,
+  "out": "docs/reference"
 }
