@@ -196,8 +196,8 @@ export function matchingStrategy(
     locales?: string | string[] | undefined,
     collatorOptions?: Intl.CollatorOptions
 ): UnorderedStrategy {
-    const eq = (w: string, s: string): boolean =>
-        w.localeCompare(s, locales, collatorOptions) === 0;
+    const compare = new Intl.Collator(locales, collatorOptions).compare;
+    const eq = (w: string, s: string): boolean => compare(w, s) === 0;
 
     return {
         matchFlag(s: string) {
@@ -295,8 +295,8 @@ export function renameKeys(
     locales?: string | string[] | undefined,
     collatorOptions?: Intl.CollatorOptions
 ): UnorderedStrategy {
-    const eq = (w: string, s: string): boolean =>
-        w.localeCompare(s, locales, collatorOptions) === 0;
+    const compare = new Intl.Collator(locales, collatorOptions).compare;
+    const eq = (w: string, s: string): boolean => compare(w, s) === 0;
 
     return mapKeys(strat, k => {
         const res = findPairing(keys, w => eq(w, k))?.[0] ?? null;

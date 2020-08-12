@@ -2,7 +2,7 @@ const { benchmarks } = require('./wrapper');
 const {
     Lexer, Parser,
     mergeOutputs,
-    longStrategy, longShortStrategy, pairingStrategy
+    longStrategy, longShortStrategy, matchingStrategy
 } = require('..');
 
 benchmarks(suite => {
@@ -50,7 +50,7 @@ benchmarks(suite => {
         });
     });
 
-    suite('parsing: parse with pairingStrategy', add => {
+    suite('parsing: parse with matchingStrategy', add => {
         const tokens = Array.from({ length: 1000 }, i => {
             const flag = i % 11 == 0;
             const option = !flag && i % 13 == 0;
@@ -61,9 +61,11 @@ benchmarks(suite => {
 
         add('parser.parse()', () => {
             const parser = new Parser(tokens)
-                .setUnorderedStrategy(pairingStrategy(
+                .setUnorderedStrategy(matchingStrategy(
                     { flag: ['flag!'] },
-                    { opti: ['opti:'] }
+                    { opti: ['opti:'] },
+                    'en-US',
+                    { sensitivity: 'base' }
                 ));
 
             parser.parse();
