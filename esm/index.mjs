@@ -20,6 +20,7 @@ export const {
     step_,
     finish,
     fail,
+    fail_,
     // option.js
     option,
     some,
