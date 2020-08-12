@@ -25,7 +25,9 @@ Parses a list of tokens to separate out flags and options.
 
 ### Methods
 
+* [setInput](parser.md#setinput)
 * [setUnorderedStrategy](parser.md#setunorderedstrategy)
+* [reset](parser.md#reset)
 * [next](parser.md#next)
 * [parse](parser.md#parse)
 
@@ -33,13 +35,13 @@ Parses a list of tokens to separate out flags and options.
 
 ###  constructor
 
-* **new Parser**(input: [Token](../interfaces/token.md)[]): [Parser](parser.md)
+* **new Parser**(input?: [Token](../interfaces/token.md)[]): [Parser](parser.md)
 
 **Parameters:**
 
 Name | Type | Description |
 ------ | ------ | ------ |
-input | [Token](../interfaces/token.md)[] | The input tokens.  |
+input? | [Token](../interfaces/token.md)[] | The input tokens.  |
 
 **Returns:** [Parser](parser.md)
 
@@ -54,6 +56,25 @@ Whether the parser is finished.
 **Returns:** boolean
 
 ## Methods
+
+###  setInput
+
+* **setInput**(input: [Token](../interfaces/token.md)[]): this
+
+Sets the input to use.
+This will reset the parser.
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+input | [Token](../interfaces/token.md)[] | Input to use. |
+
+**Returns:** this
+
+The parser.
+
+___
 
 ###  setUnorderedStrategy
 
@@ -73,6 +94,18 @@ const parser = new Parser(tokens)
 Name | Type |
 ------ | ------ |
 s | [UnorderedStrategy](../interfaces/unorderedstrategy.md) |
+
+**Returns:** this
+
+The parser.
+
+___
+
+###  reset
+
+* **reset**(): this
+
+Resets the state of the parser.
 
 **Returns:** this
 

@@ -24,7 +24,9 @@ The lexer turns input into a list of tokens.
 
 ### Methods
 
+* [setInput](lexer.md#setinput)
 * [setQuotes](lexer.md#setquotes)
+* [reset](lexer.md#reset)
 * [next](lexer.md#next)
 * [lex](lexer.md#lex)
 * [lexCommand](lexer.md#lexcommand)
@@ -33,13 +35,13 @@ The lexer turns input into a list of tokens.
 
 ###  constructor
 
-* **new Lexer**(input: string): [Lexer](lexer.md)
+* **new Lexer**(input?: undefined | string): [Lexer](lexer.md)
 
 **Parameters:**
 
 Name | Type | Description |
 ------ | ------ | ------ |
-input | string | Input string.  |
+input? | undefined &#124; string | Input string.  |
 
 **Returns:** [Lexer](lexer.md)
 
@@ -54,6 +56,25 @@ Whether the lexer is finished.
 **Returns:** boolean
 
 ## Methods
+
+###  setInput
+
+* **setInput**(input: string): this
+
+Sets the input to use.
+This will reset the lexer.
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+input | string | Input to use. |
+
+**Returns:** this
+
+The lexer.
+
+___
 
 ###  setQuotes
 
@@ -75,6 +96,18 @@ console.log(xs);
 Name | Type | Description |
 ------ | ------ | ------ |
 quotes | [string, string][] | List of pairs of open and close quotes. It is required that these strings do not contain any whitespace characters. The matching of these quotes will be case-sensitive. |
+
+**Returns:** this
+
+The lexer.
+
+___
+
+###  reset
+
+* **reset**(): this
+
+Resets the position of the lexer.
 
 **Returns:** this
 
