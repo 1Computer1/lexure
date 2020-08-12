@@ -8,6 +8,10 @@ A wrapper around the parser output for retrieving command arguments.
 
 * **Args**
 
+## Implements
+
+* IterableIterator\<string\>
+
 ## Index
 
 ### Constructors
@@ -27,6 +31,7 @@ A wrapper around the parser output for retrieving command arguments.
 
 ### Methods
 
+* [next](args.md#next)
 * [single](args.md#single)
 * [singleMap](args.md#singlemap)
 * [singleMapAsync](args.md#singlemapasync)
@@ -108,6 +113,18 @@ The amount of remaining ordered tokens.
 **Returns:** number
 
 ## Methods
+
+###  next
+
+* **next**(): IteratorResult\<string\>
+
+Gets the next ordered argument.
+
+**Returns:** IteratorResult\<string\>
+
+An iterator result containing a string.
+
+___
 
 ###  single
 

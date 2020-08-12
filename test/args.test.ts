@@ -561,4 +561,13 @@ describe('Args (misc)', () => {
 
         expect(args.single()).toEqual('b');
     });
+
+    it('can be iterated', () => {
+        const s = 'a b c';
+        const ts = new Lexer(s).setQuotes([['"', '"']]).lex();
+        const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
+        const args = new Args(po);
+
+        expect([...args]).toEqual(['a', 'b', 'c']);
+    });
 });

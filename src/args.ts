@@ -28,7 +28,7 @@ export interface ArgsState {
 /**
  * A wrapper around the parser output for retrieving command arguments.
  */
-export class Args {
+export class Args implements IterableIterator<string> {
     /**
      * The parser output.
      */
@@ -70,6 +70,22 @@ export class Args {
      */
     public get remaining(): number {
         return this.parserOutput.ordered.length - this.state.usedIndices.size;
+    }
+
+    /**
+     * Gets the next ordered argument.
+     * @return An iterator result containing a string.
+     */
+    public next(): IteratorResult<string> {
+        if (this.finished) {
+            return { done: true, value: null };
+        }
+
+        return { done: false, value: this.single()! };
+    }
+
+    public [Symbol.iterator](): this {
+        return this;
     }
 
     /**
