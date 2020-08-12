@@ -39,31 +39,26 @@ export function emptyOutput(): ParserOutput {
  * @returns The merged output.
  */
 export function mergeOutputs(...ps: ParserOutput[]): ParserOutput {
-    const ordered = Array.from(function* () {
-        for (const p of ps) {
-            yield* p.ordered;
-        }
-    }());
+    const output = emptyOutput();
 
-    const flags = new Set(function* () {
-        for (const p of ps) {
-            yield* p.flags;
-        }
-    }());
-
-    const options: Map<string, string[]> = new Map();
     for (const p of ps) {
+        output.ordered.push(...p.ordered);
+
+        for (const f of p.flags) {
+            output.flags.add(f);
+        }
+
         for (const [o, xs] of p.options.entries()) {
-            if (!options.has(o)) {
-                options.set(o, []);
+            if (!output.options.has(o)) {
+                output.options.set(o, []);
             }
 
-            const ys = options.get(o);
+            const ys = output.options.get(o);
             ys!.push(...xs);
         }
     }
 
-    return { ordered, flags, options };
+    return output;
 }
 
 /**
