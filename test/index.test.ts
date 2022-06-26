@@ -57,7 +57,7 @@ describe('readme', () => {
         const a2 = args.single();
         expect(a2).toEqual('cool stuff');
 
-        const a3 = args.findMap(x => x === 'c' ? lexure.some('it was a C') : lexure.none());
+        const a3 = args.findMap(x => x === 'c' ? lexure.some('it was a C') : lexure.none);
         expect(a3).toEqual(some('it was a C'));
 
         const a4 = args.many();
@@ -211,8 +211,8 @@ describe('parsing-with-loops', () => {
 
             async parse(s: string) {
                 const res = runParser(s);
-                if (res.success) {
-                    return finish(res.value);
+                if (res.isOk()) {
+                    return finish(res.unwrap());
                 }
 
                 await say(`Invalid input ${s}, please give a valid ${expected}.`);
@@ -246,16 +246,16 @@ describe('parsing-with-loops', () => {
 
     async function addCommand(args: Args): Promise<void> {
         const n1 = await singleParseWithLoop(args, 'number', parseNumber);
-        if (!n1.success) {
-            return sayError(n1.error);
+        if (n1.isErr()) {
+            return sayError(n1.unwrapErr());
         }
 
         const n2 = await singleParseWithLoop(args, 'number', parseNumber);
-        if (!n2.success) {
-            return sayError(n2.error);
+        if (n2.isErr()) {
+            return sayError(n2.unwrapErr());
         }
 
-        const z = n1.value + n2.value;
+        const z = n1.unwrap() + n2.unwrap();
         return say(`That adds to ${z}.`);
     }
 

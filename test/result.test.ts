@@ -1,12 +1,4 @@
-import { maybeResult, ok, err, orResultAll, orResultFirst, orResultLast } from '../src';
-
-describe('maybeResult', () => {
-    it('should work', () => {
-        expect(maybeResult(1, 'bad')).toEqual(ok(1));
-        expect(maybeResult(null, 'bad')).toEqual(err('bad'));
-        expect(maybeResult(undefined, 'bad')).toEqual(err('bad'));
-    });
-});
+import { ok, err, orResultAll, orResultFirst, orResultLast } from '../src';
 
 describe('orResultAll', () => {
     it('gives the first ok', () => {

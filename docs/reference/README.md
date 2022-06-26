@@ -48,12 +48,11 @@
 * [outputFromJSON](README.md#outputfromjson)
 * [some](README.md#some)
 * [none](README.md#none)
-* [maybeOption](README.md#maybeoption)
+* [Option.from](README.md#optionfrom)
 * [orOption](README.md#oroption)
 * [ok](README.md#ok)
 * [err](README.md#err)
 * [err_](README.md#err_)
-* [maybeResult](README.md#mayberesult)
 * [orResultAll](README.md#orresultall)
 * [orResultFirst](README.md#orresultfirst)
 * [orResultLast](README.md#orresultlast)
@@ -299,21 +298,21 @@ An Option.
 
 ___
 
-###  maybeOption
+###  Option.from
 
-* **maybeOption**\<**T**\>(x: T | null | undefined): [Option](README.md#option)\<T\>
+* **Option.from**\<**T**\>(x: T | null | undefined): [Option](README.md#option)\<T\>
 
 Creates an Option from a value that could be null or undefined.
 
 ```ts
-console.log(maybeOption(1));
->>> { exists: true, value: 1 }
+console.log(Option.from(1));
+>>> Some { value: 1 }
 
-console.log(maybeOption(null));
->>> { exists: false }
+console.log(Option.from(null));
+>>> None {}
 
-console.log(maybeOption(undefined));
->>> { exists: false }
+console.log(Option.from(undefined));
+>>> None {}
 ```
 
 **Type parameters:**
@@ -409,42 +408,6 @@ ___
 Creates an Err with null value.
 
 **Returns:** [Err](interfaces/err.md)\<null\>
-
-A Result.
-
-___
-
-###  maybeResult
-
-* **maybeResult**\<**T**, **E**\>(x: T | null | undefined, e: E): [Result](README.md#result)\<T, E\>
-
-Creates a Result from a value that could be null or undefined.
-
-```ts
-console.log(maybeResult(1, 'bad'));
->>> { success: true, value: 1 }
-
-console.log(maybeResult(null, 'bad'));
->>> { success: false, error: 'bad' }
-
-console.log(maybeResult(undefined, 'bad'));
->>> { success: false, error: 'bad' }
-```
-
-**Type parameters:**
-
-* **T**
-
-* **E**
-
-**Parameters:**
-
-Name | Type | Description |
------- | ------ | ------ |
-x | T &#124; null &#124; undefined | A nullable value. |
-e | E | The error to use. |
-
-**Returns:** [Result](README.md#result)\<T, E\>
 
 A Result.
 

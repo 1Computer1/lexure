@@ -31,7 +31,7 @@ describe('Args#singleMap{Async}', () => {
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
-        const a = args.singleMap(x => x === 'a' ? some(1) : none());
+        const a = args.singleMap(x => x === 'a' ? some(1) : none);
         expect(a).toEqual(null);
     });
 
@@ -41,7 +41,7 @@ describe('Args#singleMap{Async}', () => {
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
-        const a = args.singleMap(x => x === 'a' ? some(1) : none());
+        const a = args.singleMap(x => x === 'a' ? some(1) : none);
         expect(a).toEqual(some(1));
     });
 
@@ -51,8 +51,8 @@ describe('Args#singleMap{Async}', () => {
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
-        const a = args.singleMap(x => x === 'not a' ? some(1) : none());
-        expect(a).toEqual(none());
+        const a = args.singleMap(x => x === 'not a' ? some(1) : none);
+        expect(a).toEqual(none);
 
         expect(args.single()).toEqual('a');
     });
@@ -63,8 +63,8 @@ describe('Args#singleMap{Async}', () => {
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
-        const a = args.singleMap(x => x === 'not a' ? some(1) : none(), true);
-        expect(a).toEqual(none());
+        const a = args.singleMap(x => x === 'not a' ? some(1) : none, true);
+        expect(a).toEqual(none);
 
         expect(args.single()).toEqual('b');
     });
@@ -75,7 +75,7 @@ describe('Args#singleMap{Async}', () => {
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
-        const a = await args.singleMapAsync(async x => x === 'a' ? some(1) : none());
+        const a = await args.singleMapAsync(async x => x === 'a' ? some(1) : none);
         expect(a).toEqual(null);
     });
 
@@ -85,7 +85,7 @@ describe('Args#singleMap{Async}', () => {
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
-        const a = await args.singleMapAsync(async x => x === 'a' ? some(1) : none());
+        const a = await args.singleMapAsync(async x => x === 'a' ? some(1) : none);
         expect(a).toEqual(some(1));
     });
 
@@ -95,8 +95,8 @@ describe('Args#singleMap{Async}', () => {
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
-        const a = await args.singleMapAsync(async x => x === 'not a' ? some(1) : none());
-        expect(a).toEqual(none());
+        const a = await args.singleMapAsync(async x => x === 'not a' ? some(1) : none);
+        expect(a).toEqual(none);
 
         expect(args.single()).toEqual('a');
     });
@@ -107,8 +107,8 @@ describe('Args#singleMap{Async}', () => {
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
-        const a = await args.singleMapAsync(async x => x === 'not a' ? some(1) : none(), true);
-        expect(a).toEqual(none());
+        const a = await args.singleMapAsync(async x => x === 'not a' ? some(1) : none, true);
+        expect(a).toEqual(none);
 
         expect(args.single()).toEqual('b');
     });
@@ -364,7 +364,7 @@ describe('Args#findMap{Async}', () => {
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
-        const y = args.findMap(x => x === 'hello' ? some(10) : none());
+        const y = args.findMap(x => x === 'hello' ? some(10) : none);
         expect(y).toEqual(some(10));
     });
 
@@ -374,8 +374,8 @@ describe('Args#findMap{Async}', () => {
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
-        const y = args.findMap(x => x === 'goodbye' ? some(10) : none());
-        expect(y).toEqual(none());
+        const y = args.findMap(x => x === 'goodbye' ? some(10) : none);
+        expect(y).toEqual(none);
     });
 
     it('can find and map a token (async)', async () => {
@@ -384,7 +384,7 @@ describe('Args#findMap{Async}', () => {
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
-        const y = await args.findMapAsync(async x => x === 'hello' ? some(10) : none());
+        const y = await args.findMapAsync(async x => x === 'hello' ? some(10) : none);
         expect(y).toEqual(some(10));
     });
 
@@ -394,8 +394,8 @@ describe('Args#findMap{Async}', () => {
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
-        const y = await args.findMapAsync(async x => x === 'goodbye' ? some(10) : none());
-        expect(y).toEqual(none());
+        const y = await args.findMapAsync(async x => x === 'goodbye' ? some(10) : none);
+        expect(y).toEqual(none);
     });
 });
 
@@ -448,7 +448,7 @@ describe('Args#filterMap{Async}', () => {
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
-        const y = args.filterMap(x => x === 'hello' ? some(10) : none());
+        const y = args.filterMap(x => x === 'hello' ? some(10) : none);
         expect(y).toEqual([10, 10]);
     });
 
@@ -458,7 +458,7 @@ describe('Args#filterMap{Async}', () => {
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
-        const y = await args.filterMapAsync(async x => x === 'hello' ? some(10) : none());
+        const y = await args.filterMapAsync(async x => x === 'hello' ? some(10) : none);
         expect(y).toEqual([10, 10]);
     });
 });
@@ -517,7 +517,7 @@ describe('Args (misc)', () => {
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
-        args.findMap(x => x === 'hello' ? some(10) : none());
+        args.findMap(x => x === 'hello' ? some(10) : none);
         expect(args.state.usedIndices).toEqual(new Set([0]));
         expect(args.single()).toEqual('world');
         expect(args.state.usedIndices).toEqual(new Set([0, 1]));
@@ -530,7 +530,7 @@ describe('Args (misc)', () => {
         const po = new Parser(ts).setUnorderedStrategy(longStrategy()).parse();
         const args = new Args(po);
 
-        args.filterMap(x => x === 'hello' ? some(10) : none());
+        args.filterMap(x => x === 'hello' ? some(10) : none);
         expect(args.state.usedIndices).toEqual(new Set([0, 2]));
         expect(args.many()).toEqual([{ value: 'a', raw: 'a', trailing: ' ' }, { value: 'b', raw: 'b', trailing: '' }]);
         expect(args.state.usedIndices).toEqual(new Set([0, 1, 2, 3]));

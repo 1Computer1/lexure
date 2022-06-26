@@ -1,6 +1,6 @@
-import { Option, some, none } from './option';
-import { Result, ok, err } from './result';
+import type { Option, Result } from '@sapphire/result';
 import { LoopAction, step, finish, fail } from './loopAction';
+import { none, some } from './option';
 
 /**
  * Converts an Option to a Result.
@@ -11,11 +11,7 @@ import { LoopAction, step, finish, fail } from './loopAction';
  * @returns A Result.
  */
 export function someToOk<T, E>(x: Option<T>, error: E): Result<T, E> {
-    if (x.exists) {
-        return ok(x.value);
-    }
-
-    return err(error);
+    return x.okOr(error);
 }
 
 /**
@@ -26,11 +22,10 @@ export function someToOk<T, E>(x: Option<T>, error: E): Result<T, E> {
  * @returns An Option.
  */
 export function okToSome<T, E>(x: Result<T, E>): Option<T> {
-    if (x.success) {
-        return some(x.value);
-    }
-
-    return none();
+    return x.match<Option<T>>({
+        ok: (v) => some(v),
+        err: () => none,
+    });
 }
 
 /**
@@ -41,11 +36,10 @@ export function okToSome<T, E>(x: Result<T, E>): Option<T> {
  * @returns An Option.
  */
 export function errToSome<T, E>(x: Result<T, E>): Option<E> {
-    if (!x.success) {
-        return some(x.error);
-    }
-
-    return none();
+    return x.match<Option<E>>({
+        ok: () => none,
+        err: (e) => some(e),
+    });
 }
 
 /**
@@ -57,11 +51,10 @@ export function errToSome<T, E>(x: Result<T, E>): Option<E> {
  * @returns A LoopAction.
  */
 export function someToStep<A, B, E>(x: Option<A>, error: E): LoopAction<A, B, E> {
-    if (x.exists) {
-        return step(x.value);
-    }
-
-    return fail(error);
+    return x.match<LoopAction<A, B, E>>({
+        some: (v) => step(v),
+        none: () => fail(error),
+    });
 }
 
 /**
@@ -73,11 +66,10 @@ export function someToStep<A, B, E>(x: Option<A>, error: E): LoopAction<A, B, E>
  * @returns A LoopAction.
  */
 export function someToFinish<A, B, E>(x: Option<B>, error: E): LoopAction<A, B, E> {
-    if (x.exists) {
-        return finish(x.value);
-    }
-
-    return fail(error);
+    return x.match<LoopAction<A, B, E>>({
+        some: (v) => finish(v),
+        none: () => fail(error),
+    });
 }
 
 /**
@@ -88,11 +80,10 @@ export function someToFinish<A, B, E>(x: Option<B>, error: E): LoopAction<A, B, 
  * @returns A LoopAction.
  */
 export function okToStep<A, B, E>(x: Result<A, E>): LoopAction<A, B, E> {
-    if (x.success) {
-        return step(x.value);
-    }
-
-    return fail(x.error);
+    return x.match<LoopAction<A, B, E>>({
+        ok: (v) => step(v),
+        err: (e) => fail(e),
+    });
 }
 
 /**
@@ -103,9 +94,8 @@ export function okToStep<A, B, E>(x: Result<A, E>): LoopAction<A, B, E> {
  * @returns A LoopAction.
  */
 export function okToFinish<A, B, E>(x: Result<B, E>): LoopAction<A, B, E> {
-    if (x.success) {
-        return finish(x.value);
-    }
-
-    return fail(x.error);
+    return x.match<LoopAction<A, B, E>>({
+        ok: (v) => finish(v),
+        err: (e) => fail(e),
+    });
 }

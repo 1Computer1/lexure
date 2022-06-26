@@ -1,7 +1,8 @@
+import type { Option, Result } from '@sapphire/result';
+import { none, some } from './option';
 import { ParserOutput } from './parserOutput';
+import { err } from './result';
 import { Token } from './tokens';
-import { Option, some, none } from './option';
-import { Result, err } from './result';
 
 /**
  * The state for the argument wrapper.
@@ -153,7 +154,7 @@ export class Args implements IterableIterator<string> {
         }
 
         const o = f(this.parserOutput.ordered[this.state.position].value);
-        if (o.exists) {
+        if (o.isSome()) {
             this.state.usedIndices.add(this.state.position);
             this.state.position++;
             return o;
@@ -164,7 +165,7 @@ export class Args implements IterableIterator<string> {
             this.state.position++;
         }
 
-        return none();
+        return none;
     }
 
     /**
@@ -190,7 +191,7 @@ export class Args implements IterableIterator<string> {
         }
 
         const o = await f(this.parserOutput.ordered[this.state.position].value);
-        if (o.exists) {
+        if (o.isSome()) {
             this.state.usedIndices.add(this.state.position);
             this.state.position++;
             return o;
@@ -201,7 +202,7 @@ export class Args implements IterableIterator<string> {
             this.state.position++;
         }
 
-        return none();
+        return none;
     }
 
     /**
@@ -243,7 +244,7 @@ export class Args implements IterableIterator<string> {
         }
 
         const o = f(this.parserOutput.ordered[this.state.position].value);
-        if (o.success) {
+        if (o.isOk()) {
             this.state.usedIndices.add(this.state.position);
             this.state.position++;
             return o;
@@ -282,7 +283,7 @@ export class Args implements IterableIterator<string> {
         }
 
         const o = await f(this.parserOutput.ordered[this.state.position].value);
-        if (o.success) {
+        if (o.isOk()) {
             this.state.usedIndices.add(this.state.position);
             this.state.position++;
             return o;
@@ -510,13 +511,13 @@ export class Args implements IterableIterator<string> {
 
             const x = this.parserOutput.ordered[i];
             const o = f(x.value);
-            if (o.exists) {
+            if (o.isSome()) {
                 this.state.usedIndices.add(i);
-                return some(o.value);
+                return some(o.unwrap());
             }
         }
 
-        return none();
+        return none;
     }
 
     /**
@@ -539,13 +540,13 @@ export class Args implements IterableIterator<string> {
 
             const x = this.parserOutput.ordered[i];
             const o = await f(x.value);
-            if (o.exists) {
+            if (o.isSome()) {
                 this.state.usedIndices.add(i);
-                return some(o.value);
+                return some(o.unwrap());
             }
         }
 
-        return none();
+        return none;
     }
 
     /**
@@ -567,12 +568,12 @@ export class Args implements IterableIterator<string> {
 
             const x = this.parserOutput.ordered[i];
             const o = f(x.value);
-            if (o.success) {
+            if (o.isOk()) {
                 this.state.usedIndices.add(i);
-                return o;
+                return o as Result<T, E[]>;
             }
 
-            errors.push(o.error);
+            errors.push(o.unwrapErr());
         }
 
         return err(errors);
@@ -601,12 +602,12 @@ export class Args implements IterableIterator<string> {
 
             const x = this.parserOutput.ordered[i];
             const o = await f(x.value);
-            if (o.success) {
+            if (o.isOk()) {
                 this.state.usedIndices.add(i);
-                return o;
+                return o as Result<T, E[]>;
             }
 
-            errors.push(o.error);
+            errors.push(o.unwrapErr());
         }
 
         return err(errors);
@@ -642,9 +643,9 @@ export class Args implements IterableIterator<string> {
 
             const x = this.parserOutput.ordered[i];
             const o = f(x.value);
-            if (o.exists) {
+            if (o.isSome()) {
                 this.state.usedIndices.add(i);
-                ys.push(o.value);
+                ys.push(o.unwrap());
             }
         }
 
@@ -674,9 +675,9 @@ export class Args implements IterableIterator<string> {
 
             const x = this.parserOutput.ordered[i];
             const o = await f(x.value);
-            if (o.exists) {
+            if (o.isSome()) {
                 this.state.usedIndices.add(i);
-                ys.push(o.value);
+                ys.push(o.unwrap());
             }
         }
 

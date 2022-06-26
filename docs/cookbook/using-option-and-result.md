@@ -94,11 +94,11 @@ function number(x: string): number | null {
     return x;
 }
 
-// `maybeOption` turns null and undefined into `None`.
-const x = args.singleMap(x => maybeOption(number(x)));
+// `Option.from` turns null and undefined into `None`.
+const x = args.singleMap(x => Option.from(number(x)));
 
-// `maybeResult` turns null and undefined into an `Err` containing your error.
-const y = args.singleParse(x => maybeResult(number(x), 'not a number'));
+// `Option.from` can also be used to null and undefined into an `Err` containing your error.
+const y = args.singleParse(x => Option.from(number(x)).okOr('not a number'));
 ```
 
 There are also various conversion functions between `Option` and `Result`:  

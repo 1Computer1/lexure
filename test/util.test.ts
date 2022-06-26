@@ -10,7 +10,7 @@ describe('someToOk', () => {
     });
 
     it('none -> err', () => {
-        expect(someToOk(none(), 0)).toEqual(err(0));
+        expect(someToOk(none, 0)).toEqual(err(0));
     });
 });
 
@@ -20,13 +20,13 @@ describe('okToSome', () => {
     });
 
     it('err -> none', () => {
-        expect(okToSome(err(0))).toEqual(none());
+        expect(okToSome(err(0))).toEqual(none);
     });
 });
 
 describe('errToSome', () => {
     it('ok -> none', () => {
-        expect(errToSome(ok(1))).toEqual(none());
+        expect(errToSome(ok(1))).toEqual(none);
     });
 
     it('err -> sone', () => {
@@ -40,7 +40,7 @@ describe('someToStep', () => {
     });
 
     it('none -> fail', () => {
-        expect(someToStep(none(), 0)).toEqual(fail(0));
+        expect(someToStep(none, 0)).toEqual(fail(0));
     });
 });
 
@@ -50,7 +50,7 @@ describe('someToFinish', () => {
     });
 
     it('none -> fail', () => {
-        expect(someToFinish(none(), 0)).toEqual(fail(0));
+        expect(someToFinish(none, 0)).toEqual(fail(0));
     });
 });
 

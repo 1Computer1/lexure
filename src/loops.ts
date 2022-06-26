@@ -1,5 +1,6 @@
+import type { Result } from '@sapphire/result';
 import { LoopAction, fail, step_, LoopTag } from './loopAction';
-import { Result, ok, err } from './result';
+import { err, ok } from './result';
 
 const { STEP, FINISH, FAIL } = LoopTag;
 

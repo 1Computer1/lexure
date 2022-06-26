@@ -1,98 +1,6 @@
-/**
- * A type used to express computations that can fail.
- * @typeparam T - Type of results.
- * @typeparam E - Type of errors.
- */
-export type Result<T, E> = Ok<T> | Err<E>;
+import { Result } from '@sapphire/result';
 
-/**
- * The computation is successful.
- * @typeparam T - Type of results.
- */
-export interface Ok<T> {
-    /**
-     * If this is an Ok, this is true.
-     */
-    readonly success: true;
-
-    /**
-     * The resulting value, which only exists on an Ok.
-     */
-    readonly value: T;
-
-    readonly error?: undefined
-}
-
-/**
- * The computation failed.
- * @typeparam E - Type of errors.
- */
-export interface Err<E> {
-    /**
-     * If this an Err, this is false.
-     */
-    readonly success: false;
-
-    readonly value?: undefined
-
-    /**
-     * The resulting error, which only exists on an Err.
-     */
-    readonly error: E;
-}
-
-/**
- * Creates an Ok.
- * @typeparam T - Type of results.
- * @param x - Value to use.
- * @returns A Result.
- */
-export function ok<T>(x: T): Ok<T> {
-    return { success: true, value: x };
-}
-
-/**
- * Creates an Err.
- * @typeparam E - Type of errors.
- * @param x - Value to use.
- * @returns A Result.
- */
-export function err<E>(x: E): Err<E> {
-    return { success: false, error: x };
-}
-
-/**
- * Creates an Err with null value.
- * @returns A Result.
- */
-export function err_(): Err<null> {
-    return { success: false, error: null };
-}
-
-/**
- * Creates a Result from a value that could be null or undefined.
- *
- * ```ts
- * console.log(maybeResult(1, 'bad'));
- * >>> { success: true, value: 1 }
- *
- * console.log(maybeResult(null, 'bad'));
- * >>> { success: false, error: 'bad' }
- *
- * console.log(maybeResult(undefined, 'bad'));
- * >>> { success: false, error: 'bad' }
- * ```
- * @param x - A nullable value.
- * @param e - The error to use.
- * @returns A Result.
- */
-export function maybeResult<T, E>(x: T | null | undefined, e: E): Result<T, E> {
-    if (x == null) {
-        return err(e);
-    }
-
-    return ok(x);
-}
+const { ok, err } = Result;
 
 /**
  * Gets the first Ok from many Results.
@@ -101,17 +9,17 @@ export function maybeResult<T, E>(x: T | null | undefined, e: E): Result<T, E> {
  * @return The first Ok, or all the Errs if there were no Ok.
  */
 export function orResultAll<T, E>(x: Result<T, E>, ...xs: Result<T, E>[]): Result<T, E[]> {
-    if (x.success) {
-        return x;
+    if (x.isOk()) {
+        return x as Result<T, E[]>;
     }
 
-    const es = [x.error];
+    const es = [x.unwrapErr()];
     for (const x of xs) {
-        if (x.success) {
-            return x;
+        if (x.isOk()) {
+            return x as Result<T, E[]>;
         }
 
-        es.push(x.error);
+        es.push(x.unwrapErr());
     }
 
     return err(es);
@@ -124,13 +32,13 @@ export function orResultAll<T, E>(x: Result<T, E>, ...xs: Result<T, E>[]): Resul
  * @return The first Ok, or the first Err if there were no Ok.
  */
 export function orResultFirst<T, E>(x: Result<T, E>, ...xs: Result<T, E>[]): Result<T, E> {
-    if (x.success) {
+    if (x.isOk()) {
         return x;
     }
 
-    const e = x.error;
+    const e = x.unwrapErr();
     for (const x of xs) {
-        if (x.success) {
+        if (x.isOk()) {
             return x;
         }
     }
@@ -145,18 +53,20 @@ export function orResultFirst<T, E>(x: Result<T, E>, ...xs: Result<T, E>[]): Res
  * @return The first Ok, or the last Err if there were no Ok.
  */
 export function orResultLast<T, E>(x: Result<T, E>, ...xs: Result<T, E>[]): Result<T, E> {
-    if (x.success) {
+    if (x.isOk()) {
         return x;
     }
 
-    let e = x.error;
+    let e = x.unwrapErr();
     for (const x of xs) {
-        if (x.success) {
+        if (x.isOk()) {
             return x;
         }
 
-        e = x.error;
+        e = x.unwrapErr();
     }
 
     return err(e);
 }
+
+export { ok, err, Result };
